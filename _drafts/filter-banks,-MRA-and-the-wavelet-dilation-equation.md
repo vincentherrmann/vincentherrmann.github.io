@@ -30,6 +30,8 @@ fig8:
 
 ---
 
+#draft!
+
 The fast wavelet transform (FWT) is easily implemented as a cascaded filter bank. However, the exact mathematical derivation from wavelet theory is a bit unwieldy. In this blog post I will try to shed some light on this connection by starting with the simple implementation algorithm and developing the wavelet properties from there.
 
 ## Filter Banks

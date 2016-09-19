@@ -9,6 +9,7 @@ fig1:
 fig2:
   - image_path: db6SynthesisSum.png
 ---
+#draft!
 
 In the previous blog post I described the workings of the Fast Wavelet Transform (FWT) and Multiresolution Analysis (MRA). We saw that the scaling function $\phi$ and the wavelet function $\psi$ are defined by the filter coefficients $h_0$ by the dilation/refinement equations:
 
