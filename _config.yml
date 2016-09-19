@@ -10,11 +10,11 @@ locale                   : "en"
 title                    : "Vincent Herrmann"
 title_separator          : "-"
 name                     : "Vincent Herrmann"
-description              : "Professionally trained pianist and composer exploring the world of artificial intelligence"
-url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+description              : "Classically trained pianist and composer exploring the world of artificial intelligence"
+url                      : http://localhost:4000 # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
+teaser                   : db6SynthesisSum.png # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
@@ -47,6 +47,52 @@ staticman:
 atom_feed:
   path                   : # blank (default) uses feed.xml
 
+# Collections
+collections:
+  piano:
+    output: true
+    permalink: /:collection/:path/
+  composition:
+    output: true
+    permalink: /:collection/:path/
+    images:
+      teaser: vocal-piece-teaser.jpg
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: false
+      comments: true
+      share: true
+      related: true
+  # _piano
+  - scope:
+      path: ""
+      type: piano
+    values:
+      layout: single
+      author_profile: false
+      read_time: false
+      comments: true
+      share: true
+      related: true
+  # _composition
+  - scope:
+      path: ""
+      type: composition
+    values:
+      layout: single
+      author_profile: false
+      read_time: false
+      comments: true
+      share: true
+      related: true
+
 # SEO Related
 google_site_verification :
 bing_site_verification   :
@@ -77,10 +123,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
-  avatar           : "bio-photo.jpg"
-  bio              : "I am an amazing person."
-  location         : "Somewhere"
+  name             : "Vincent Herrmann"
+  avatar           : "profil-picture.jpg"
+  bio              : "Classically trained pianist and composer exploring the world of artificial intelligence"
+  location         : "Stuttgart, Germany"
   email            :
   uri              :
   bitbucket        :
@@ -89,7 +135,7 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           :
+  github           : "vincentherrmann"
   google_plus      :
   keybase          :
   instagram        :
@@ -100,7 +146,7 @@ author:
   stackoverflow    : # "123456/username" (the last part of your profile url, e.g. http://stackoverflow.com/users/123456/username)
   steam            :
   tumblr           :
-  twitter          :
+  twitter          : "@herrmannvincent"
   vine             :
   weibo            :
   xing             :
