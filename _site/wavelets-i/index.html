@@ -239,7 +239,7 @@
       <section class="page__content" itemprop="text">
         <p>This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician it might be difficult to distill the important ideas.</p>
 
-<p>Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumptions is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!</p>
+<p>Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!</p>
 
 <h2 id="filter-banks">Filter Banks</h2>
 
@@ -273,7 +273,7 @@
 Y(z) & = & \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \: + \\ & &\frac{1}{2}\Big( H_0(-z)F_0(z) + H_1(-z)F_1(z) \Big) \: X(-z)
 \end{array} \tag{1.2} %]]></script>
 
-<p>Our PR condition, with gain $g$ and a delay of $d$ samples, in terms of the Z-transform is</p>
+<p>More information is available <a href="https://www.dsprelated.com/freebooks/sasp/Critically_Sampled_Perfect_Reconstruction.html#30743">here</a>. Our PR condition, with gain $g$ and a delay of $d$ samples, in terms of the Z-transform is</p>
 
 <script type="math/tex; mode=display">Y(z) =  g \: z^{-d} X(z) \tag{1.3}</script>
 
