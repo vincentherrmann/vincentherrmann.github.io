@@ -1,7 +1,13 @@
 ---
+date: 2016-09-21
 title: Wavelets I - From Filter Banks to the Dilation Equation
+
+excerpt: "Derivation of the dilation and wavelet equation from an implementation of the Fast Wavelet Transform"
+
 header:
   teaser: FilterCascadeDB4Analysis.png
+
+tags: wavelets dsp
 
 fig1:
   - image_path: FilterBankDB4.png
@@ -34,12 +40,9 @@ fig9:
 
 ---
 
-**This post is not yet finished - stay tuned!**
+This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician it might be difficult to distill the important ideas.
 
-During the last weeks, I tried to refresh and deepen my understanding of wavelet transforms. There are tons of books and articles about it, but especially regarding the Fast Wavelet Transform (FWT) I had trouble finding clear ...
-
-
-The fast wavelet transform (FWT) is easily implemented as a cascaded filter bank. However, the exact mathematical derivation from wavelet theory is a bit unwieldy. In this blog post I will try to shed some light on this connection by starting with the simple implementation algorithm and developing the wavelet properties from there.
+Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumptions is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!
 
 ## Filter Banks
 
@@ -83,7 +86,15 @@ To have everything nice and compact we set $h_0$ and $h_1$ to be a so-called con
 - $H_1(z) = z^{-(L-1)} F_1(z^{-1}) = -z^{-(L-1)} H_0(-z^{-1})$, or $h_1(n) = -(-1)^n h_0(L-1-n)$
 <span style="float:right;">$(1.6)\;\;\;$</span>
 
-Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$.
+Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$. An additional benefit is, that $h_0$ and $h_1$ are orthogonal:
+
+$$
+\sum_n h_0(n)h_1(n) = \sum_n h_0(n)\Big(-(-1)^n h_0(L-1-n)\Big)
+$$
+
+$$
+= -h_0(0)h_0(L-1) + h_0(1)h_0(L-2) - ...-h_0(L-2)h_0(1)+h_0(L-1)h_0(0) = 0
+$$
 
 Equation $(1.2)$  combined with the PR condition $(1.3)$ becomes:
 
@@ -103,14 +114,12 @@ $$
 
 This constraint is not quite as straightforward to translate for $h_0$. Using the definition of the Z-transform we can write
 
-$$
-\begin{array}{cl}
+$$ \begin{array}{cl}
 & H_0(z)H_0(z^{-1}) \; + \; H_0(-z^{-1})H_0(-z) \\
 = & \left( \sum_{n} h_0(n) z^{-n} \right) \left( \sum_{n} h_0(n) z^{n} \right) + \left( \sum_{n}-  h_0(n) z^{-n} \right) \left( \sum_{n} - h_0(n) z^{n} \right) \\
 = & \sum_m \sum_n h_0(n)h_0(n+m) z^m + \sum_m \sum_n -h_0(n)h_0(n+m) z^m \\
 = & 2 \sum_{\mathrm{even} \:m} \sum_n h_0(n)h_0(n+m) z^m = 2
-\end{array}
-$$
+\end{array} $$
 
 Because it can't depend on $z$, $\sum_n h_0(n)h_0(n+m)$ has to be zero for $m \neq 0$. With $k := \frac{1}{2}m$, our perfect reconstruction constraint for $h_0$ is:
 
@@ -137,6 +146,7 @@ Reconstruction works the same way. And if all filter bank modules reconstruct th
 <!-- ![image](/images/FilterCascadeDB4Synthesis.png) -->
 {% include gallery id="fig3" caption="Fig.3: Cascading reconstruction filter bank" %}
 
+
 ## Multi Resolution Convolution
 In this section we will concentrate on the $h_0$ filter. So let's look at the upper half of Figure 2 (shaded in yellow). What has to happen to compute one sample, say the one with index 0, of the representation signal $r_{000}$? We can draw a graph describing the operation as a computational graph:
 
@@ -151,7 +161,7 @@ $$
 
 It should be clear how the graph would look like if we added more layers and looked at the sample 0 of the innermost representation signal. The graph would grow upwards, getting denser and denser at the top, but the bottom part stayed the same, only the labels of the representations would change.
 
-Technically, our topic is wavelets. At their core idea, wavelet representations do not build on one another. A scaled and shifted version of a wavelet is used always on the original signal, the cascading approach is just an implementation trick. But for our filter bank it is also useful to examine, how the direct link from the signal to every representation level looks like. For that, we have to look at Figure 4 in a different way: All the operations for generating the bottom sample 0 from the input signal $x$ - since they are all linear - can be combined into a single long filter $c_n$, where $n$ is the number of considered representation stages. To get the coefficients of this combined filter, we look at all the paths connecting a square at the level $c_n$ to the bottom square. These paths all have $latex n$ colored segments. The coefficients corresponding to the color of the segments are multiplied and these products are added for each different path. Note that now the white squares don't depict the signal in its various representations anymore, but the coefficients of the combined filter $c_n$. For example, if we take $c_3[-10]$, there are four paths to $c_0[0]$:
+Technically, our topic is wavelets. At their core idea, wavelet representations do not build on one another. A scaled and shifted version of a wavelet is used always on the original signal, the cascading approach is just an implementation trick. This means for our filter bank it is also useful to examine how the direct link from the signal to every representation level looks like. For that, we have to look at Figure 4 in a different way: All the operations for generating the bottom sample 0 from the input signal $x$ - since they are all linear - can be combined into a single long filter $c_n$, where $n$ is the number of considered representation stages. To get the coefficients of this combined filter, we look at all the paths connecting a square at the level $c_n$ to the bottom square. These paths all have $n$ colored segments. The coefficients corresponding to the color of the segments are multiplied and these products are added for each different path. Note that now the white squares don't depict the signal in its various representations anymore, but the coefficients of the combined filter $c_n$. For example, if we take $c_3[-10]$, there are four paths to $c_0[0]$:
 
 <span style="font-family:Arial">
 [-10]<span style="color: #37abc8;">——</span>[-5]<span style="color: #d45500;">——</span>[-2]<span style="color: #5aa02c;">——</span>[0] <br>
@@ -197,20 +207,21 @@ We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ 
 
 These are, in the sense of a discrete continuous wavelet transform, the actual "wavelets" used, for each representation a different one, although they converge quite quickly.
 
+
 ## The Dilation Identity
 
-This first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let's generalize this relation nevertheless to a construction progression of different function $\phi$:
+The $2^{-n-1}$ factor in $(1.11)$ prevents this progression to be elegantly expressed as a limit for $n \rightarrow \infty$. We could try to find a better suited equivalent progression. The first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let's generalize this relation nevertheless to a construction progression of different function $\phi$:
 
 $$
 \phi_{n+1}(t) =   \sum\limits_k h_0(k) \phi_n(2t - k) \tag{1.12}
 $$
 
-Notice that it has the same form as $(1.9)$. I think this resemblance can be a bit misleading, as blurs the distinction between the filter bank implementation and the underlying mathematical framework of the multi resolution analysis (MRA). Looking at the corresponding graph shows that the link between $x_n$ and $\phi_n$ is less obvious at it may seem at the first superficial glance:
+Notice that it has the same form as $(1.9)$. I think this resemblance can be a bit misleading, as blurs the distinction between the filter bank implementation and the underlying mathematical framework of the MRA. Looking at the corresponding graph shows that the link between $x_n$ and $\phi_n$ is less obvious at it may seem at the first superficial glance:
 
 <!-- ![image](/images/WaveletGraph2Float.png) -->
 {% include gallery id="fig7" caption="Fig.7: Computational graph based on filter dilation" %}
 
-The connections are completely different from the previous graph, except for the first step. But the remarkable thing is, that the paths connecting value of $\phi_n$ to $\phi_0$ have exactly the same color combinations as the $x_n$ graph. See for yourself! We can look again $\phi_3(1.250)$, which is equivalent to our previous example $c_3(-10)$. The paths connecting this node to $\phi_0(0)$ are:
+The connections are completely different from the previous graph, except for the first step. But the remarkable thing is that the paths connecting value of $\phi_n$ to $\phi_0$ have exactly the same color combinations as the $x_n$ graph. See for yourself! We can look again $\phi_3(1.250)$, which is equivalent to our previous example $c_3(-10)$. The paths connecting this node to $\phi_0(0)$ are:
 
 <span style="font-family:Arial">
 [1.250]<span style="color: #d45500;">——</span>[1.50]<span style="color: #5aa02c;">——</span>[1.0]<span style="color: #5aa02c;">——</span>[0] <br>
@@ -228,7 +239,7 @@ $$
 = c_3(-10)
 $$
 
-The order of the paths is jumbled, as are the colors of the path segments (those are, in fact, exactly reversed). But in the end, they generate the same result. But while we can verify the identity $\phi_n(t) = x_n(t)$ for $n={1, 2, 3}$, this seems a bit magical and is nothing more than a nice observation. We need a proof, that the identity holds for all $n$. Luckily, that's not too difficult to accomplish via induction.
+The order of the paths is jumbled, as are the colors of the path segments (those are in fact exactly reversed). But in the end they generate the same result. But while we can verify the identity $\phi_n(t) = x_n(t)$ for $n={1, 2, 3}$, this seems a bit magical and is nothing more than a nice observation. We need a proof that the identity holds for all $n$.
 
 Let's start with our two progressions $(1.11)$ and $(1.12)$:
 
@@ -260,20 +271,21 @@ As we see, the arguments of $\phi_{n-1}$ and $x_{n-1}$ on the right are the same
 
 If $\phi_{n} = x_{n}$ and $\phi_{n-1} = x_{n-1}$, then $\phi_{n+1} = x_{n+1}$
 
-We have already seen, that our assumptions hold for the first two levels, i.e. $\phi_0(t) = x_0(t)$ and $\phi_1(t) = x_1(t)$. With that, as we showed, we have $\phi_2(t) = x_2(t)$, and as a consequence of that $\phi_3(t) = x_3(t)$, and so on for all $n$. Therefore we have proved that indeed:
+We have already seen that our assumptions hold for the first two levels, i.e. $\phi_0(t) = x_0(t)$ and $\phi_1(t) = x_1(t)$. With that, as we showed, we have $\phi_2(t) = x_2(t)$, and as a consequence of that $\phi_3(t) = x_3(t)$, and so on for all $n$. Therefore we have proved by induction that indeed:
 
 $\phi_n(t) = x_n(t); \; n \geqslant 0, t \in R$, if $\phi_0(0) = x_0(0) = 1$ and $\phi_0(t) = x_0(t) = 0;  \forall t \neq 0$
 <span style="float:right;">$(1.13)\;\;\;$</span>
 
+
 ## The Dilation and Wavelet Equation
 
-For $n \to \infty$, $\phi_n$ converges to a continuous function with support $[0, K-1]$, where $K$ is the number of coefficients of $h_0$, and $x_n(0) = x_n(K-1) = 0$. Let's call this function simply $\phi$. The support of a function is the interval where it is different from zero. This converged progression still has to hold the construction criterion:
+For $n \to \infty$, $\phi_n$ converges to a continuous function with support $[0, K-1]$, where $K$ is the number of coefficients of $h_0$, and $x_n(0) = x_n(K-1) = 0$ (the support of a function is the interval where it is different from zero). Let's call this function simply $\phi$. This converged progression still has to hold the construction criterion:
 
 $$
 \phi(t) = \sum\limits_k h_0(k) \phi(2t-k) \tag{1.14}
 $$
 
-This is the dilation equation, the workhorse in the theory of FWT and multi resolution analysis (MRA). And $\phi$ itself is the scaling function of the FWT, in our concrete examples the DB4 scaling function. The dilation equation says, that the scaling function has a fractal self-similarity: it can be constructed of versions of itself, compressed by a factor of two, shifted and scaled by the $h_0$ coefficients.
+This is the dilation equation, the workhorse in the theory of FWT and multi resolution analysis (MRA). And $\phi$ itself is the scaling function of the FWT, in our concrete examples the DB4 scaling function. The dilation equation says that the scaling function has a fractal self-similarity: it can be constructed of versions of itself, compressed by a factor of two, shifted and scaled by the $h_0$ coefficients.
 
 <!-- ![image](/images/DB4SynthesisFractals.png)
 ![image](/images/DB4SynthesisSum.png) -->
@@ -328,6 +340,10 @@ This is the wavelet equation, defining the wavelet function $\psi$ of our FWT. A
 ![image](/images/DB4WaveletSynthesisSum.png) -->
 {% include gallery id="fig9" caption="Fig.9: Construction of the DB4 wavelet function from compressed scaling functions, scaled by the $h_1$ coefficients" %}
 
-The scaling function $\phi$ and the wavelet function $\psi$ are theoretical limits, that never actually occur in a practical filter bank implementation of the FWT, not even as a discretized or subsampled version. This is an important distinction from a discrete implementation of the continuous wavelet transform, where the scaled wavelets are explicitly used.
+The scaling function $\phi$ and the wavelet function $\psi$ are theoretical limits that never actually occur in a practical filter bank implementation of the FWT, not even as a discretized or subsampled version. This is an important distinction from a discrete implementation of the continuous wavelet transform, where the scaled wavelets are explicitly used.
 
-The fact, that the actually (implicitly) used filter $\phi_n$ with finite $n$ vary from $\phi$, can be seen as a discretization artifact. A signal with a higher sample rate uses a better approximation of $\phi$ at a certain scale, because it must have gone through more precedent filters to reach this level. If we could use the filter banks on a infinitesimally sampled signal, all filters would have had an infinite count of filters before them, making the effective filter be equal to $\phi$.
+The fact that the actually (implicitly) used filter $\phi_n$ with finite $n$ vary from $\phi$, can be seen as a discretization artifact. A signal with a higher sample rate uses a better approximation of $\phi$ at a certain scale, because it must have gone through more precedent filters to reach this level. If we could use the filter banks on a infinitesimally sampled signal, all filters would have had an infinite count of filters before them, making the effective filter be equal to $\phi$.
+
+## Conclusion
+
+We have seen the conditions $(1.4)$ - $(1.8)$ for the filters of a cascading filter bank implementation of the FWT. Those are critical and sufficient to make it work. Then we have tried to look at this implementation from a wavelet point of view. For this we have introduced the identity $(1.13)$, which then led to the dilation equation $(1.14)$ and $(1.15)$. I hope this was interesting for now, although it might not yet be actually useful. In the next blog post, however, I will explain how to design better filters with these results.

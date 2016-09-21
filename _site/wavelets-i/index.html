@@ -32,12 +32,12 @@
 <meta property="og:title" content="Wavelets I - From Filter Banks to the Dilation Equation">
 
 
-  <link rel="canonical" href="https://vincentherrmann.github.io/filter-banks,-MRA-and-the-wavelet-dilation-equation/">
-  <meta property="og:url" content="https://vincentherrmann.github.io/filter-banks,-MRA-and-the-wavelet-dilation-equation/">
+  <link rel="canonical" href="https://vincentherrmann.github.io/wavelets-i/">
+  <meta property="og:url" content="https://vincentherrmann.github.io/wavelets-i/">
 
 
 
-  <meta property="og:description" content="This post is not yet finished - stay tuned!">
+  <meta property="og:description" content="Derivation of the dilation and wavelet equation from an implementation of the Fast Wavelet Transform">
 
 
 
@@ -54,7 +54,7 @@
 
 
   <meta property="og:type" content="article">
-  <meta property="article:published_time" content="2016-09-19T00:00:00+02:00">
+  <meta property="article:published_time" content="2016-09-21T00:00:00+02:00">
 
 
 
@@ -209,8 +209,8 @@
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
     <meta itemprop="headline" content="Wavelets I - From Filter Banks to the Dilation Equation">
-    <meta itemprop="description" content="This post is not yet finished - stay tuned!">
-    <meta itemprop="datePublished" content="September 19, 2016">
+    <meta itemprop="description" content="Derivation of the dilation and wavelet equation from an implementation of the Fast Wavelet Transform">
+    <meta itemprop="datePublished" content="September 21, 2016">
     
 
     <div class="page__inner-wrap">
@@ -223,11 +223,9 @@
       
 
       <section class="page__content" itemprop="text">
-        <p><strong>This post is not yet finished - stay tuned!</strong></p>
+        <p>This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician it might be difficult to distill the important ideas.</p>
 
-<p>During the last weeks, I tried to refresh and deepen my understanding of wavelet transforms. There are tons of books and articles about it, but especially regarding the Fast Wavelet Transform (FWT) I had trouble finding clear …</p>
-
-<p>The fast wavelet transform (FWT) is easily implemented as a cascaded filter bank. However, the exact mathematical derivation from wavelet theory is a bit unwieldy. In this blog post I will try to shed some light on this connection by starting with the simple implementation algorithm and developing the wavelet properties from there.</p>
+<p>Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumptions is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!</p>
 
 <h2 id="filter-banks">Filter Banks</h2>
 
@@ -285,7 +283,11 @@ Y(z) & = & \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \: + \\ &
 <span style="float:right;">$(1.6)\;\;\;$</span></li>
 </ul>
 
-<p>Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$.</p>
+<p>Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$. An additional benefit is, that $h_0$ and $h_1$ are orthogonal:</p>
+
+<script type="math/tex; mode=display">\sum_n h_0(n)h_1(n) = \sum_n h_0(n)\Big(-(-1)^n h_0(L-1-n)\Big)</script>
+
+<script type="math/tex; mode=display">= -h_0(0)h_0(L-1) + h_0(1)h_0(L-2) - ...-h_0(L-2)h_0(1)+h_0(L-1)h_0(0) = 0</script>
 
 <p>Equation $(1.2)$  combined with the PR condition $(1.3)$ becomes:</p>
 
@@ -375,7 +377,7 @@ Y(z) & = & \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \: + \\ &
 
 <p>It should be clear how the graph would look like if we added more layers and looked at the sample 0 of the innermost representation signal. The graph would grow upwards, getting denser and denser at the top, but the bottom part stayed the same, only the labels of the representations would change.</p>
 
-<p>Technically, our topic is wavelets. At their core idea, wavelet representations do not build on one another. A scaled and shifted version of a wavelet is used always on the original signal, the cascading approach is just an implementation trick. But for our filter bank it is also useful to examine, how the direct link from the signal to every representation level looks like. For that, we have to look at Figure 4 in a different way: All the operations for generating the bottom sample 0 from the input signal $x$ - since they are all linear - can be combined into a single long filter $c_n$, where $n$ is the number of considered representation stages. To get the coefficients of this combined filter, we look at all the paths connecting a square at the level $c_n$ to the bottom square. These paths all have $latex n$ colored segments. The coefficients corresponding to the color of the segments are multiplied and these products are added for each different path. Note that now the white squares don’t depict the signal in its various representations anymore, but the coefficients of the combined filter $c_n$. For example, if we take $c_3[-10]$, there are four paths to $c_0[0]$:</p>
+<p>Technically, our topic is wavelets. At their core idea, wavelet representations do not build on one another. A scaled and shifted version of a wavelet is used always on the original signal, the cascading approach is just an implementation trick. This means for our filter bank it is also useful to examine how the direct link from the signal to every representation level looks like. For that, we have to look at Figure 4 in a different way: All the operations for generating the bottom sample 0 from the input signal $x$ - since they are all linear - can be combined into a single long filter $c_n$, where $n$ is the number of considered representation stages. To get the coefficients of this combined filter, we look at all the paths connecting a square at the level $c_n$ to the bottom square. These paths all have $n$ colored segments. The coefficients corresponding to the color of the segments are multiplied and these products are added for each different path. Note that now the white squares don’t depict the signal in its various representations anymore, but the coefficients of the combined filter $c_n$. For example, if we take $c_3[-10]$, there are four paths to $c_0[0]$:</p>
 
 <p><span style="font-family:Arial">
 [-10]<span style="color: #37abc8;">——</span>[-5]<span style="color: #d45500;">——</span>[-2]<span style="color: #5aa02c;">——</span>[0] <br />
@@ -442,11 +444,11 @@ We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ 
 
 <h2 id="the-dilation-identity">The Dilation Identity</h2>
 
-<p>This first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let’s generalize this relation nevertheless to a construction progression of different function $\phi$:</p>
+<p>The $2^{-n-1}$ factor in $(1.11)$ prevents this progression to be elegantly expressed as a limit for $n \rightarrow \infty$. We could try to find a better suited equivalent progression. The first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let’s generalize this relation nevertheless to a construction progression of different function $\phi$:</p>
 
 <script type="math/tex; mode=display">\phi_{n+1}(t) =   \sum\limits_k h_0(k) \phi_n(2t - k) \tag{1.12}</script>
 
-<p>Notice that it has the same form as $(1.9)$. I think this resemblance can be a bit misleading, as blurs the distinction between the filter bank implementation and the underlying mathematical framework of the multi resolution analysis (MRA). Looking at the corresponding graph shows that the link between $x_n$ and $\phi_n$ is less obvious at it may seem at the first superficial glance:</p>
+<p>Notice that it has the same form as $(1.9)$. I think this resemblance can be a bit misleading, as blurs the distinction between the filter bank implementation and the underlying mathematical framework of the MRA. Looking at the corresponding graph shows that the link between $x_n$ and $\phi_n$ is less obvious at it may seem at the first superficial glance:</p>
 
 <!-- ![image](/images/WaveletGraph2Float.png) -->
 
@@ -462,7 +464,7 @@ We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ 
   
 </figure>
 
-<p>The connections are completely different from the previous graph, except for the first step. But the remarkable thing is, that the paths connecting value of $\phi_n$ to $\phi_0$ have exactly the same color combinations as the $x_n$ graph. See for yourself! We can look again $\phi_3(1.250)$, which is equivalent to our previous example $c_3(-10)$. The paths connecting this node to $\phi_0(0)$ are:</p>
+<p>The connections are completely different from the previous graph, except for the first step. But the remarkable thing is that the paths connecting value of $\phi_n$ to $\phi_0$ have exactly the same color combinations as the $x_n$ graph. See for yourself! We can look again $\phi_3(1.250)$, which is equivalent to our previous example $c_3(-10)$. The paths connecting this node to $\phi_0(0)$ are:</p>
 
 <p><span style="font-family:Arial">
 [1.250]<span style="color: #d45500;">——</span>[1.50]<span style="color: #5aa02c;">——</span>[1.0]<span style="color: #5aa02c;">——</span>[0] <br />
@@ -476,7 +478,7 @@ We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ 
 <p><script type="math/tex">\phi_3(-1.250) = h_0(1) h_0(2) h_0(2) + h_0(1) h_0(3) h_0(0) + h_0(2) h_0(0) h_0(2) + h_0(2) h_0(1) h_0(0)</script>
 <script type="math/tex">= c_3(-10)</script></p>
 
-<p>The order of the paths is jumbled, as are the colors of the path segments (those are, in fact, exactly reversed). But in the end, they generate the same result. But while we can verify the identity $\phi_n(t) = x_n(t)$ for $n={1, 2, 3}$, this seems a bit magical and is nothing more than a nice observation. We need a proof, that the identity holds for all $n$. Luckily, that’s not too difficult to accomplish via induction.</p>
+<p>The order of the paths is jumbled, as are the colors of the path segments (those are in fact exactly reversed). But in the end they generate the same result. But while we can verify the identity $\phi_n(t) = x_n(t)$ for $n={1, 2, 3}$, this seems a bit magical and is nothing more than a nice observation. We need a proof that the identity holds for all $n$.</p>
 
 <p>Let’s start with our two progressions $(1.11)$ and $(1.12)$:</p>
 
@@ -512,18 +514,18 @@ x_{n+1}(t) & = & \sum\limits_k h_0(k) \: x_n(t-2^{-n-1}k) \\
 
 <p>If $\phi_{n} = x_{n}$ and $\phi_{n-1} = x_{n-1}$, then $\phi_{n+1} = x_{n+1}$</p>
 
-<p>We have already seen, that our assumptions hold for the first two levels, i.e. $\phi_0(t) = x_0(t)$ and $\phi_1(t) = x_1(t)$. With that, as we showed, we have $\phi_2(t) = x_2(t)$, and as a consequence of that $\phi_3(t) = x_3(t)$, and so on for all $n$. Therefore we have proved that indeed:</p>
+<p>We have already seen that our assumptions hold for the first two levels, i.e. $\phi_0(t) = x_0(t)$ and $\phi_1(t) = x_1(t)$. With that, as we showed, we have $\phi_2(t) = x_2(t)$, and as a consequence of that $\phi_3(t) = x_3(t)$, and so on for all $n$. Therefore we have proved by induction that indeed:</p>
 
 <p>$\phi_n(t) = x_n(t); \; n \geqslant 0, t \in R$, if $\phi_0(0) = x_0(0) = 1$ and $\phi_0(t) = x_0(t) = 0;  \forall t \neq 0$
 <span style="float:right;">$(1.13)\;\;\;$</span></p>
 
 <h2 id="the-dilation-and-wavelet-equation">The Dilation and Wavelet Equation</h2>
 
-<p>For $n \to \infty$, $\phi_n$ converges to a continuous function with support $[0, K-1]$, where $K$ is the number of coefficients of $h_0$, and $x_n(0) = x_n(K-1) = 0$. Let’s call this function simply $\phi$. The support of a function is the interval where it is different from zero. This converged progression still has to hold the construction criterion:</p>
+<p>For $n \to \infty$, $\phi_n$ converges to a continuous function with support $[0, K-1]$, where $K$ is the number of coefficients of $h_0$, and $x_n(0) = x_n(K-1) = 0$ (the support of a function is the interval where it is different from zero). Let’s call this function simply $\phi$. This converged progression still has to hold the construction criterion:</p>
 
 <script type="math/tex; mode=display">\phi(t) = \sum\limits_k h_0(k) \phi(2t-k) \tag{1.14}</script>
 
-<p>This is the dilation equation, the workhorse in the theory of FWT and multi resolution analysis (MRA). And $\phi$ itself is the scaling function of the FWT, in our concrete examples the DB4 scaling function. The dilation equation says, that the scaling function has a fractal self-similarity: it can be constructed of versions of itself, compressed by a factor of two, shifted and scaled by the $h_0$ coefficients.</p>
+<p>This is the dilation equation, the workhorse in the theory of FWT and multi resolution analysis (MRA). And $\phi$ itself is the scaling function of the FWT, in our concrete examples the DB4 scaling function. The dilation equation says that the scaling function has a fractal self-similarity: it can be constructed of versions of itself, compressed by a factor of two, shifted and scaled by the $h_0$ coefficients.</p>
 
 <!-- ![image](/images/DB4SynthesisFractals.png)
 ![image](/images/DB4SynthesisSum.png) -->
@@ -609,9 +611,13 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
   
 </figure>
 
-<p>The scaling function $\phi$ and the wavelet function $\psi$ are theoretical limits, that never actually occur in a practical filter bank implementation of the FWT, not even as a discretized or subsampled version. This is an important distinction from a discrete implementation of the continuous wavelet transform, where the scaled wavelets are explicitly used.</p>
+<p>The scaling function $\phi$ and the wavelet function $\psi$ are theoretical limits that never actually occur in a practical filter bank implementation of the FWT, not even as a discretized or subsampled version. This is an important distinction from a discrete implementation of the continuous wavelet transform, where the scaled wavelets are explicitly used.</p>
 
-<p>The fact, that the actually (implicitly) used filter $\phi_n$ with finite $n$ vary from $\phi$, can be seen as a discretization artifact. A signal with a higher sample rate uses a better approximation of $\phi$ at a certain scale, because it must have gone through more precedent filters to reach this level. If we could use the filter banks on a infinitesimally sampled signal, all filters would have had an infinite count of filters before them, making the effective filter be equal to $\phi$.</p>
+<p>The fact that the actually (implicitly) used filter $\phi_n$ with finite $n$ vary from $\phi$, can be seen as a discretization artifact. A signal with a higher sample rate uses a better approximation of $\phi$ at a certain scale, because it must have gone through more precedent filters to reach this level. If we could use the filter banks on a infinitesimally sampled signal, all filters would have had an infinite count of filters before them, making the effective filter be equal to $\phi$.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We have seen the conditions $(1.4)$ - $(1.8)$ for the filters of a cascading filter bank implementation of the FWT. Those are critical and sufficient to make it work. Then we have tried to look at this implementation from a wavelet point of view. For this we have introduced the identity $(1.13)$, which then led to the dilation equation $(1.14)$ and $(1.15)$. I hope this was interesting for now, although it might not yet be actually useful. In the next blog post, however, I will explain how to design better filters with these results.</p>
 
         
       </section>
@@ -621,10 +627,35 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
         
 
 
+  
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="https://vincentherrmann.github.io/tags/#dsp" class="page__taxonomy-item" rel="tag">dsp</a><span class="sep">, </span>
+    
+      
+      
+      <a href="https://vincentherrmann.github.io/tags/#wavelets" class="page__taxonomy-item" rel="tag">wavelets</a>
+    
+    </span>
+  </p>
+
+
 
 
         
-          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-09-19T00:00:00+02:00">September 19, 2016</time></p>
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-09-21T00:00:00+02:00">September 21, 2016</time></p>
         
       </footer>
 
@@ -635,13 +666,13 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=https://vincentherrmann.github.io/filter-banks,-MRA-and-the-wavelet-dilation-equation/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=https://vincentherrmann.github.io/wavelets-i/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://vincentherrmann.github.io/filter-banks,-MRA-and-the-wavelet-dilation-equation/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://vincentherrmann.github.io/wavelets-i/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=https://vincentherrmann.github.io/filter-banks,-MRA-and-the-wavelet-dilation-equation/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=https://vincentherrmann.github.io/wavelets-i/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://vincentherrmann.github.io/filter-banks,-MRA-and-the-wavelet-dilation-equation/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://vincentherrmann.github.io/wavelets-i/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
       
@@ -649,11 +680,11 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
 
   <nav class="pagination">
     
-      <a href="#" class="pagination--pager disabled">Previous</a>
-    
-    
       <a href="https://vincentherrmann.github.io/wavelet-construction-and-spectral-factorization/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
-">Next</a>
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -673,6 +704,45 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
   </article>
 
   
+  
+    <div class="page__related">
+      
+        <h4 class="page__related-title">You May Also Enjoy</h4>
+      
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "https://vincentherrmann.github.io/images/db6SynthesisSum.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://vincentherrmann.github.io/wavelet-construction-and-spectral-factorization/" rel="permalink">Wavelets II - Vanishing Moments and Spectral Factorization
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">This post is not yet finished - stay tuned!
+
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
   
 </div>
 
@@ -752,6 +822,22 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
   }
 
 });" type="text/javascript" ></script> -->
+
+
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-84550896-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
 
 
 

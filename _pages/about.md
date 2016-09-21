@@ -5,4 +5,4 @@ layout: single
 permalink: /about/
 ---
 
-short biograpy
+Coming soon...
