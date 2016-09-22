@@ -40,7 +40,7 @@ fig9:
 
 ---
 
-This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician it might be difficult to distill the important ideas.
+This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them tending to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician (such as me) it might be difficult to distill the important ideas.
 
 Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!
 
@@ -86,7 +86,7 @@ To have everything nice and compact we set $h_0$ and $h_1$ to be a so-called con
 - $H_1(z) = z^{-(L-1)} F_1(z^{-1}) = -z^{-(L-1)} H_0(-z^{-1})$, or $h_1(n) = -(-1)^n h_0(L-1-n)$
 <span style="float:right;">$(1.6)\;\;\;$</span>
 
-Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$. An additional benefit is, that $h_0$ and $h_1$ are orthogonal:
+Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$. An additional benefit is that $h_0$ and $h_1$ are orthogonal:
 
 $$
 \sum_n h_0(n)h_1(n) = \sum_n h_0(n)\Big(-(-1)^n h_0(L-1-n)\Big)
@@ -210,7 +210,7 @@ These are, in the sense of a discrete continuous wavelet transform, the actual "
 
 ## The Dilation Identity
 
-The $2^{-n-1}$ factor in $(1.11)$ prevents this progression to be elegantly expressed as a limit for $n \rightarrow \infty$. We could try to find a better suited equivalent progression. The first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let's generalize this relation nevertheless to a construction progression of different function $\phi$:
+The $2^{-n-1}$ factor in $(1.11)$ prevents this progression to be elegantly expressed as a limit for $n \rightarrow \infty$. So we will try to find a better suited equivalent progression. The first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let's generalize this relation nevertheless to a construction progression of different function $\phi$:
 
 $$
 \phi_{n+1}(t) =   \sum\limits_k h_0(k) \phi_n(2t - k) \tag{1.12}
@@ -346,4 +346,13 @@ The fact that the actually (implicitly) used filter $\phi_n$ with finite $n$ var
 
 ## Conclusion
 
-We have seen the conditions $(1.4)$ - $(1.8)$ for the filters of a cascading filter bank implementation of the FWT. Those are critical and sufficient to make it work. Then we have tried to look at this implementation from a wavelet point of view. For this we have introduced the identity $(1.13)$, which then led to the dilation equation $(1.14)$ and $(1.15)$. I hope this was interesting for now, although it might not yet be actually useful. In the next blog post, however, I will explain how to design better filters with these results.
+We have seen the conditions $(1.4)$ - $(1.8)$ for the filters of a cascading filter bank implementation of the FWT. Those are critical and sufficient to make it work. Then we have tried to look at this implementation from a wavelet point of view. For this we have introduced the identity $(1.13)$, which then led to the dilation equation $(1.14)$ and $(1.15)$. That gives us an analytic perspective for the converged state of our algorithm. I hope this was interesting for now, although it might not yet be actually useful. In the next blog post, however, I will explain how these results can help us to design better filters.
+
+## Useful Resources
+
+- [Blatter, Christian: Wavelets - Eine Einführung (link to pdf, german)](https://people.math.ethz.ch/~blatter/Wavelets.pdf)
+- [Keinert, Fritz: Wavelets and Multiwavelets](http://orion.math.iastate.edu/keinert/book.html)
+- [Rieder, Andreas: Wavelets - Theory and Applications](http://www.math.kit.edu/ianm3/lehre/wavelets2008w/)
+- [Smith III, Julius O.: Spectral Audio Processing](https://www.dsprelated.com/freebooks/sasp/)
+- [Strang, Gilbert: Wavelets and Dilation Equations: A Brief Introduction (link to pdf)](http://www-math.mit.edu/~gs/papers/siamrev.pdf)
+- [Winkler, Joab A.: Orthogonal Wavelets via Filter Banks: Theory and Applications (link to pdf)](http://www.maths-in-industry.org/miis/377/1/Orthogonal-wavelets-via-filter-banks.pdf)
