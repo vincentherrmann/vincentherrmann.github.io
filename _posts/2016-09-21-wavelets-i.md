@@ -46,7 +46,7 @@ Here I will start with the implementation of the FWT, which is easily done with 
 
 ## Filter Banks
 
-A finite impulse response (FIR) filter transforms a discrete signal $x(n)$ by convoluting it with a finite series of values $h(k)$:
+A finite impulse response (FIR) filter transforms a discrete signal $x(n)$ by convolving it with a finite series of values $h(k)$:
 
 $$
 y(n) = (h \ast x)(n) = \sum\limits_k h(k) x(n-k) \tag{1.1}
