@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="https://vincentherrmann.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://vincentherrmann.github.io/" rel="alternate" type="text/html" /><updated>2016-09-22T14:31:23+02:00</updated><id>https://vincentherrmann.github.io/</id><title>Vincent Herrmann</title><subtitle>Classically trained pianist and composer exploring the world of artificial intelligence</subtitle><author><name>Vincent Herrmann</name></author><entry><title>Wavelets I - From Filter Banks to the Dilation Equation</title><link href="https://vincentherrmann.github.io/wavelets-i/" rel="alternate" type="text/html" title="Wavelets I - From Filter Banks to the Dilation Equation" /><published>2016-09-21T00:00:00+02:00</published><updated>2016-09-21T00:00:00+02:00</updated><id>https://vincentherrmann.github.io/wavelets-i</id><content type="html" xml:base="https://vincentherrmann.github.io/wavelets-i/">&lt;p&gt;This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them tending to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician (such as me) it might be difficult to distill the important ideas.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="https://vincentherrmann.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://vincentherrmann.github.io/" rel="alternate" type="text/html" /><updated>2016-09-22T14:38:42+02:00</updated><id>https://vincentherrmann.github.io/</id><title>Vincent Herrmann</title><subtitle>Classically trained pianist and composer exploring the world of artificial intelligence</subtitle><author><name>Vincent Herrmann</name></author><entry><title>Wavelets I - From Filter Banks to the Dilation Equation</title><link href="https://vincentherrmann.github.io/wavelets-i/" rel="alternate" type="text/html" title="Wavelets I - From Filter Banks to the Dilation Equation" /><published>2016-09-21T00:00:00+02:00</published><updated>2016-09-21T00:00:00+02:00</updated><id>https://vincentherrmann.github.io/wavelets-i</id><content type="html" xml:base="https://vincentherrmann.github.io/wavelets-i/">&lt;p&gt;This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them tending to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician (such as me) it might be difficult to distill the important ideas.&lt;/p&gt;
 
 &lt;p&gt;Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!&lt;/p&gt;
 
@@ -11,7 +11,7 @@
 &lt;p&gt;The basic building block of our filter bank is shown in this graphic:
 &lt;!-- ![image](/images/FilterBankDB4.png) --&gt;&lt;/p&gt;
 
-&lt;figure class=&quot; &quot;&gt;
+&lt;figure class=&quot; align-left&quot;&gt;
   
     
       &lt;img src=&quot;https://vincentherrmann.github.io/images/FilterBankDB4.png&quot; alt=&quot;&quot; /&gt;
@@ -203,7 +203,7 @@ We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ 
 
 &lt;!-- ![image](/images/DB4XApproximation.png) --&gt;
 
-&lt;figure class=&quot; &quot;&gt;
+&lt;figure class=&quot; align-left&quot;&gt;
   
     
       &lt;img src=&quot;https://vincentherrmann.github.io/images/DB4XApproximation.png&quot; alt=&quot;&quot; /&gt;

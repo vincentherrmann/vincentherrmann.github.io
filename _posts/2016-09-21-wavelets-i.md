@@ -54,7 +54,7 @@ $$
 
 The basic building block of our filter bank is shown in this graphic:
 <!-- ![image](/images/FilterBankDB4.png) -->
-{% include gallery id="fig1" caption="Fig.1: A simple critically sampled filter bank with perfect reconstruction" %}
+{% include gallery id="fig1" caption="Fig.1: A simple critically sampled filter bank with perfect reconstruction" class="align-left" %}
 
 The input signal $x(n)$ is split and fed into two different analysis filters $h_0$ and $h_1$. These two signals are downsampled by a factor of two (i.e. all values with odd $n$ are deleted). Now we have an intermediate representation of the input signal, consisting of two different signals $r_0$ and $r_1$, each with half the sample count. But if we do it right, since the total amount of samples remains the same, there could still be all information left from the input. To reconstruct the signal, the representations are now upsampled by a factor if two (a zero is inserted after each sample) and fed into the reconstruction filters $f_0$ and $f_1$. Then the outputs of these filters are added together.
 
@@ -203,7 +203,7 @@ $$
 We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ has just the $h_0$ filter coefficients as values. The next graphic shows the first several levels of $x$ and the converged progression:
 
 <!-- ![image](/images/DB4XApproximation.png) -->
-{% include gallery id="fig6" caption="Fig.6: Several approximation levels of $x$, from the filter coefficients to the scaling function" %}
+{% include gallery id="fig6" caption="Fig.6: Several approximation levels of $x$, from the filter coefficients to the scaling function" class="align-left" %}
 
 These are, in the sense of a discrete continuous wavelet transform, the actual "wavelets" used, for each representation a different one, although they converge quite quickly.
 
