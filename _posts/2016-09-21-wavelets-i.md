@@ -5,38 +5,49 @@ title: Wavelets I - From Filter Banks to the Dilation Equation
 excerpt: "Derivation of the dilation and wavelet equation from an implementation of the Fast Wavelet Transform"
 
 header:
-  teaser: FilterCascadeDB4Analysis.png
+  teaser: wavelet-cascaded-filter-bank-analysis.png
 
 tags: wavelets dsp
 
 fig1:
-  - image_path: FilterBankDB4.png
+  - image_path: wavelet-reconstruction-filter-bank.png
+    alt: "perfect reconstruction filter bank"
 
 fig2:
-  - image_path: FilterCascadeDB4Analysis.png
+  - image_path: wavelet-cascaded-filter-bank-analysis.png
+    alt: "analysis part of a cascaded perfect reconstruction filter bank"
 
 fig3:
-  - image_path: FilterCascadeDB4Synthesis.png
+  - image_path: wavelet-cascaded-filter-bank-synthesis.png
+    alt: "synthesis part of a cascaded perfect reconstruction filter bank"
 
 fig4:
-  - image_path: WaveletGraph1Int.png
+  - image_path: wavelet-convolution-graph-int.png
+    alt: "computational graph of a multi-level convolution with down-sampling"
 
 fig5:
-  - image_path: WaveletGraph1Float.png
+  - image_path: wavelet-convolution-graph-float.png
+    alt: "computational graph with new continuous indexing"
 
 fig6:
-  - image_path: DB4XApproximation.png
+  - image_path: daubechies-4-scaling-approximation.png
+    alt: "several approximations of the Daubechies 4 scaling function"
 
 fig7:
-  - image_path: WaveletGraph2Float.png
+  - image_path: wavelet-dilation-graph-float.png
+    alt: "computational graph constructed with the dilation rule"
 
 fig8:
-  - image_path: DB4SynthesisFractals.png
-  - image_path: DB4SynthesisSum.png
+  - image_path: daubechies-4-scaling-components.png
+    alt: "fractal components of the Daubechies 4 scaling function"
+  - image_path: daubechies-4-scaling-sum.png
+    alt: "sum of the fractal components of the Daubechies 4 scaling function"
 
 fig9:
-  - image_path: DB4WaveletSynthesisFractals.png
-  - image_path: DB4WaveletSynthesisSum.png
+  - image_path: daubechies-4-wavelet-components.png
+    alt: "fractal components of the Daubechies 4 wavelet function"
+  - image_path: daubechies-4-wavelet-sum.png
+    alt: "sum of the fractal components of the Daubechies 4 wavelet function"
 
 ---
 
