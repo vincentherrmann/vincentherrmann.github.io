@@ -42,15 +42,17 @@ fig9:
 
 This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them tending to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician (such as me) it might be difficult to distill the important ideas.
 
-Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!
+Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters and the Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!
 
 ## Filter Banks
 
 A finite impulse response (FIR) filter transforms a discrete signal $x(n)$ by convolving it with a finite series of values $h(k)$:
 
+<a name="eq-1"></a>
 $$
 y(n) = (h \ast x)(n) = \sum\limits_k h(k) x(n-k) \tag{1.1}
 $$
+
 
 The basic building block of our filter bank is shown in this graphic:
 <!-- ![image](/images/FilterBankDB4.png) -->
@@ -62,6 +64,7 @@ If possible, we want the output of this whole setup to be exactly the same as th
 
 Of course there are not than just the Haar filters that yield a PR filter bank. Let's look at the Z-transform of Figure 1:
 
+<a name="eq-2"></a>
 $$ \begin{array}{rcl}
 Y(z) & = & \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \: + \\ & &\frac{1}{2}\Big( H_0(-z)F_0(z) + H_1(-z)F_1(z) \Big) \: X(-z)
 \end{array} \tag{1.2}
@@ -69,20 +72,24 @@ $$
 
 More information is available [here](https://www.dsprelated.com/freebooks/sasp/Critically_Sampled_Perfect_Reconstruction.html#30743). Our PR condition, with gain $g$ and a delay of $d$ samples, in terms of the Z-transform is
 
+<a name="eq-3"></a>
 $$
 Y(z) =  g \: z^{-d} X(z) \tag{1.3}
 $$
 
 As we see, there is no use for the second term in $(1.2)$, i.e. the alias term proportional to $X(-z)$. The easiest way to get rid of it is to set
 
+<a name="eq-4"></a>
 - $F_0(z) = -H_1(-z)$, which is equivalent to $f_0(n) = -(-1)^n h_1(n)$
 <span style="float:right;">$(1.4)\;\;\;$</span>
 
+<a name="eq-5"></a>
 - $F_1(z) = H_0(-z)$, which is equivalent to $f_1(n) = (-1)^n h_0(n)$
 <span style="float:right;">$(1.5)\;\;\;$</span>
 
 To have everything nice and compact we set $h_0$ and $h_1$ to be a so-called conjugate quadrature filter (CQF) pair. Here this means $h_1$ is $f_1$ in reverse ($L$ is the length of $h_0$ and must be even):
 
+<a name="eq-6"></a>
 - $H_1(z) = z^{-(L-1)} F_1(z^{-1}) = -z^{-(L-1)} H_0(-z^{-1})$, or $h_1(n) = -(-1)^n h_0(L-1-n)$
 <span style="float:right;">$(1.6)\;\;\;$</span>
 
@@ -108,6 +115,7 @@ $$
 
 If we set $d=L-1$ and $g=-1$, we can write
 
+<a name="eq-7"></a>
 $$
 H_0(z)H_0(z^{-1}) \; + \; H_0(-z^{-1})H_0(-z) = 2 \tag{1.7}
 $$
@@ -123,6 +131,7 @@ $$ \begin{array}{cl}
 
 Because it can't depend on $z$, $\sum_n h_0(n)h_0(n+m)$ has to be zero for $m \neq 0$. With $k := \frac{1}{2}m$, our perfect reconstruction constraint for $h_0$ is:
 
+<a name="eq-8"></a>
 $$
 \sum_n h_0(n)h_0(n + 2k) = \delta (k) = \begin{cases} 1, \; k = 0 \\ 0, \; k\neq 0 \end{cases} \tag{1.8}
 $$
@@ -155,6 +164,7 @@ In this section we will concentrate on the $h_0$ filter. So let's look at the up
 
 The white squares illustrate the signal at different representation states, which I have slightly renamed for convenience: $s_0 = x, s_1 = r_0, s_2 = r_{00}$ and in general $s_i$ being the representation $r$ with $i$ subscript zeros, meaning the output of the $i$th analysis filter $h_0$. A colored line stands for a multiplication with the corresponding filter coefficient, following the specified convolution and downsampling procedure
 
+<a name="eq-9"></a>
 $$
 s_{n+1} = \sum\limits_k h_0(k) s_n(2j - k) \tag{1.9}
 $$
@@ -176,6 +186,8 @@ $$c_3[-10] = h_0(0) h_0(1) h_0(2) + h_0(0) h_0(3) h_0(1) + h_0(2) h_0(0) h_0(2) 
 The resulting factor is exactly how an input sample is scaled while traveling through the graph from top to bottom.
 
 The efficient way to compute the coefficients for $c_n$ is working the way up the graph and using the following rule (all values of $c_n$ with non-integer indices are zero):
+
+<a name="eq-10"></a>
 $$
 c_{n+1}(j) = \sum\limits_k h_0(k) c_n \left( \frac{j+k}{2} \right) \tag{1.10}
 $$
@@ -197,9 +209,12 @@ x_{n+1}(t_{n+1}) & = & \sum\limits_k h_0(k) c_n \left( \frac{j+k}{2} \right) \\
 \end{array} $$
 
 Or when we set $t := t_{n+1}$
+
+<a name="eq-11"></a>
 $$
 x_{n+1}(t) = \sum\limits_k h_0(k) x_n(t - 2^{-n-1}k) \tag{1.11}
 $$
+
 We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ has just the $h_0$ filter coefficients as values. The next graphic shows the first several levels of $x$ and the converged progression:
 
 <!-- ![image](/images/DB4XApproximation.png) -->
@@ -212,6 +227,7 @@ These are, in the sense of a discrete continuous wavelet transform, the actual "
 
 The $2^{-n-1}$ factor in $(1.11)$ prevents this progression to be elegantly expressed as a limit for $n \rightarrow \infty$. So we will try to find a better suited equivalent progression. The first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let's generalize this relation nevertheless to a construction progression of different function $\phi$:
 
+<a name="eq-12"></a>
 $$
 \phi_{n+1}(t) =   \sum\limits_k h_0(k) \phi_n(2t - k) \tag{1.12}
 $$
@@ -273,6 +289,7 @@ If $\phi_{n} = x_{n}$ and $\phi_{n-1} = x_{n-1}$, then $\phi_{n+1} = x_{n+1}$
 
 We have already seen that our assumptions hold for the first two levels, i.e. $\phi_0(t) = x_0(t)$ and $\phi_1(t) = x_1(t)$. With that, as we showed, we have $\phi_2(t) = x_2(t)$, and as a consequence of that $\phi_3(t) = x_3(t)$, and so on for all $n$. Therefore we have proved by induction that indeed:
 
+<a name="eq-13"></a>
 $\phi_n(t) = x_n(t); \; n \geqslant 0, t \in R$, if $\phi_0(0) = x_0(0) = 1$ and $\phi_0(t) = x_0(t) = 0;  \forall t \neq 0$
 <span style="float:right;">$(1.13)\;\;\;$</span>
 
@@ -281,6 +298,7 @@ $\phi_n(t) = x_n(t); \; n \geqslant 0, t \in R$, if $\phi_0(0) = x_0(0) = 1$ and
 
 For $n \to \infty$, $\phi_n$ converges to a continuous function with support $[0, K-1]$, where $K$ is the number of coefficients of $h_0$, and $x_n(0) = x_n(K-1) = 0$ (the support of a function is the interval where it is different from zero). Let's call this function simply $\phi$. This converged progression still has to hold the construction criterion:
 
+<a name="eq-14"></a>
 $$
 \phi(t) = \sum\limits_k h_0(k) \phi(2t-k) \tag{1.14}
 $$
@@ -330,6 +348,7 @@ w_{n+1}(t) & = & \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
 
 The proof works just the same, and we can write:
 
+<a name="eq-15"></a>
 $$
 \psi(t) = \sum\limits_k h_1(k) \phi(2t-k) \tag{1.15}
 $$

@@ -15,16 +15,16 @@ fig2:
 In the previous blog post I described the workings of the Fast Wavelet Transform (FWT) and Multiresolution Analysis (MRA). We saw that the scaling function $\phi$ and the wavelet function $\psi$ are defined by the filter coefficients $h_0$ by the dilation/refinement equations:
 
 $$
-\phi(t) = \sum\limits_k h_0(k) \phi(2t-k)
+\phi(t) = \sum\limits_k h_0(k) \phi(2t-k) \tag{2.1}
 $$
 
 $$
-\psi(t) = \sum\limits_k h_1(k) \phi(2t-k)
+\psi(t) = \sum\limits_k h_1(k) \phi(2t-k) \tag{2.2}
 $$
 
 ## Vanishing Moments
 
-The idea of vanishing moments is closely linked to the filter bank implementation. The signal is split in two parts, one part that was analyzed with $\psi$ and one that was analyzed with $\phi$. If $\psi$ is orthogonal to the signal $x(t)$, i.e. $\int x(t) \psi(-t) \mathrm{d}t = 0$, the whole signal is represented by the $\phi$ half and can nevertheless be perfectly reconstructed. This scenario is of course great for compression, and in general for data manipulation or analysis. So one measure of quality of the wavelet function $\psi$ is, to how many important functions it stands orthogonal to. In the case of so-called vanishing moments these important target function are polynoms.
+The idea of vanishing moments is closely linked to the filter bank implementation. The signal is split in two parts, one part that was analyzed with $\psi$ and one that was analyzed with $\phi$. If $\psi$ is orthogonal to the signal $x(t)$, i.e. $\int x(t) \psi(t) \mathrm{d}t = 0$, the whole signal is represented by the $\phi$ half and can nevertheless be perfectly reconstructed. This scenario is of course great for compression, and in general for data manipulation or analysis. So one measure of quality of the wavelet function $\psi$ is, to how many important functions it stands orthogonal to. In the case of so-called vanishing moments these important target function are polynoms.
 
 The $n$th moment of a function $f$ is defined as:
 
@@ -51,74 +51,101 @@ It seems a bit strange that these odd, spiky shapes sum up to a smooth parable. 
 
 ## Connection to Filter Coefficients
 
-Now we have new criteria for our scaling- and wavelet-function. But in a FWT setting, our functions are defined through the filter coefficients $h_0$ and $h_1$, where $h_1(k) = (-1)^k h_0(k)$. For the next part, we will only use $h_1$, so let's call it only $h$ for now. So how do we translate the idea of vanishing moments into constraints for these coefficients? First we plug the wavelet equation into the definition of the vanishing moments:
+Now we have new criteria for our scaling- and wavelet-function. But in a FWT setting, our functions are defined through the filter coefficients $h_0$ and $h_1$. So how do we translate the idea of vanishing moments into constraints for these coefficients? First we plug the wavelet equation $(2.2)$ into the definition of the vanishing moments:
 
 $$
-M_n(\psi) = \int t^n \sum\limits_k h(k) \phi(2t-k) \mathrm{d}t = 0
+M_n(\psi) = \int t^n \sum\limits_k h_1(k) \phi(2t-k) \mathrm{d}t = 0
 $$
 
 We assume that $\phi$ has the necessary moments, but they are not zero. Now we create a new variable $s_k = 2t-k$:
 
 $$
-M_n(\psi) = \int (\frac{s_k + k}{2})^n \sum\limits_k h(k) \phi(s_k) \mathrm{d}s_k
+M_n(\psi) = \int \left( \frac{s_k + k}{2} \right)^n \sum\limits_k h_1(k) \phi(s_k) \mathrm{d}s_k
 $$
 
 $$
-= \sum\limits_k h(k) \int (\frac{s_k + k}{2})^n \phi(s_k) \mathrm{d}s_k = 0
+= \sum\limits_k h_1(k) \int \left( \frac{s_k + k}{2} \right)^n \phi(s_k) \mathrm{d}s_k = 0
 $$
 
 Let's look at the $0$th moment:
 
 $$
-M_0(\psi) = \sum\limits_k h(k) \int \phi(s_k) \mathrm{d}s_k = \sum\limits_k h(k) M_0(\phi(s_k)) = 0
+M_0(\psi) = \sum\limits_k h_1(k) \int \phi(s_k) \mathrm{d}s_k = \sum\limits_k h_1(k) M_0(\phi(s_k)) = 0
 $$
 
 The integral  $\int \phi(s_k) \mathrm{d}s_k = \int \phi(2t-k) \mathrm {d}t$ is invariant to changes in $k$, so $M_n(\phi(s_k))$ is constant for all $k$. With that, the requirement for one vanishing moment is:
 
 $$
-\sum\limits_k h(k) = 0
+\sum\limits_k h_1(k) = 0
 $$
 
 Now we can go on with vanishing moment $1$:
 
 $$
-M_1(\psi) = \sum\limits_k h(k) \int (\frac{1}{2} s_k \phi(s_k) +  \frac{1}{2} k \phi(s_k)) \mathrm{d}s_k
+M_1(\psi) = \sum\limits_k h_1(k) \int \left( \frac{1}{2} s_k \phi(s_k) +  \frac{1}{2} k \phi(s_k) \right) \mathrm{d}s_k
 $$
 
 $$
-= \sum\limits_k h(k) (\frac{1}{2} k M_0(\phi(s_k)) + \frac{1}{2} M_1(\phi(s_k))) = 0
+= \sum\limits_k h_1(k) \left( \frac{1}{2} k M_0(\phi(s_k)) + \frac{1}{2} M_1(\phi(s_k)) \right) = 0
 $$
 
-The second term $\sum_k h(k) \frac{1}{2} M_1(\phi(s_k))$ is zero, we know that from the condition for the $0$th vanishing moment. From the second term $\sum_k h(k) \frac{1}{2} k M_0(\phi(s_k)) = 0$ follows the new condition for vanishing moment $1$:
+The second term $\sum_k h_1(k) \frac{1}{2} M_1(\phi(s_k))$ is zero, we know that from the condition for the $0$th vanishing moment. From the second term $\sum_k h_1(k) \frac{1}{2} k M_0(\phi(s_k)) = 0$ follows the new condition for vanishing moment $1$:
 
 $$
-\sum\limits_k k h(k) = 0
+\sum\limits_k k h_1(k) = 0
 $$
 
 And vanishing Moment $2$:
 
 $$
-M_2(\psi) = \sum\limits_k h(k) \int \frac{1}{4} s_k^2 \phi(s_k) +  \frac{1}{2} k \phi(s_k) + \frac{1}{4} k^2 \phi(s_k)\mathrm{d}s_k
+M_2(\psi) = \sum\limits_k h_1(k) \int \left( \frac{1}{4} s_k^2 \phi(s_k) +  \frac{1}{2} k \phi(s_k) + \frac{1}{4} k^2 \phi(s_k) \right) \mathrm{d}s_k
 $$
 
 $$
-= \sum\limits_k h(k) (\frac{1}{4} k^2 M_0(\phi(s_k)) + \frac{1}{2} k M_1(\phi(s_k))  + \frac{1}{4} M_2(\phi(s_k))) = 0
+= \sum\limits_k h_1(k) \left( \frac{1}{4} k^2 M_0(\phi(s_k)) + \frac{1}{2} k M_1(\phi(s_k))  + \frac{1}{4} M_2(\phi(s_k)) \right) = 0
 $$
 
 Now the second and third term are both zero, based on the previous conditions. And the new condition for vanishing moment $2$ is:
 
 $$
-\sum\limits_k k^2 h(k) = 0
+\sum\limits_k k^2 h_1(k) = 0
 $$
 
-For every new vanishing moment $n$, there will be a term proportional to $\sum_k h(k) k^n M_n(\phi(s_k))$. All other terms will have a factor $k^m$ with $m<n$, those will automatically zero, based on the previous conditions. With that we have the condition for filter coefficients $h$ of a wavelet function $\psi$ with $A$ vanishing moments:
+For every new vanishing moment $n$, there will be a term proportional to $\sum_k h_1(k) k^n M_n(\phi(s_k))$. All other terms will have a factor $k^m$ with $m<n$, those will automatically zero, based on the previous conditions. With that we have the condition for filter coefficients $h$ of a wavelet function $\psi$ with $A$ vanishing moments:
 
 $$
-\sum\limits_k k^n h(k) = 0; \: \: n = 0, 1, ..., A-1
+\sum\limits_k k^n h_1(k) = 0; \: \: n = 0, 1, ..., A-1 \tag{2.3}
+$$
+
+Or, because $h_1 = -(-1)^n h_0(L-1-n)$, see [$(1.6)$](/wavelets-i#eq-6):
+
+$$
+\sum\limits_k k^n (-1)^nh_0(k) = 0; \: \: n = 0, 1, ..., A-1 \tag{2.4}
 $$
 
 ## Construction in the Fourier Domain
 
 Now we have all the conditions to construct useful wavelets. Unfortunately, this construction is probably the fiddliest part.
+
+By definition, the fourier-transform of $h_0$ is
+
+$$
+H_0(\xi) = \sum_k h_0(k) e^{-i k \xi} \tag{2.5}
+$$
+
+and the $n$th derivative of $H_0$:
+
+$$
+(D^n H_0)(\xi) = \sum_k h_0(k) (-i k)^n  e^{-i k \xi} = (-i)^n \sum_k k^n e^{-i k \xi} h_0(k)
+$$
+
+If we set $\xi = \pi$, we get $(D^n H_0)(\pi) = (-i)^n \sum_k k^n (-1)^k h_0(k)$.
+This means
+
+$$
+(D^n H_0)(\pi) = 0; \: \: n = 0, 1, ..., A-1 \tag{2.6}
+$$
+
+is equivalent to $(2.4)$ and $(2.3)$. The easiest way to achieve this would be setting $H_0(\xi) = \left( \frac{1+e^{i\xi}}{2} \right)^A$. This unfortunately interferes with our shift orthogonality condition [$(1.7)$](/wavelets-i#eq-7). But we can add
 
 ...

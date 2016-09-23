@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="https://vincentherrmann.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://vincentherrmann.github.io/" rel="alternate" type="text/html" /><updated>2016-09-22T20:44:16+02:00</updated><id>https://vincentherrmann.github.io/</id><title>Vincent Herrmann</title><subtitle>Classically trained pianist and composer exploring the world of artificial intelligence</subtitle><author><name>Vincent Herrmann</name></author><entry><title>Wavelets I - From Filter Banks to the Dilation Equation</title><link href="https://vincentherrmann.github.io/wavelets-i/" rel="alternate" type="text/html" title="Wavelets I - From Filter Banks to the Dilation Equation" /><published>2016-09-21T00:00:00+02:00</published><updated>2016-09-21T00:00:00+02:00</updated><id>https://vincentherrmann.github.io/wavelets-i</id><content type="html" xml:base="https://vincentherrmann.github.io/wavelets-i/">&lt;p&gt;This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them tending to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician (such as me) it might be difficult to distill the important ideas.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="https://vincentherrmann.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://vincentherrmann.github.io/" rel="alternate" type="text/html" /><updated>2016-09-23T14:55:48+02:00</updated><id>https://vincentherrmann.github.io/</id><title>Vincent Herrmann</title><subtitle>Classically trained pianist and composer exploring the world of artificial intelligence</subtitle><author><name>Vincent Herrmann</name></author><entry><title>Wavelets I - From Filter Banks to the Dilation Equation</title><link href="https://vincentherrmann.github.io/wavelets-i/" rel="alternate" type="text/html" title="Wavelets I - From Filter Banks to the Dilation Equation" /><published>2016-09-21T00:00:00+02:00</published><updated>2016-09-21T00:00:00+02:00</updated><id>https://vincentherrmann.github.io/wavelets-i</id><content type="html" xml:base="https://vincentherrmann.github.io/wavelets-i/">&lt;p&gt;This is the first in what I hope will be a series of posts about wavelets, especially about various aspects of the Fast Wavelet Transform (FWT). Of course there are already plenty of resources, but I found them tending to be either simple implementation guides that do not touch on the many interesting and sometimes crucial connections. Or they are highly mathematical and definition-heavy, for a non-mathematician (such as me) it might be difficult to distill the important ideas.&lt;/p&gt;
 
-&lt;p&gt;Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters the and Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!&lt;/p&gt;
+&lt;p&gt;Here I will start with the implementation of the FWT, which is easily done with a cascading filter bank. From there I will try to develop the corresponding wavelet properties and get to the maybe most important aspect of the Multi-Resolution Analysis (MRA), namely the dilation and wavelet equations. I think this is a reasonable and intuitive approach. My assumption is that you know the very basic principles of the continuous wavelet transform, digital filters and the Z-transform. I just want to mention that this is my first posts of this kind in English and I would appreciate your comments if you find mistakes in this text or in the calculation, if something is unclear or if you have any kind of feedback or question!&lt;/p&gt;
 
 &lt;h2 id=&quot;filter-banks&quot;&gt;Filter Banks&lt;/h2&gt;
 
 &lt;p&gt;A finite impulse response (FIR) filter transforms a discrete signal $x(n)$ by convolving it with a finite series of values $h(k)$:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;y(n) = (h \ast x)(n) = \sum\limits_k h(k) x(n-k) \tag{1.1}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-1&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;y(n) = (h \ast x)(n) = \sum\limits_k h(k) x(n-k) \tag{1.1}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;The basic building block of our filter bank is shown in this graphic:
 &lt;!-- ![image](/images/FilterBankDB4.png) --&gt;&lt;/p&gt;
@@ -29,34 +30,32 @@
 
 &lt;p&gt;Of course there are not than just the Haar filters that yield a PR filter bank. Let’s look at the Z-transform of Figure 1:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+&lt;p&gt;&lt;a name=&quot;eq-2&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 \begin{array}{rcl}
 Y(z) &amp; = &amp; \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \: + \\ &amp; &amp;\frac{1}{2}\Big( H_0(-z)F_0(z) + H_1(-z)F_1(z) \Big) \: X(-z)
-\end{array} \tag{1.2} %]]&gt;&lt;/script&gt;
+\end{array} \tag{1.2} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;More information is available &lt;a href=&quot;https://www.dsprelated.com/freebooks/sasp/Critically_Sampled_Perfect_Reconstruction.html#30743&quot;&gt;here&lt;/a&gt;. Our PR condition, with gain $g$ and a delay of $d$ samples, in terms of the Z-transform is&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Y(z) =  g \: z^{-d} X(z) \tag{1.3}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-3&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;Y(z) =  g \: z^{-d} X(z) \tag{1.3}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;As we see, there is no use for the second term in $(1.2)$, i.e. the alias term proportional to $X(-z)$. The easiest way to get rid of it is to set&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;$F_0(z) = -H_1(-z)$, which is equivalent to $f_0(n) = -(-1)^n h_1(n)$
+&lt;p&gt;&lt;a name=&quot;eq-4&quot;&gt;&lt;/a&gt;
+- $F_0(z) = -H_1(-z)$, which is equivalent to $f_0(n) = -(-1)^n h_1(n)$
 &lt;span style=&quot;float:right;&quot;&gt;$(1.4)\;\;\;$&lt;/span&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;$F_1(z) = H_0(-z)$, which is equivalent to $f_1(n) = (-1)^n h_0(n)$
+
+&lt;p&gt;&lt;a name=&quot;eq-5&quot;&gt;&lt;/a&gt;
+- $F_1(z) = H_0(-z)$, which is equivalent to $f_1(n) = (-1)^n h_0(n)$
 &lt;span style=&quot;float:right;&quot;&gt;$(1.5)\;\;\;$&lt;/span&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;p&gt;To have everything nice and compact we set $h_0$ and $h_1$ to be a so-called conjugate quadrature filter (CQF) pair. Here this means $h_1$ is $f_1$ in reverse ($L$ is the length of $h_0$ and must be even):&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;$H_1(z) = z^{-(L-1)} F_1(z^{-1}) = -z^{-(L-1)} H_0(-z^{-1})$, or $h_1(n) = -(-1)^n h_0(L-1-n)$
-&lt;span style=&quot;float:right;&quot;&gt;$(1.6)\;\;\;$&lt;/span&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;a name=&quot;eq-6&quot;&gt;&lt;/a&gt;
+- $H_1(z) = z^{-(L-1)} F_1(z^{-1}) = -z^{-(L-1)} H_0(-z^{-1})$, or $h_1(n) = -(-1)^n h_0(L-1-n)$
+&lt;span style=&quot;float:right;&quot;&gt;$(1.6)\;\;\;$&lt;/span&gt;&lt;/p&gt;
 
 &lt;p&gt;Now $f_0$, $f_1$ and $h_1$ can be all expressed in terms of $h_0$. An additional benefit is that $h_0$ and $h_1$ are orthogonal:&lt;/p&gt;
 
@@ -72,7 +71,8 @@ Y(z) &amp; = &amp; \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \
 
 &lt;p&gt;If we set $d=L-1$ and $g=-1$, we can write&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;H_0(z)H_0(z^{-1}) \; + \; H_0(-z^{-1})H_0(-z) = 2 \tag{1.7}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-7&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;H_0(z)H_0(z^{-1}) \; + \; H_0(-z^{-1})H_0(-z) = 2 \tag{1.7}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;This constraint is not quite as straightforward to translate for $h_0$. Using the definition of the Z-transform we can write&lt;/p&gt;
 
@@ -86,7 +86,8 @@ Y(z) &amp; = &amp; \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \
 
 &lt;p&gt;Because it can’t depend on $z$, $\sum_n h_0(n)h_0(n+m)$ has to be zero for $m \neq 0$. With $k := \frac{1}{2}m$, our perfect reconstruction constraint for $h_0$ is:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_n h_0(n)h_0(n + 2k) = \delta (k) = \begin{cases} 1, \; k = 0 \\ 0, \; k\neq 0 \end{cases} \tag{1.8}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-8&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\sum_n h_0(n)h_0(n + 2k) = \delta (k) = \begin{cases} 1, \; k = 0 \\ 0, \; k\neq 0 \end{cases} \tag{1.8}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;Which means $h_0$ has to be orthogonal to versions of itself shifted by an even number of samples. This orthogonality condition, in combination with $(1.4)$, $(1.5)$ and $(1.6)$ is sufficient for creating a set of filters for a PR filter bank. A procedure for getting the $h_0$ coefficients with additional beneficial features will be explained in my next blog post.&lt;/p&gt;
 
@@ -148,7 +149,8 @@ Y(z) &amp; = &amp; \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \
 
 &lt;p&gt;The white squares illustrate the signal at different representation states, which I have slightly renamed for convenience: $s_0 = x, s_1 = r_0, s_2 = r_{00}$ and in general $s_i$ being the representation $r$ with $i$ subscript zeros, meaning the output of the $i$th analysis filter $h_0$. A colored line stands for a multiplication with the corresponding filter coefficient, following the specified convolution and downsampling procedure&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;s_{n+1} = \sum\limits_k h_0(k) s_n(2j - k) \tag{1.9}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-9&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;s_{n+1} = \sum\limits_k h_0(k) s_n(2j - k) \tag{1.9}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;It should be clear how the graph would look like if we added more layers and looked at the sample 0 of the innermost representation signal. The graph would grow upwards, getting denser and denser at the top, but the bottom part stayed the same, only the labels of the representations would change.&lt;/p&gt;
 
@@ -166,7 +168,9 @@ Y(z) &amp; = &amp; \frac{1}{2} \Big( H_0(z)F_0(z) + H_1(z)F_1(z) \Big) \: X(z) \
 
 &lt;p&gt;The resulting factor is exactly how an input sample is scaled while traveling through the graph from top to bottom.&lt;/p&gt;
 
-&lt;p&gt;The efficient way to compute the coefficients for $c_n$ is working the way up the graph and using the following rule (all values of $c_n$ with non-integer indices are zero):
+&lt;p&gt;The efficient way to compute the coefficients for $c_n$ is working the way up the graph and using the following rule (all values of $c_n$ with non-integer indices are zero):&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;eq-10&quot;&gt;&lt;/a&gt;
 &lt;script type=&quot;math/tex&quot;&gt;c_{n+1}(j) = \sum\limits_k h_0(k) c_n \left( \frac{j+k}{2} \right) \tag{1.10}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;The length of the filter $c_n$ more than doubles for each subsequent level. To again get closer to the idea of wavelets, which are first defined at a certain size and then scaled, we do not want a ever growing discrete filter, but a function that ideally will be continuous at the limit. To achieve this, we have to introduce a re-parametrization of the filter: $x_n(t_n) = c_n(j)$, where $t_n = -2^{-n}j$, which also means $t_n = 2t_{n+1}$.&lt;/p&gt;
@@ -197,9 +201,12 @@ x_{n+1}(t_{n+1}) &amp; = &amp; \sum\limits_k h_0(k) c_n \left( \frac{j+k}{2} \ri
 &amp; = &amp; \sum\limits_k h_0(k) x_n \left( t_{n+1} + \frac{-2^{-n}k}{2} \right) \\
 \end{array} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;Or when we set $t := t_{n+1}$
-&lt;script type=&quot;math/tex&quot;&gt;x_{n+1}(t) = \sum\limits_k h_0(k) x_n(t - 2^{-n-1}k) \tag{1.11}&lt;/script&gt;
-We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ has just the $h_0$ filter coefficients as values. The next graphic shows the first several levels of $x$ and the converged progression:&lt;/p&gt;
+&lt;p&gt;Or when we set $t := t_{n+1}$&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;eq-11&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;x_{n+1}(t) = \sum\limits_k h_0(k) x_n(t - 2^{-n-1}k) \tag{1.11}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ has just the $h_0$ filter coefficients as values. The next graphic shows the first several levels of $x$ and the converged progression:&lt;/p&gt;
 
 &lt;!-- ![image](/images/DB4XApproximation.png) --&gt;
 
@@ -221,7 +228,8 @@ We have to give this sequence a starting value, we use $x_0(0) = 1$. Then $x_1$ 
 
 &lt;p&gt;The $2^{-n-1}$ factor in $(1.11)$ prevents this progression to be elegantly expressed as a limit for $n \rightarrow \infty$. So we will try to find a better suited equivalent progression. The first step, calculating $x_1$ from $x_0$, could also be achieved by $x_1(t) = \sum_k h_0(k) x_0(2t - k)$, as we can easily see. This currently seems somewhat arbitrary, but let’s generalize this relation nevertheless to a construction progression of different function $\phi$:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\phi_{n+1}(t) =   \sum\limits_k h_0(k) \phi_n(2t - k) \tag{1.12}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-12&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\phi_{n+1}(t) =   \sum\limits_k h_0(k) \phi_n(2t - k) \tag{1.12}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;Notice that it has the same form as $(1.9)$. I think this resemblance can be a bit misleading, as blurs the distinction between the filter bank implementation and the underlying mathematical framework of the MRA. Looking at the corresponding graph shows that the link between $x_n$ and $\phi_n$ is less obvious at it may seem at the first superficial glance:&lt;/p&gt;
 
@@ -291,14 +299,16 @@ x_{n+1}(t) &amp; = &amp; \sum\limits_k h_0(k) \: x_n(t-2^{-n-1}k) \\
 
 &lt;p&gt;We have already seen that our assumptions hold for the first two levels, i.e. $\phi_0(t) = x_0(t)$ and $\phi_1(t) = x_1(t)$. With that, as we showed, we have $\phi_2(t) = x_2(t)$, and as a consequence of that $\phi_3(t) = x_3(t)$, and so on for all $n$. Therefore we have proved by induction that indeed:&lt;/p&gt;
 
-&lt;p&gt;$\phi_n(t) = x_n(t); \; n \geqslant 0, t \in R$, if $\phi_0(0) = x_0(0) = 1$ and $\phi_0(t) = x_0(t) = 0;  \forall t \neq 0$
+&lt;p&gt;&lt;a name=&quot;eq-13&quot;&gt;&lt;/a&gt;
+$\phi_n(t) = x_n(t); \; n \geqslant 0, t \in R$, if $\phi_0(0) = x_0(0) = 1$ and $\phi_0(t) = x_0(t) = 0;  \forall t \neq 0$
 &lt;span style=&quot;float:right;&quot;&gt;$(1.13)\;\;\;$&lt;/span&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;the-dilation-and-wavelet-equation&quot;&gt;The Dilation and Wavelet Equation&lt;/h2&gt;
 
 &lt;p&gt;For $n \to \infty$, $\phi_n$ converges to a continuous function with support $[0, K-1]$, where $K$ is the number of coefficients of $h_0$, and $x_n(0) = x_n(K-1) = 0$ (the support of a function is the interval where it is different from zero). Let’s call this function simply $\phi$. This converged progression still has to hold the construction criterion:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\phi(t) = \sum\limits_k h_0(k) \phi(2t-k) \tag{1.14}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-14&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\phi(t) = \sum\limits_k h_0(k) \phi(2t-k) \tag{1.14}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;This is the dilation equation, the workhorse in the theory of FWT and multi resolution analysis (MRA). And $\phi$ itself is the scaling function of the FWT, in our concrete examples the DB4 scaling function. The dilation equation says that the scaling function has a fractal self-similarity: it can be constructed of versions of itself, compressed by a factor of two, shifted and scaled by the $h_0$ coefficients.&lt;/p&gt;
 
@@ -363,7 +373,8 @@ w_{n+1}(t) &amp; = &amp; \sum\limits_k h_1(k) \: x_n(t-2^{-n-1}k) \\
 
 &lt;p&gt;The proof works just the same, and we can write:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\psi(t) = \sum\limits_k h_1(k) \phi(2t-k) \tag{1.15}&lt;/script&gt;
+&lt;p&gt;&lt;a name=&quot;eq-15&quot;&gt;&lt;/a&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\psi(t) = \sum\limits_k h_1(k) \phi(2t-k) \tag{1.15}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;This is the wavelet equation, defining the wavelet function $\psi$ of our FWT. According to the this equation, the wavelet function $\psi$ can also be constructed from compressed and scaled version version of $\phi$, this time scaled by $h_1$.&lt;/p&gt;
 
