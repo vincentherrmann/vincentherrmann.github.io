@@ -1,5 +1,7 @@
 ---
 title: Werden Roboter jemals so werden wie wir? (German)
+header:
+  teaser: db6SynthesisSum.png
 ---
 
 Dies ist ein kurzes Essay, das ich im Frühjahr zu einer vorgegebenen Fragestellung geschrieben habe:
