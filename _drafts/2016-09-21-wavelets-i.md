@@ -248,7 +248,7 @@ Notice that it has the same form as $(1.9)$. I think this resemblance can be a b
 <!-- ![image](/images/WaveletGraph2Float.png) -->
 {% include gallery id="fig7" caption="Fig.7: Computational graph based on filter dilation" %}
 
-The connections are completely different from the previous graph, except for the first step. But the remarkable thing is that the paths connecting value of $\phi_n$ to $\phi_0$ have exactly the same color combinations as the $x_n$ graph. See for yourself! We can look again $\phi_3(1.250)$, which is equivalent to our previous example $c_3(-10)$. The paths connecting this node to $\phi_0(0)$ are:
+The connections are completely different from the previous graph, except for the first step. But the remarkable thing is that the paths connecting values of $\phi_n$ to $\phi_0$ have exactly the same color combinations as the $x_n$ graph. See for yourself! We can look again at $\phi_3(1.250)$, which is equivalent to our previous example $c_3(-10)$. The paths connecting this node to $\phi_0(0)$ are:
 
 <span style="font-family:Arial">
 [1.250]<span style="color: #d45500;">——</span>[1.50]<span style="color: #5aa02c;">——</span>[1.0]<span style="color: #5aa02c;">——</span>[0] <br>

@@ -165,7 +165,7 @@ $$
 and try to find $L$ such that condition $(2.7)$ is met. To get real coefficients $h_0$, we have to be able to write $(2.8)$ as
 
 $$
-H_0(\omega) = \left( \sum_k {A \choose k} \frac{1}{2^A} e^{-i k \omega} \right)  \left( \sum_j l(j) e^{-i j \omega} \right) \tag{2.9}
+H_0(\omega) = \left( \sum_k {A  k} \frac{1}{2^A} e^{-i k \omega} \right)  \left( \sum_j l(j) e^{-i j \omega} \right) \tag{2.9}
 $$
 
 which means $L(\omega)$ has to be a polynomial in $e^{-i \omega}$, also with real coefficients $l(j)$. The identity
@@ -180,7 +180,7 @@ $$
 \left| H_0(\omega) \right| ^2 = \cos^{2A} \left( \frac{\omega}{2} \right) \left| L(\omega) \right| ^2
 $$
 
-Because $H_0(-\omega) = \overline{H_0(\omega)}$, which can see from directly from $(2.5)$, $\left| H_0(\omega) \right| ^2$ is an even function, meaning it is symmetric with respect to $\omega = 0$ and can be expressed in terms of only cosine-functions. This means the same has to be true for $\left| L(\omega) \right| ^2$. With $\cos(\omega) = 1 - \sin^2(\frac{\omega}{2})$ and $P$ being a polynomial we can write:
+Because $H_0(-\omega) = \overline{H_0(\omega)}$, which can see from directly from $(2.5)$, $\left| H_0(\omega) \right| ^2$ is an even function, meaning it is symmetric with respect to $\omega = 0$ and can be expressed in terms of only cosine-functions. The same has then to be true for $\left| L(\omega) \right| ^2$. With $\cos(\omega) = 1 - \sin^2(\frac{\omega}{2})$ and $P$ being a polynomial we can write:
 
 $$
 \left| L(\omega) \right| ^2 = P \left( \sin^2 \Big( \frac{\omega}{2}\Big) \right) \tag{2.10}
@@ -211,18 +211,65 @@ P(y) & = & (1-y)^{-A} \left(2 - y^A P(1-y) \right) \\
 \tag{2.13}
 \end{array}$$
 
-The second term has a factor $y^A$ in it, so there is now way we can model it with a polynomial of degree $A-1$. The best we can do is create a Taylor expansion of the first term $2(1-y)^A$.
+The second term has a factor $y^A$, so there is no way we can model it with a polynomial of degree $A-1$. The best we can do is create a Taylor expansion at $y=0$ of the first term $2(1-y)^{-A}$. For a function $f(y)$, a Taylor approximation at $y=0$ means
 
+$$
+f(y) \approx f(0) + \frac{f'(0)}{1!} y + \frac{f''(0)}{2!} y^2 + \frac{f'''(0)}{3!} y^3 + \: ...
+$$
+
+Our $f(y)$ is $2(1-y)^{-A}$ as we said. We can write out its $n$th derivative:
+
+$$
+D^n(2(1-y)^{-A}) = 2 \: (A)(A+1)\:...(A+n-1)  \left( (1-y)^{-A-n} \right)
+$$
+
+This means the coefficient of $y^n$ in our Taylor series is
+
+$$
+2 \frac{(A)(A+1)\:...(A+n-1)}{n!} = 2 \frac{(A+n-1)!}{n! \; (A-1)!} = 2 {A+n-1 \choose n}
+$$
+
+Now we can write out our solution for $P$:
+
+$$
+P(y) = 2 \sum_{n=0}^{A-1} {A + n - 1 \choose \:n} \: y^n \tag{2.14}
+$$
+
+We can verify, that this is a solution. We define the left side of $(2.12)$ as $S_{A-1}$
+
+$$ \begin{array}{rcccl}
+S_{A-1}(y) & = & \sum_{n=0}^{A-1} & {A-1+n \choose n} & \left( (1-y)^A y^n + y^A(1-y)^n \right) \\
+& = & &{A-1 \choose 0} & \left( (1-y)^A + y^A \right) ((1-y) + y) \\
+& & + &{A \choose 1} & \left( (1-y)^A y + y^A (1-y) \right) ((1-y) + y) \\
+& & + &...\\
+& & + &{2A-2 \choose A-1} & \left( (1-y)^A y^{A-1} + y^A (1-y)^{A-1} \right) ((1-y) + y)
+\end{array}$$
+
+Here we have multiplied every term with $((1-y)+y) = 1$, which of course is a legitimate thing to do. If we expand these products, we can write
+
+$$ \begin{array}{rcccl}
+S_{A-1}(y) & = & & {A-1 \choose 0} & \left( (1-y)^{A+1} + y^{A+1} \right) \\
+& & + & \bigg( {A-1 \choose 0} + {A \choose 1}\bigg) & \left( (1-y)^{A+1} y + y^{A+1} (1-y) \right)  \\
+& & + & ... \\
+& & + & \bigg( \sum_{k=0}^{A-1} {A-1+k \choose k} \bigg) & \left( (1-y)^{A+1} y^{A-1} + y^{A+1} (1-y)^{A-1} \right)  \\
+& & + & \bigg( \sum_{k=0}^{A-1} {A-1+k \choose k} \bigg) & \left( (1-y)^A y^A + y^A (1-y)^A \right) \\
+& = & & \sum_{n=0}^{A-1} \bigg( \sum_{k=0}^{n} {A-1+k \choose k} \bigg) & \left( (1-y)^{A+1} y^n + y^{A+1} (1-y)^n \right) \\
+& & + & \bigg( \sum_{k=0}^{A-1} {A-1+k \choose k} \bigg) & \left( (1-y)^A y^A + y^A (1-y)^A \right) \\
+\end{array}$$
+
+Let's just look at $\sum_{k=0}^{n} {A-1+k \choose k}$. We have
+
+$$
+\sum_{k=0}^{n+1} {A+k \choose k} = \frac{(A+n+1)!}{(n+1)! \: A!} + \sum_{k=0}^{n} \frac{(A+k-1)!}{k! \: A!}(A+k)
 $$
 
 $$
-
-
-
+= {A+n+1 \choose n+1} + \sum_{k=0}^{n} \frac{(A+k-1)!} {k! \: (A-1)!} + \sum_{k=1}^{n} \frac{(A+k-1)!}{(k-1)! \: A!}
+$$
 
 ...
 
-## Construction in the Z Domain
+<!-- ## Construction in the Z Domain
 By definition, the Z-transform of $h_0$ is
 
 $$
@@ -273,4 +320,4 @@ $$
 P(z) = (1-U(z))^{-A} \left( 2-U(z)^AP_2(z) \right)
 $$
 
-There exists a number theoretical result, called [Bézout's identity](https://en.wikipedia.org/wiki/Bézout%27s_identity), which we can tweak for polynomials. It then says that there exists a solution for $P()$
+There exists a number theoretical result, called [Bézout's identity](https://en.wikipedia.org/wiki/Bézout%27s_identity), which we can tweak for polynomials. It then says that there exists a solution for $P()$ -->
