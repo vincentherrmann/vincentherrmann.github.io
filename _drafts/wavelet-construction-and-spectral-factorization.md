@@ -341,7 +341,7 @@ $$
 Q(z) = \sum_{n=0}^{A-1} {A + n - 1 \choose \:n} \: \left( \frac{1}{2} -\frac{1}{4}z - \frac{1}{4} z^{-1} \right)^n z^{A-1} \tag{2.19}
 $$
 
-which means $\left| L(z) \right| ^2 = Q(z)z^{-(A-1)}$ and find the roots of $Q$. We can do this because the factor $z^{-(A-1)}$ leaves the existing roots untouched and does not introduce any new roots, since itself has none. Let's look at $Q$ for $A=3$:
+which means $\left| L(z) \right| ^2 = 2 Q(z)z^{-(A-1)}$ and find the roots of $Q$. We can do this because the factor $2 z^{-(A-1)}$ leaves the existing roots untouched and does not introduce any new roots, since itself has none. Let's look at $Q$ for $A=3$:
 
 <figure>
     <img src='https://github.com/vincentherrmann/vincentherrmann.github.io/blob/master/images/daubechies-6-roots-3D.png?raw=true' alt='quadratic signal and daubechies 6 synthesis functions' width='700' />
@@ -382,6 +382,8 @@ gives us the filter coefficients we are looking for. As we see, a Daubechies fil
 - Set $z_k$, where $k=1, ..., A-1$, to the roots inside the unit circle, i.e. $\left| z_k\right| \leq 1$ must be true for all $k$.
 - Expand the polynomial $H_0(z) = \left( \frac{1+z}{2}\right)^A \prod_{k=1}^{A-1}(z-z_k)(1-z_k)^{-1}$ into the form $H_0 = \sum_{n=0}^{2A-1} h_0(n)z^n$. The values $h_0$ are the coefficients of the lowpass analysis filter.
 
+## Example: Calculating the DB6 coefficients
+
 Concrete example:
 We set $A=3$, this give us the polynomial
 
@@ -390,44 +392,27 @@ $$
 $$
 
 $$
-= - \frac{3}{2}z^4 - \frac{3}{4}z^3 + \frac{11}{2}z^2 - \frac{3}{4}z - \frac{3}{2}
+= - \frac{3}{8}z^4 - \frac{9}{4}z^3 + \frac{19}{4}z^2 - \frac{9}{4}z - \frac{3}{8}
 $$
 
-We can [ask WolframAlpha for the roots](http://www.wolframalpha.com/input/?i=roots+-+3%2F2+z%5E4+-+3%2F4+z%5E3+%2B+11%2F2+z%5E2+-+3%2F4+z+-+3%2F2) and get in this case the exact solutions $\frac{1}{4}(-3 - \sqrt{33})$, $\frac{1}{6}(3 - \sqrt{33})$, $\frac{1}{4}(\sqrt{33} - 3)$ and $\frac{1}{6}(3 + \sqrt{33})$. It is not obvious that they are reciprocal pairs, but we show that
+We can [ask WolframAlpha for the roots](http://www.wolframalpha.com/input/?i=roots+3%2F4+z%5E4+-+9%2F2+z%5E3+%2B+19%2F2+z%5E2+-+9%2F2+z+%2B+3%2F4) and get in this case the solutions $0.28725 - 0.15289 \:i$, $0.28725 + 0.15289 \:i$, $2.7127 - 1.4439 \:i$ and $2.7127 + 1.4439 \:i$. Actually, in this case there exist exact solutions, but they are a bit unpractical for this demonstration.
 
-$\frac{6}{3 - \sqrt{33}} = \frac{12 - 4\sqrt{33}}{4(7-\sqrt{33})} = \frac{1}{4}(-3 - \sqrt{33})$ and
-$\frac{6}{3 + \sqrt{33}} = \frac{12 + 4\sqrt{33}}{4(7+\sqrt{33})} = \frac{1}{4}(\sqrt{33} - 3)$.
+We set $z_1 = 0.28725 - 0.15289 \:i$ and $z_2 = 0.28725 + 0.15289 \:i$ because they are complex conjugates and have an absolute value smaller than 1. Now we have
 
-We set $z_1 = \frac{1}{6}(3 - \sqrt{33})$ and $z_2 = \frac{1}{4}(\sqrt{33} - 3)$ because they have an absolute value smaller than 1.
+$$\begin{align}
+H_0(z) = & \left( \frac{1+z}{2}\right)^3 \frac{z-z_1}{1 - z_1} \frac{z - z_2}{1 - z_2} \\
+= & (\frac{1}{8} + \frac{3}{8} z + \frac{3}{8} z^2 + \frac{1}{8} z^3) \frac{z^2 - (z_1 + z_2) z + z_1 z_2}{1 - z_1 - z_2 + z_1 z_2} \\
+= &  \;\frac{1}{8} (1 - z_1 - z_2 + z_1 z_2)^{-1} \Big( z_1 z_2 + (3 z_1 z_2 + z_1 + z_2) z + (1 + 3(z_1 + z_2) + 3 z_1 z_2) z^2 \\
+& \qquad \qquad \qquad \qquad \qquad \quad+ (3 + 3(z_1 + z_2) + z_1 z_2) z^3 + (3 + z_1 + z_2) z^4 + z^5 \Big) \\
+\end{align}$$
 
-Now we have
+That gives us
 
-$$
-H_0(z) = \left( \frac{1+z}{2}\right)^3 \frac{z-z_1}{1 - z_1} \frac{z - z_2}{1 - z_2}
-$$
-
-$$
-= (\frac{1}{8} + \frac{3}{8} z + \frac{3}{8} z^2 + \frac{1}{8} z^3) \frac{z^2 - (z_1 + z_2) z + z_1 z_2}{1 - z_1 - z_2 + z_1 z_2}
-$$
-
-$$
-= \frac{1}{1 - z_1 - z_2 + z_1 z_2} (\frac{z_1 z_2}{8} + \frac{3 z_1 z_2 - z_1 - z_2}{8} z + \frac{1 - 3(z_1 + z_2) + 3 z_1 z_2}{8} z^2 + \frac{3 - 3(z_1 + z_2) + z_1 z_2}{8} z^3 + \frac{3 - z_1 - z_2}{8} z^4 + \frac{1}{8}z^5)
-$$
-
-$$
-= \frac{z_1 z_2 + (6 z_1 z_2 + z_1 + z_2) z + (1 + 6(z_1 + z_2) + 6 z_1 z_2) z^2 + (6 + 6(z_1 + z_2) + z_1 z_2) z^3 + (6 + z_1 + z_2) z^4 + z^5} {8 (1 - z_1 - z_2 + z_1 z_2)}
-$$
-
----
-
-$$
-H_0(z) = \left( \frac{1+z}{2}\right)^3 \frac{z-\frac{1}{6}(3 - \sqrt{33})}{1 - \frac{1}{6}(3 - \sqrt{33})} \frac{z - \frac{1}{4}(\sqrt{33} - 3)}{1 - \frac{1}{4}(\sqrt{33} - 3)}
-$$
-
-$$
-= (\frac{1}{8} + \frac{3}{4} z + \frac{3}{4} z^2 + \frac{1}{8} z^3) \frac{1}{27 - 5\sqrt{33}} (12 z^2 + (3-\sqrt{33}) z + 3 \sqrt{33} - 21)
-$$
-
-$$
-= \frac{1}{27 - 5\sqrt{33}} \left( \frac{3 \sqrt{33} - 21}{8} +  \right)
-$$
+$$\begin{align}
+h_0(0) & = 0.049817 \\
+h_0(1) & = -0.12083 \\
+h_0(2) & = -0.19093 \\
+h_0(3) & = 0.65037 \\
+h_0(4) & = 1.1411 \\
+h_0(5) & = 0.47047
+\end{align}$$
