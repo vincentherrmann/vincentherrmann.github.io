@@ -1,0 +1,56 @@
+{% include base_path %}
+
+<div class="{{ include.type | default: "list" }}__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+
+    {% assign firstPost = collection[0] %}
+
+    <h2>
+      <a href="{{ base_path }}/{{ firstPost.collection }}" rel="permalink">{{ firstPost.collection | capitalize}}</a>
+    </h2>
+
+    {% for thisPost in collection %}
+
+      {% if thisPost.header.teaser %}
+        {% capture teaser %}{{ thisPost.header.teaser }}{% endcapture %}
+      {% else %}
+        {% assign teaser = site.teaser %}
+      {% endif %}
+
+      {% if post.id %}
+        {% assign title = thisPost.title | markdownify | remove: "<p>" | remove: "</p>" %}
+      {% else %}
+        {% assign title = thisPost.title %}
+      {% endif %}
+
+      {% if include.type == "grid" and teaser %}
+      <div class="archive__item-teaser">
+        <img src=
+          {% if teaser contains "://" %}
+            "{{ teaser }}"
+          {% else %}
+            "{{ teaser | prepend: "/images/" | prepend: base_path }}"
+          {% endif %}
+          alt="">
+      </div>
+    {% endif %}
+
+    <h2 class="archive__item-title" itemprop="headline">
+      {% if thisPost.link %}
+        <a href="{{ thisPost.link }}">{{ title }}</a> <a href="{{ base_path }}{{ thisPost.url }}" rel="permalink"><i class="fa fa-link" aria-hidden="true" title="permalink"></i><span class="sr-only">Permalink</span></a>
+      {% else %}
+        <a href="{{ base_path }}{{ thisPost.url }}" rel="permalink">{{ title }}</a>
+      {% endif %}
+    </h2>
+
+    {% if thisPost.read_time %}
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> {% include read-time.html %}</p>
+    {% endif %}
+
+    {% if thisPost.excerpt %}<p class="archive__item-excerpt" itemprop="description">{{ thisPost.excerpt | markdownify | strip_html | truncate: 160 }}</p>{% endif %}
+
+    {% endfor %}
+
+
+  </article>
+</div>

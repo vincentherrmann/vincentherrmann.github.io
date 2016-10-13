@@ -7,44 +7,20 @@ header:
 
 {% include base_path %}
 
-<!-- <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
-
-{% for post in paginator.posts %}
-  {% include archive-single.html %}
-{% endfor %}
-
-{% include paginator.html %} -->
-
-<div class="grid__wrapper">
-  {% assign post = site.piano[0] %}
-  {% include archive-single.html type="grid" %}
-
-  {% assign post = site.composition[0] %}
-  {% include archive-single.html type="grid" %}
-
-  {% assign post = site.posts[0] %}
-  {% include archive-single.html type="grid" %}
+<div class="reduce-top-margin">
+  <br>
+  <small><b>recent posts:</b></small>
 </div>
 
-<div class="grid__wrapper">
-  {% assign post = site.piano[1] %}
-  {% include archive-single.html type="grid" %}
+<div class="grid__wrapper"; margin-top: -50px;>
+  <div class="reduce-top-margin">
+    {% assign collection = site.piano %}
+    {% include archive-collection-single.html type="grid" %}
 
-  {% assign post = site.composition[1] %}
-  {% include archive-single.html type="grid" %}
+    {% assign collection = site.composition %}
+    {% include archive-collection-single.html type="grid" %}
 
-  {% assign post = site.posts[1] %}
-  {% include archive-single.html type="grid" %}
+    {% assign collection = site.blog %}
+    {% include archive-collection-single.html type="grid" %}
+  </div>
 </div>
-
-<!-- <div class="grid__wrapper">
-  {% for post in site.piano | limit: 2 %}
-    {% include archive-single.html type="grid" %}
-  {% endfor %}
-</div>
-
-<div class="grid__wrapper">
-  {% for post in site.posts %}
-    {% include archive-single.html type="grid" %}
-  {% endfor %}
-</div> -->

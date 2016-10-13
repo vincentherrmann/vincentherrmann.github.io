@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://vincentherrmann.github.io/wavelets-ii/</loc>
-<lastmod>2016-10-11T00:00:00+02:00</lastmod>
-</url>
-<url>
-<loc>https://vincentherrmann.github.io/wavelets-i/</loc>
-<lastmod>2016-09-29T00:00:00+02:00</lastmod>
-</url>
-<url>
-<loc>https://vincentherrmann.github.io/robotics-essay/</loc>
-<lastmod>2016-09-26T00:00:00+02:00</lastmod>
-</url>
-<url>
 <loc>https://vincentherrmann.github.io/about/</loc>
 </url>
 <url>
@@ -28,6 +16,15 @@
 <loc>https://vincentherrmann.github.io/piano/</loc>
 </url>
 <url>
+<loc>https://vincentherrmann.github.io/blog/wavelets-i/</loc>
+</url>
+<url>
+<loc>https://vincentherrmann.github.io/blog/wavelets-ii/</loc>
+</url>
+<url>
+<loc>https://vincentherrmann.github.io/blog/robotics-essay/</loc>
+</url>
+<url>
 <loc>https://vincentherrmann.github.io/composition/concertante/</loc>
 </url>
 <url>
@@ -38,6 +35,18 @@
 </url>
 <url>
 <loc>https://vincentherrmann.github.io/composition/vocal-piece/</loc>
+</url>
+<url>
+<loc>https://vincentherrmann.github.io/about/</loc>
+</url>
+<url>
+<loc>https://vincentherrmann.github.io/blog/</loc>
+</url>
+<url>
+<loc>https://vincentherrmann.github.io/composition/</loc>
+</url>
+<url>
+<loc>https://vincentherrmann.github.io/piano/</loc>
 </url>
 <url>
 <loc>https://vincentherrmann.github.io/piano/beethoven-op-31-3/</loc>

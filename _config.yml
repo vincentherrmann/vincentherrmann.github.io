@@ -11,7 +11,7 @@ title                    : "Vincent Herrmann"
 title_separator          : "-"
 name                     : "Vincent Herrmann"
 description              : "Classically trained pianist and composer exploring the world of artificial intelligence"
-url                      : https://vincentherrmann.github.io # http://localhost:4000 #the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : https://vincentherrmann.github.io # http://localhost:4000 # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : db6SynthesisSum.png # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
@@ -49,6 +49,9 @@ atom_feed:
 
 # Collections
 collections:
+  pages:
+    output: true
+    permalink: /:path
   piano:
     output: true
     permalink: /:collection/:path/
@@ -57,12 +60,26 @@ collections:
     permalink: /:collection/:path/
     images:
       teaser: vocal-piece-teaser.jpg
+  blog:
+    output: true
+    permalink: /:collection/:path/
 
 defaults:
-  # _posts
+  # _pages
   - scope:
       path: ""
-      type: posts
+      type: pages
+    values:
+      layout: splash
+      author_profile: false
+      read_time: false
+      comments: false
+      share: false
+      related: false
+  # _blog
+  - scope:
+      path: ""
+      type: blog
     values:
       layout: single
       author_profile: false
