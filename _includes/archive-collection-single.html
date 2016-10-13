@@ -9,7 +9,7 @@
       <a href="{{ base_path }}/{{ firstPost.collection }}" rel="permalink">{{ firstPost.collection | capitalize}}</a>
     </h2>
 
-    {% for thisPost in collection | sort:"date"%}
+    {% for thisPost in collection | sort:"date" | reverse %}
 
       {% if thisPost.header.teaser %}
         {% capture teaser %}{{ thisPost.header.teaser }}{% endcapture %}

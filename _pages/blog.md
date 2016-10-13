@@ -8,7 +8,7 @@ permalink: /blog/
 {% include base_path %}
 
 <div class="grid__wrapper">
-  {% for post in site.blog | sort:"date"%}
+  {% for post in site.blog | sort:"date" | reverse %}
     {% include archive-single.html type="grid" %}
   {% endfor %}
 </div>
