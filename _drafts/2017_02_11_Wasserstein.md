@@ -106,7 +106,7 @@ b = np.concatenate((P_r, P_t), axis=0)
 c = D.reshape((l**2))
 
 emd, x = linprog(c, A_eq=A.T, b_eq=b)
-gamma = x.reshape((d, d))
+gamma = x.reshape((l, l))
 ```
 
 Now we have our transference plan, as well as the EMD.
@@ -133,7 +133,7 @@ $$
 
 \begin{array}{rrcl}
 \mathrm{maximize} \ & \tilde{z} & = & \ \mathbf{b}^T \mathbf{y} \\
-\mathrm{so \ that} \ & \mathbf{A}^T \mathbf{y} & \leq & \ \mathbf{b} \\ \\
+\mathrm{so \ that} \ & \mathbf{A}^T \mathbf{y} & \leq & \ \mathbf{c} \\ \\
 \end{array}
 
 \end{array}
@@ -148,6 +148,74 @@ $$
 This is called *Weak Duality* theorem. As you might guess, there also exists the *Strong Duality* theorem, which states that, should we find an optimal solution for $\tilde{z}$, then $z=\tilde{z}$. I tried to find a short proof, and I will sketch it here. It still is a bit technical, and you can skip it, if you want.
 
 ---
+
+We can see the columns of a matrix $\hat{\mathbf{A}} \in \mathbb{R}^{d \times n}$ as vectors $\mathbf{a}_1, \mathbf{a}_2, ..., \mathbf{a}_n\in \mathbb{R}^{d}$. The set of all possible linear combinations of these vectors with nonnegative coefficients is a convex cone with the origin as apex (note that a convex cone could also potentially cover the whole $\mathbb{R}^{d}$ space). We can combine these coefficients in a vector $\mathbf{x} \in \mathbb{R}^{n}$.
+
+For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ between the convex cone and $\hat{\mathbf{b}}$. Because $h$ goes through the origin, we can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} > 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} < 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-sapce than and all vectors $\mathbf{a}_i$.
+
+
+![p_r](/images/farkas_i.png)
+![p_r](/images/farkas_ii.png)
+
+Summarized, exactly one of the following statements is true:
+- $(1)$ There exists $\mathbf{x} \in \mathbb{R}^{n}$, so that $\hat{\mathbf{A}} \mathbf{x} = \hat{\mathbf{b}}$ and $\mathbf{x} \geq \mathbf{0}$
+- $(2)$ There exists $\hat{\mathbf{y}} \in \mathbb{R}^{d}$, so that $\hat{\mathbf{A}}^T \hat{\mathbf{y}} \geq \mathbf{0}$ and $\hat{\mathbf{b}}^T \hat{\mathbf{y}} < 0$
+
+This is called Farkas theorem, or Farkas alternatives. There exist slightly different versions and many proofs, but what we showed is sufficient for our purposes.
+
+The trick for the second part of this proof is to construct a problem that is related to our original LP forms, but in such a way that $\hat{\mathbf{b}}$ lies right at the edge of the convex cone. Then according to Farkas, for some $\hat{\mathbf{y}}$, the corresponding hyperplane comes arbitrarily close to $\hat{\mathbf{b}}$. From this, in combination with the Weak Duality theorem, we will proof the Strong Duality. For this, we add an extra dimension to our $m$-dimensional vectors.
+
+Let the minimal solution to the primal problem be $z^*= \mathbf{c}^T \mathbf{x}^*$. Then we define
+
+$$
+\hat{\mathbf{A}} = \begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}, \ \ \
+\hat{\mathbf{b}}_\epsilon = \begin{bmatrix} \mathbf{b} \\ -z^* - \epsilon \end{bmatrix}, \ \ \
+\hat{\mathbf{y}} = \begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix}
+$$
+
+with $\epsilon, \alpha \in \mathbb{R}$. For $\epsilon = 0$, we have Farkas case $(1)$, because $\hat{\mathbf{A}} \mathbf{x}^* = \hat{\mathbf{b}}_0$. For $\epsilon > 0$, there exists no nonnegative solution (because because $\mathbf{x}^* \phantom{}$ is already minimal) and we have Farkas case $(2)$. That means there exist $\mathbf{y}$ and $\alpha$, such that
+
+$$
+\begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}^T
+\begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} \geq \mathbf{0}, \ \ \ \
+\begin{bmatrix} \mathbf{b} \\ -z^* - \epsilon \end{bmatrix}
+\begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} < 0
+$$
+
+or equivalently
+
+$$
+\mathbf{A}^T \mathbf{y} \geq \alpha \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} < \alpha(z^* + \epsilon).
+$$
+
+The way we constructed it, we can find $\hat{\mathbf{y}}$ so that additionally $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} = 0$. Then changing $\epsilon$ to any number greater than $0$ has to result in $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} < 0$. In our specific problem, this is only possible if $\alpha > 0$, because $z^* > 0$. We showed that $\hat{\mathbf{y}}$ is simply the normal vector of a hyperplane, and because of that we can scale it to any magnitude greater than zero. If we choose to scale it so that $\alpha = 1$, then there exists vector $\mathbf{y}$, so that
+
+$$
+\mathbf{A}^T \mathbf{y} \geq \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} < (z^* + \epsilon).
+$$
+
+From that, we see that
+
+---
+
+Farkas:
+$$
+\begin{align}
+(i) \ & \mathbf{A} \mathbf{x} = \mathbf{b} & \mathbf{x} \geq \mathbf{0} \\
+(ii) \ & \mathbf{A}^T \mathbf{y} \geq \mathbf{0} & \mathbf{b}^T \mathbf{y} < 0
+\end{align}
+$$
+
+Because of **FARKAS**, this means that there for positive $\epsilon$ there has to be a vector $\hat{\mathbf{y}} = (\mathbf{u}, \alpha)$ so that $\hat{\mathbf{y}}^T \hat{\mathbf{A}} \geq 0$ and $\hat{\mathbf{y}}^T \hat{\mathbf{b}}_\epsilon < 0$.
+
+$$
+\mathbf{A}^T \mathbf{u} \geq \alpha \mathbf{c}, \ \ \mathbf{b}^T \mathbf{u} < \alpha(z^* + \epsilon)
+$$
+
+We know that $\alpha \geq 0$, the last coordinate of $\hat{\mathbf{b}}_\epsilon$ is negative, and it lies on the negative halfspace of the hyperplane defined by $\hat{\mathbf{y}}$.
+Moreover, we can scale $\hat{\mathbf{y}}$ in such  way that $\alpha = 1$, because $\hat{\mathbf{y}}$ is just the normal vector of a hyperplane.
+
+For $\epsilon = 0$, this means $\hat{\mathbf{y}}^T \hat{\mathbf{b}}_0 \geq 0$, or $\mathbf{b}^T \mathbf{u} \geq \alpha z^*$
 
 ---
 
