@@ -4,6 +4,9 @@ layout: single
 author_profile: false
 date: 2017-02-24
 title: Wasserstein GAN and the Kantorovich-Rubinstein Duality
+header:
+  teaser: wasserstein/transport_plan.png
+excerpt: "Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks"
 
 discrete_distributions:
  - image_path: wasserstein/P_r.png

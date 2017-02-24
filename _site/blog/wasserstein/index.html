@@ -19,7 +19,7 @@
 
 
 
-<title>The Intuition Behind The Wasserstein Distance - Vincent Herrmann</title>
+<title>Wasserstein GAN and the Kantorovich-Rubinstein Duality - Vincent Herrmann</title>
 
 
 
@@ -29,25 +29,27 @@
 
 <meta property="og:locale" content="en">
 <meta property="og:site_name" content="Vincent Herrmann">
-<meta property="og:title" content="The Intuition Behind The Wasserstein Distance">
+<meta property="og:title" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
 
 
-  <link rel="canonical" href="http://localhost:4000/wasserstein/">
-  <meta property="og:url" content="http://localhost:4000/wasserstein/">
+  <link rel="canonical" href="https://vincentherrmann.github.io/blog/wasserstein/">
+  <meta property="og:url" content="https://vincentherrmann.github.io/blog/wasserstein/">
 
 
 
-  <meta property="og:description" content="From what I can tell, there is much interest in the recent Wasserstein-GAN paper. It, or at least this excellent summary, is definitely worth reading. In this post, I don’t want to repeat the mechanics and promised benefit of WGANs. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever.">
+  <meta property="og:description" content="Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks">
 
 
 
   <meta name="twitter:site" content="@idivinci">
-  <meta name="twitter:title" content="The Intuition Behind The Wasserstein Distance">
-  <meta name="twitter:description" content="From what I can tell, there is much interest in the recent Wasserstein-GAN paper. It, or at least this excellent summary, is definitely worth reading. In this post, I don’t want to repeat the mechanics and promised benefit of WGANs. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever.">
-  <meta name="twitter:url" content="http://localhost:4000/wasserstein/">
+  <meta name="twitter:title" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
+  <meta name="twitter:description" content="Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks">
+  <meta name="twitter:url" content="https://vincentherrmann.github.io/blog/wasserstein/">
 
   
     <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png">
     
   
 
@@ -61,10 +63,12 @@
 
 
 
+  <meta property="og:image" content="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png">
+
 
 
   <meta property="og:type" content="article">
-  <meta property="article:published_time" content="2017-02-11T00:00:00+01:00">
+  <meta property="article:published_time" content="2017-02-24T00:00:00+01:00">
 
 
 
@@ -78,7 +82,7 @@
       "@context" : "http://schema.org",
       "@type" : "Person",
       "name" : "Vincent Herrmann",
-      "url" : "http://localhost:4000",
+      "url" : "https://vincentherrmann.github.io",
       "sameAs" : null
     }
   </script>
@@ -91,7 +95,7 @@
 <!-- end SEO -->
 
 
-<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
+<link href="https://vincentherrmann.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -103,7 +107,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<link rel="stylesheet" href="https://vincentherrmann.github.io/assets/css/main.css">
 
 <meta http-equiv="cleartype" content="on">
     <!-- start custom head snippets -->
@@ -126,19 +130,19 @@
       <nav id="site-nav" class="greedy-nav">
         <button><div class="navicon"></div></button>
         <ul class="visible-links">
-          <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Vincent Herrmann</a></li>
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://vincentherrmann.github.io/">Vincent Herrmann</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/about/">About</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/piano/">Piano</a></li>
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/piano/">Piano</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/composition/">Composition</a></li>
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/composition/">Composition</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/blog/">Blog</a></li>
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/blog/">Blog</a></li>
           
         </ul>
         <ul class="hidden-links hidden"></ul>
@@ -159,28 +163,28 @@
 
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
-    <meta itemprop="headline" content="The Intuition Behind The Wasserstein Distance">
-    <meta itemprop="description" content="From what I can tell, there is much interest in the recent Wasserstein-GAN paper. It, or at least this excellent summary, is definitely worth reading. In this post, I don’t want to repeat the mechanics and promised benefit of WGANs. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever.">
-    <meta itemprop="datePublished" content="February 11, 2017">
+    <meta itemprop="headline" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
+    <meta itemprop="description" content="Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks">
+    <meta itemprop="datePublished" content="February 24, 2017">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 class="page__title" itemprop="headline">The Intuition Behind The Wasserstein Distance
+          <h1 class="page__title" itemprop="headline">Wasserstein GAN and the Kantorovich-Rubinstein Duality
 </h1>
           
         </header>
       
 
       <section class="page__content" itemprop="text">
-        <p>From what I can tell, there is much interest in the recent <a href="https://arxiv.org/abs/1701.07875">Wasserstein-GAN paper</a>. It, or at least <a href="http://www.alexirpan.com/2017/02/22/wasserstein-gan.html">this excellent summary</a>, is definitely worth reading. In this post, I don’t want to repeat the mechanics and promised benefit of WGANs. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever.</p>
+        <p>From what I can tell, there is much interest in the recent <a href="https://arxiv.org/abs/1701.07875">Wasserstein GAN paper</a>. In this post, I don’t want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or at least <a href="http://www.alexirpan.com/2017/02/22/wasserstein-gan.html">this excellent summary</a>. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.</p>
 
-<p>The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can <a href="cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf">download it from his homepage</a> (large pdf file!). That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani talks about this topic in an accessible way in <a href="https://www.youtube.com/watch?v=zo46TEp6FB8">this lecture</a>, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as complete as possible, and it should be enough get some intuition for this subject.</p>
+<p>The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can <a href="cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf">download it from his homepage</a>. That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in <a href="https://www.youtube.com/watch?v=zo46TEp6FB8">this lecture</a>, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.</p>
 
-<p>The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the discrete case and somewhat related problems in Linear Programming.</p>
+<p>The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the nice discrete case and somewhat related problems in Linear Programming.</p>
 
-<p>If you’re interested, you can take a look at the Jupyter notebook that I created to plot some of the graphics in this post.</p>
+<p>If you’re interested, you can take a look at the <a href="https://github.com/vincentherrmann/wasserstein-notebook/blob/master/Wasserstein_Kantorovich.ipynb">Jupyter notebook</a> that I created to plot some of the graphics in this post.</p>
 
 <h2 id="earth-movers-distance">Earth Mover’s Distance</h2>
 
@@ -189,11 +193,11 @@
 <figure class="half ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/P_r.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/P_r.png" alt="" />
     
   
     
-      <img src="http://localhost:4000/images/wasserstein/P_theta.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/P_theta.png" alt="" />
     
   
   
@@ -222,7 +226,7 @@ $P_\theta$
 <figure class=" ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/transport_plan.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png" alt="" />
     
   
   
@@ -293,21 +297,22 @@ $P_\theta$
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
 
 <span class="c"># We construct our A matrix by creating two 3-way tensors,</span>
-<span class="c"># and then concatenating and reshaping them</span>
+<span class="c"># and then reshaping and concatenating them</span>
 <span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 <span class="n">A_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
 	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
-		<span class="n">A_r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-		<span class="n">A_t</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="n">A_r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="n">A_t</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A_r</span><span class="p">,</span> <span class="n">A_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A_r</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span> <span class="n">A_t</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">P_r</span><span class="p">,</span> <span class="n">P_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 
-<span class="n">emd</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
-<span class="n">gamma</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+<span class="n">emd</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 </code></pre>
 </div>
 
@@ -316,7 +321,7 @@ $P_\theta$
 <figure class=" ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/earth_move.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/earth_move.png" alt="" />
     
   
   
@@ -372,11 +377,11 @@ $P_\theta$
 <figure class="half ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/farkas_i.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/farkas_i.png" alt="" />
     
   
     
-      <img src="http://localhost:4000/images/wasserstein/farkas_ii.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/farkas_ii.png" alt="" />
     
   
   
@@ -472,15 +477,15 @@ g(x_n) \\
 <figure class="third ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/Dual_Constraints_o.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_o.png" alt="" />
     
   
     
-      <img src="http://localhost:4000/images/wasserstein/Dual_Constraints_f.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_f.png" alt="" />
     
   
     
-      <img src="http://localhost:4000/images/wasserstein/Dual_Constraints_g.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_g.png" alt="" />
     
   
   
@@ -495,7 +500,7 @@ g(x_n) \\
 
 <p>The implementation is straightforward:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># linprog() can only minimize the cost, because of that,</span>
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># linprog() can only minimize the cost, because of that</span>
 <span class="c"># we optimize the negative of the objective. Also, we are</span>
 <span class="c"># not constrained to nonnegative values.</span>
 <span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
@@ -509,7 +514,7 @@ g(x_n) \\
 <figure class=" ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/Scaling_f.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Scaling_f.png" alt="" />
     
   
   
@@ -518,7 +523,7 @@ g(x_n) \\
 <figure class=" ">
   
     
-      <img src="http://localhost:4000/images/wasserstein/Scaling_g.png" alt="" />
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Scaling_g.png" alt="" />
     
   
   
@@ -531,10 +536,7 @@ g(x_n) \\
 
 <h2 id="wasserstein-distance">Wasserstein Distance</h2>
 
-<p>Lastly, we have to consider continuous probability distributions.
-The analog to the <em>Strong Duality</em> in LP is a special case of the Kantorovich-Rubinstein duality.</p>
-
-<p>Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein-1 distance is defined as</p>
+<p>Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as</p>
 
 <script type="math/tex; mode=display">W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x,y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].</script>
 
@@ -582,156 +584,16 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
 & = \sup_{\lVert f \lVert \leq 1} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
 \end{align} %]]></script>
 
+<p>This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.</p>
+
 <h2 id="sources">Sources</h2>
 <ul>
   <li><a href="https://arxiv.org/abs/1701.07875">Arjovsky, Chintala, Bottou: Wasserstein GAN</a></li>
   <li><a href="http://www.springer.com/la/book/9783540306979">Matoušek, Gärtner: Understanding and Using Linear Programming</a></li>
   <li><a href="http://www.springer.com/br/book/9783540710493">Villani: Optimal Transport - Old and New</a></li>
   <li><a href="https://www.math.ucdavis.edu/~qlxia/Research/monge.pdf">Xia: Introductionto Monge-Kantorovich Problem (slides)</a></li>
-  <li>
-    <h2 id="zemel-optimal-transportation-continuous-and-discretesmatepflchzemelvtpdmpdf"><a href="smat.epfl.ch/~zemel/vt/pdm.pdf">Zemel: Optimal Transportation: Continuous and Discrete</a></h2>
-  </li>
+  <li><a href="smat.epfl.ch/~zemel/vt/pdm.pdf">Zemel: Optimal Transportation: Continuous and Discrete</a></li>
 </ul>
-
-<script type="math/tex; mode=display">W(p_r, p_g) = \inf_{\gamma \in \Pi} \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert \right)
-= \inf_{\gamma} \int\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x,y \\
-= \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert + \sup_{f} \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) - \left( f(x) - f(y) \right) \right) \\
-= \inf_{\gamma} \ \sup_{f} \ \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) - \left( f(x) - f(y) \right) \right) \\
-= \sup_{f} \ \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) - \left( f(x) - f(y) \right) \right) \\
-= \sup_{f} \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) + \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert - \left( f(x) - f(y) \right)\right)</script>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{cc}
-= \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} ( \lVert x - y \lVert + & \underbrace{\sup_{f} \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) - \left( f(x) - f(y) \right)}) \\
-&= \cases{\begin{align} 0, & \ \ \ \mathrm{if \gamma \in \mathrm{\Pi}} \\ + \infty  &  \ \ \ \mathrm{else} \end{align}}
-\end{array} \\
-= \inf_{\gamma} \ \sup_{f} \ \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) - \left( f(x) - f(y) \right) \right) \\ %]]></script>
-
-<p>The argument that $\inf_A \sup_B \geq \sup_A \inf_B$ is simple: Any f(a,b) that is optimal for $\inf_B \sup_A$ (“lowest of all maxima”) is automatically allowed as a candidate for the infimum of $\sup_A \inf_A$ (“the greatest of all minima”), but not the other way around.</p>
-
-<p>Let’s take some function $g$ and set $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$. For $g(\hat{a}, \hat{b}) &gt; g(\hat{a}’, \hat{b}’)$, at least one of those statements must be true:</p>
-
-<ul>
-  <li>$g(\hat{a}+t, \hat{b}) &lt; g(\hat{a}, \hat{b})$ for some $t \neq 0$. This is only possible if $\sup_{\ b \in B} g(a,b)$ is not convex in $a$, because $g(\hat{a}, \hat{b})$ is already an infimum for $\hat{a}$.</li>
-  <li>$g(\hat{a}’, \hat{b}’+t) &gt; g(\hat{a}’, \hat{b}’)$ for some $t \neq 0$. This is only possible if $\inf_{\ a \in A} g(a,b)$ is not concave in $b$, because $g(\hat{a}’, \hat{b}’)$ is already a supremum for $\hat{b}’$.</li>
-</ul>
-
-<p>This means of course that, if  $\sup_{\ b \in B} g(a,b)$ is convex and $\inf_{\ a \in A} g(a,b)$ is concave, then the minimax principle applies and $g(\hat{a}, \hat{b}) = g(\hat{a}’, \hat{b}’)$.</p>
-
-<p>In our case, we can already see from the underbrace, we already see that the convexity condition is met. Let’s try changing to $\sup \inf$:</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\sup_{f} \ \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} \left( \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) - \left( f(x) - f(y) \right) \right) \\
-\begin{array}{cc}
-= \sup_{f} \ \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) + & \underbrace{ \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} ( \lVert x - y \lVert - ( f(x) - f(y) )} ) \\
-&= \cases{\begin{align} 0, & \ \ \ \mathrm{if} \ \| f \| {}_{L} \leq 1\\ - \infty  &  \ \ \ \mathrm{else} \end{align}}
-\end{array} \\ %]]></script>
-
-<p>So the concavity condition is also met, and this expression is equivalent to the $W$, and we have proven that</p>
-
-<script type="math/tex; mode=display">W(p_r, p_\theta) = \sup_{f} \ \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)).</script>
-
-<hr />
-
-<p>Let’s take some function $g$ and set $g(\hat{a}, \hat{b}) = \sup_{a \in A} \inf_{\ b \in B} g(a,b)$ and $g(\hat{a}’, \hat{b}’) = \inf_{\ b \in B} \sup_{a \in A} g(a,b)$. For $f(a’,b’) &gt; f(a,b)$, there must be either $f(a + (a’-a), b) &gt; f(a,b)$, which is not possible if $\inf_B f$ is concave in $a$, because $f(a,b)$ is already a supremum for $a$. Or there must be $f(a’, b’ + (b-b’)) &lt; f(a’,b’)$, which is not possible if $\sup_A f$ is convex in $b$, because $f(a’,b’)$ is already an infimum for $b’$. Or, of course, both could apply. Anyway this shows that, if $f$ is concave in $a$ and convex in $b$, then $f(a,b) = f(a’b’)$, which means the minimax principle applies.</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{cc}
-= \sup_{f} \ \mathbb{E}_{s \sim p_r}(f(s)) - \mathbb{E}_{t \sim p_\theta}(f(t)) + & \underbrace{ \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} ( \lVert x - y \lVert - ( f(x) - f(y) )} ) \\
-&= \cases{\begin{align} 0, & \ \ \ \mathrm{if} \ \| f \| {}_{L} \leq 1\\ - \infty  &  \ \ \ \mathrm{else} \end{align}}
-\end{array} \\ %]]></script>
-
-<p>then there are two options: It minimal in dimension B, or it is not. If it is, it is considered as a maximum for $$ for is a minimum for A and maximum for B, but then it is</p>
-
-<hr />
-
-<script type="math/tex; mode=display">\mathbf{D} = d_{ij} = \lVert x_i - y_i \lVert \\
-EM(p_r, p_g) = \inf_{\gamma} \, \langle D, \Gamma\rangle_\mathrm{F}</script>
-
-<p>Lagrangian:
-<script type="math/tex">\min_x \max_\lambda L(x, \lambda) = c^T x + \lambda (Ax-b) \\
-\min_y \max_{\alpha, \alpha \geq 0} L(x, \alpha) = -b^T y + \alpha(A^T y - c)</script></p>
-
-<script type="math/tex; mode=display">D_{ij} = \lVert x_i - y_i \lVert \\
-EM(p_r, p_g) = \inf_{\gamma} \, \langle D, \Gamma\rangle_\mathrm{F}</script>
-
-<script type="math/tex; mode=display">c = \mathrm{vec}(D) \\
-x = \mathrm{vec}(\Gamma)</script>
-
-<p>We can see calculating the EMD as a linear programming problem. We have to flatten our $\gamma$ matrix.</p>
-
-<p>Linear programming is a generic problem of following form: Search for a vector $x$, so that the expression $c^T x$ minimizes.
-Additionally there are constrains of the form $A x = b$.</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-z = & \ \mathbf{c}^T \mathbf{x} \\
-\mathbf{A} \mathbf{x} = & \ \mathbf{b} \\
-\mathbf{x} \geq & \ \mathbf{0}
-\end{align} %]]></script>
-
-<p>Dual Problem:
-<script type="math/tex">% <![CDATA[
-\begin{align}
-\tilde{z} = & \ \mathbf{b}^T \mathbf{y} \\
-\mathbf{A}^T \mathbf{y} \leq & \ \mathbf{c} \\
-\end{align} %]]></script></p>
-
-<h2 id="weak-duality">Weak Duality</h2>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-primal: &  &dual: \\
-\max z = & \ \mathbf{c}^T \mathbf{x}        \hspace{3em} & \min \tilde{z} = & \ \mathbf{b}^T \mathbf{y} \\
-\mathbf{A} \mathbf{x} \leq & \ \mathbf{b}  & \mathbf{A}^T \mathbf{y} \geq & \ \mathbf{c} \\
-\mathbf{x} \geq & \ \mathbf{0}
-\end{align} %]]></script>
-
-<script type="math/tex; mode=display">z \leq \tilde{z} \\
-z = \mathbf{c}^T \mathbf{x} \leq \mathbf{y}^T \mathbf{A} \mathbf{x} \leq \mathbf{b}^T \mathbf{y} = \tilde{z}</script>
-
-<h2 id="strong-duality-1">Strong Duality</h2>
-<p>optimal solution for primal program: $\mathbf{x}<em>0$
-<script type="math/tex">\mathbf{V} = \mathbf{A}^{-1} \\
-\mathbf{y} = \mathbf{c} \ \mathbf{V} \\
-\mathbf{y} \ \mathbf{b} = \mathbf{c} \ \mathbf{V} \ \mathbf{b} = \mathbf{c} \ \mathbf{x}_0</script>
-__</em>
-Only if strong duality holds, this is possible:
-<script type="math/tex">% <![CDATA[
-\begin{align}
-\mathbf{A} \mathbf{x} \leq & \ \mathbf{b} \\
-\mathbf{c}^T \mathbf{x} \geq & \ \mathbf{b}^T \mathbf{y}\\
-\mathbf{x} \geq & \ \mathbf{0}
-\end{align} %]]></script></p>
-
-<p>Or
-<script type="math/tex">\begin{bmatrix} -\mathbf{A} \\ \mathbf{c}^T \end{bmatrix} \mathbf{x} \geq
-\begin{bmatrix} -\mathbf{b} \\ \mathbf{b}^T \mathbf{y}\end{bmatrix}</script></p>
-
-<p>But let’s assume, that’s impossible, and the strong duality does not hold.</p>
-
-<p>For $\epsilon &gt; 0$, this has no solution:
-<script type="math/tex">\begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix} \mathbf{x} \leq
-\begin{bmatrix} \mathbf{b} \\ -z-\epsilon \end{bmatrix}</script>
-So according to Farkas, there must be a solution to
-$$</p>
-
-<p>$$</p>
-
-<p>##Wasserstein distance:</p>
-
-<script type="math/tex; mode=display">W(p_r, p_g) = \inf_{\gamma \in \Pi} \mathbb{E} \left( \lVert x - y \lVert \right)
-= \inf_{\gamma} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x \, \mathrm{d} y</script>
-
-<p>First, we will outline the discrete case, and somewhat related problems in Linear Programming. Then we turn to the Wasserstein distance and our case of the Kantorovich-Rubinstein duality. The argument at the end is actually not too complicated and stands for it self. However, it is very abstract</p>
-
-<p>He also talks about this topic in a more approachable way in this interesting talk, but gives no real explanation.</p>
-
-<p>The mathematical concepts behind this application of the Wasserstein distance is quite interesting, and  behind this</p>
-
-<p>For the discriminator in a GAN, we need some way to measure the distance or divergence between the real and the fake data distribution. Usually, some kind of f-divergence or, most notably, the Jensen-Shannon divergence are used. They all have at the basis the quotient of the probability distributions. While they clearly do work, this fact is problematic for highly concentrated distributions (e.g. when the samples all lie on a low-dimensional submanifold). Then we are basically trying to divide by zero, and often get no useful gradient to train the generator, as is shown in the paper.</p>
-
-<p>A more robust way to measure this distance is the Wasserstein-1 metric. Although the idea behind it is simple and intuitive, t</p>
 
         
       </section>
@@ -744,27 +606,52 @@ $$</p>
 
 
         
-          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-02-11T00:00:00+01:00">February 11, 2017</time></p>
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-02-24T00:00:00+01:00">February 24, 2017</time></p>
         
       </footer>
 
       
+
+<section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
 
       
 
 
   <nav class="pagination">
     
-      <a href="http://localhost:4000/wavelet-construction-and-spectral-factorization/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
+      <a href="https://vincentherrmann.github.io/blog/wavelets-ii/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="https://vincentherrmann.github.io/blog/robotics-essay/" class="pagination--pager" title="Werden Roboter jemals so werden wie wir? (German)
+">Next</a>
     
   </nav>
 
     </div>
 
+    
+      
+
+<div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
     
   </article>
 
@@ -792,7 +679,7 @@ $$</p>
       <li><a href="http://github.com/vincentherrmann"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
     
     
-    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="https://vincentherrmann.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
   </ul>
 </div>
 
@@ -800,7 +687,7 @@ $$</p>
       </footer>
     </div>
 
-    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+    <script src="https://vincentherrmann.github.io/assets/js/main.min.js"></script>
 
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 <script type="text/javascript">
@@ -865,6 +752,33 @@ $$</p>
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
+
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'vincentherrmann';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 
 
