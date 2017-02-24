@@ -2,6 +2,7 @@
 title: Werden Roboter jemals so werden wie wir? (German)
 header:
   teaser: robot.jpg
+date: 2016-09-01
 ---
 
 Dies ist ein kurzes Essay, das ich im Frühjahr zu einer vorgegebenen Fragestellung geschrieben habe:

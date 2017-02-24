@@ -33,7 +33,7 @@ dual_scaling_g:
  - image_path: wasserstein/Scaling_g.png
 ---
 
-From what I can tell, there is much interest in the recent [Wasserstein GAN paper](https://arxiv.org/abs/1701.07875). In this post, I don't want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or at least [this excellent summary](http://www.alexirpan.com/2017/02/22/wasserstein-gan.html). Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.
+From what I can tell, there is much interest in the recent [Wasserstein GAN paper](https://arxiv.org/abs/1701.07875). In this post, I don't want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or [this excellent summary](http://www.alexirpan.com/2017/02/22/wasserstein-gan.html). Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.
 
 The paper cites the book "Optimal Transport - Old and New" by Fields-Medal winner and french eccentric Cedric Villani, you can [download it from his homepage](cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf). That's about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in [this lecture](https://www.youtube.com/watch?v=zo46TEp6FB8), at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn't know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.
 
@@ -383,4 +383,4 @@ This is our case of the Kantorovich-Rubinstein duality. It actually holds for ot
 - [Matoušek, Gärtner: Understanding and Using Linear Programming](http://www.springer.com/la/book/9783540306979)
 - [Villani: Optimal Transport - Old and New](http://www.springer.com/br/book/9783540710493)
 - [Xia: Introductionto Monge-Kantorovich Problem (slides)](https://www.math.ucdavis.edu/~qlxia/Research/monge.pdf)
-- [Zemel: Optimal Transportation: Continuous and Discrete](smat.epfl.ch/~zemel/vt/pdm.pdf)
+- [Zemel: Optimal Transportation: Continuous and Discrete](http://smat.epfl.ch/~zemel/vt/pdm.pdf)

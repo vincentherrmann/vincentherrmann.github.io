@@ -20,7 +20,7 @@ header:
     {% assign collection = site.composition %}
     {% include archive-collection-single.html type="grid" %}
 
-    {% assign collection = site.blog %}
+    {% assign collection = site.blog limit:3 | sort:"date" | reverse %}
     {% include archive-collection-single.html type="grid" %}
   </div>
 </div>
