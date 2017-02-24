@@ -68,7 +68,7 @@ $$
 
 where $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all the element-wise products).
 
-{% include gallery id="transport_plan" caption="Fig.2: Transport plan $\mathbf{\Gamma}$ and distances $\mathbf{D}$" %}
+{% include gallery id="transport_plan" caption="Fig.2: Transport plan $\mathbf{\Gamma}$ with $P_r$ and $P_\theta$ as marginal probabilities, and distances $\mathbf{D}$" %}
 
 ## Linear Programming
 
@@ -322,7 +322,7 @@ g = opt_res.x[d:]
 ```
 
 {% include gallery id="dual_scaling_f"%}
-{% include gallery id="dual_scaling_g" caption="Fig.6: Element-wise multiplication of $\mathbf{f}$ and $P_r$, as well as $\mathbf{g} = -\mathbf{f}$  and $P_\theta.$" %}
+{% include gallery id="dual_scaling_g" caption="Fig.6: Element-wise multiplication of the optimal $\mathbf{f}$ and $P_r$, as well as $\mathbf{g} = -\mathbf{f}$  and $P_\theta.$" %}
 
 As we see, the optimal strategy is of course to set $f(x)$ to high values where $P_r(x) > P_\theta(x)$, and to low values where $P_\theta > P_r$.
 
