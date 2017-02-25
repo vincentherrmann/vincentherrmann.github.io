@@ -1,5 +1,6 @@
 ---
 title: Werden Roboter jemals so werden wie wir? (German)
+related: true
 header:
   teaser: robot.jpg
 date: 2016-09-01
