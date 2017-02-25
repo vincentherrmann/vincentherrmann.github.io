@@ -250,6 +250,7 @@ $$
 
 We see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon > 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.
 
+
 ## Dual Implementation
 
 Now we can confidently use the dual form to calculate the EMD. As we showed, the maximal value $\tilde{z}^* = \mathbf{b}^T \mathbf{y}^{* }$ is the EMD. Let's define
@@ -301,7 +302,7 @@ We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the funct
 ![p_r](/images/Dual_Constraints_f.png)
 ![p_r](/images/Dual_Constraints_g.png)-->
 
-{% include gallery id="dual_constraints" caption="Fig.5: Constraints for the dual solution. Blue and red lines depict the upper bounds for $\mathbf{f}$ and $\mathbf{g}$ respectively. For every $\mathbf{f} \neq \mathbf{g}$, there is a net loss of the optimization function." %}
+{% include gallery id="dual_constraints" caption="Fig.5: Constraints for the dual solution. Blue and red lines depict the upper bounds for $\mathbf{f}$ and $\mathbf{g}$ respectively. For every $\mathbf{f} \neq -\mathbf{g}$, there is a net loss of the optimization function." %}
 
 For $g = - f$ the constraints become $f(x_i) - f(x_j) \leq \mathbf{D}\_{i,j}$ and $f(x_i) - f(x_j) \geq -\mathbf{D}\_{i,j}$. If we see the values $f(x_i)$ as connected with line segments, this means that the upward and the downward slope of these segments is limited. In our case, where we use Euclidian distances, these slope limits are $1$ and $-1$. We call this constraint Lipschitz continuity (with Lipschitz constant $1$) and write $\lVert f \lVert_{L \leq 1}$. With that, our dual form of the EMD is
 
