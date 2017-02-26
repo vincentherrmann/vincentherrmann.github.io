@@ -374,7 +374,7 @@ We see that the infimum is concave, as required. Because all functions $f$ that 
 $$
 \begin{align}
 W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y)) ] \\
-& = \sup_{\lVert f \lVert \leq 1} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
+& = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
 \end{align}
 $$
 
