@@ -319,8 +319,8 @@ The implementation is straightforward:
 opt_res = linprog(-b, A, c, bounds=(None, None))
 
 emd = -opt_res.fun
-f = opt_res.x[0:d]
-g = opt_res.x[d:]
+f = opt_res.x[0:l]
+g = opt_res.x[l:]
 ```
 
 {% include gallery id="dual_scaling_f"%}
