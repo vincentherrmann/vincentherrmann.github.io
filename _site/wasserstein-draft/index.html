@@ -1,0 +1,733 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>Wasserstein GAN and the Kantorovich-Rubinstein Duality - Vincent Herrmann</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Vincent Herrmann">
+<meta property="og:title" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
+
+
+  <link rel="canonical" href="https://vincentherrmann.github.io/wasserstein-draft/">
+  <meta property="og:url" content="https://vincentherrmann.github.io/wasserstein-draft/">
+
+
+
+  <meta property="og:description" content="From what I can tell, there is much interest in the recent Wasserstein GAN paper. In this post, I don’t want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or at least this excellent summary. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can download it from his homepage. That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in this lecture, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the nice discrete case and somewhat related problems in Linear Programming.If you’re interested, you can take a look at the Jupyter notebook that I created to plot some of the graphics in this post.Earth Mover’s DistanceFor discrete probability distributions, the Wasserstein distance is also descriptively called the earth mover’s distance (EMD). If we imagine the distributions as different heaps of a certain amount of earth, then the EMD is the minimal total amount of work it takes to transform one heap into the other. Work is defined as the amount of earth in a chunk times the distance it was moved. Let’s call our discrete distributions $P_r$ and $P_\theta$, each with $l$ possible states $x$ or $y$ respectively, and take two arbitrary distributions as an example.                                        Fig.1: Probability distribution $P_r$ and $P_\theta$, each with ten states  Calculating the EMD is in itself an optimization problem: There are infinitely many ways to move the earth around, and we need to find the optimal one. We call the transport plan that we are trying to find $\gamma(x,y)$. It simply states how we distribute the amount of earth from one place $x$ over the domain of $y$, or vice versa.To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover’s distance is:If you’re not familiar with the expression $\inf$, it stands for infimum, or greatest lower bound. It is simply a slight mathematical variation of the minimum. The opposite is $\sup$ or supremum, roughly meaning maximum, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\lVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can writewhere $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all the element-wise products).                        Fig.2: Transport plan $\mathbf{\Gamma}$ and distances $\mathbf{D}$  Linear ProgrammingIn the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is costrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^n$ and $\mathbf{x} \geq \mathbf{0}$.To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:This means $n = l^2$. For the constraints, we concatenate the target distributions, which makes $m=2l$:For $\mathbf{A}$, we have to construct a large sparse binary matrix that picks out the values from $\mathbf{x}$ and sums them to get $\mathbf{b}$. This schematic should make it clear:With that, we can call a standard LP routine, for example linprog() from scipy.import numpy as npfrom scipy.optimize import linprog# We construct our A matrix by creating two 3-way tensors,# and then reshaping and concatenating themA_r = np.zeros((l, l, l))A_t = np.zeros((l, l, l))for i in range(l):	for j in range(l):		A_r[i, i, j] = 1		A_t[i, j, i] = 1A = np.concatenate((A_r.reshape((l, l**2)), A_t.reshape((l, l**2))), axis=0)b = np.concatenate((P_r, P_t), axis=0)c = D.reshape((l**2))opt_res = linprog(c, A_eq=A, b_eq=b)emd = opt_res.fungamma = opt_res.x.reshape((l, l))Now we have our transference plan, as well as the EMD.                        Fig.3: Optimal transportation between $P_r$ and $P_\theta$  Dual FormUnfortunately, this kind of optimization is not practical in many cases, certainly not in domains where GANs are usually used. In our example, we use a one-dimensional random variable with ten possible states. The number of possible discrete states scales exponentially with the number of dimensions of the input variable. For many applications, e.g. images, the input can easily have thousands of dimensions. Even an approximation of $\gamma$ is then virtually impossible.But actually we don’t care about $\gamma$. We only want a single number, the EMD. Also, we want to use it to train our generator network, which generates the distribution $P_\theta$. To do this, we must be able to calculate the gradient $\nabla_{P_\theta} \mathrm{EMD}(P_r, P_\theta)$. Since $P_r$ and $P_\theta$ are only constraints of our optimization, this not possible in any straightforward way.As it turns out, there is another way of calculating the EMD that is much more convenient. Any LP has two ways in which the problem can be formulated: The primal form, which we just used, and the dual form.By changing the relations between the same values, we can turn our minimization problem into a maximization problem. Here the objective $\tilde{z}$ directly depends on $\mathbf{b}$, which contains the our distributions $P_r$ and $P_\theta$. This is exactly that we want. It is easy to see that $\tilde{z}$ is a lower bound of $z$:This is called the Weak Duality theorem. As you might have guessed, there also exists a Strong Duality theorem, which states that, should we find an optimal solution for $\tilde{z}$, then $z=\tilde{z}$. Proving it is a bit more complicated and requires Farkas theorem as an intermediate result.Farkas TheoremWe can regard the columns of a matrix $\hat{\mathbf{A}} \in \mathbb{R}^{d \times n}$ as vectors $\mathbf{a}_{1}, \mathbf{a}_{2}, …, \mathbf{a}_{n}\in \mathbb{R}^{d}$. The set of all possible linear combinations of these vectors with nonnegative coefficients is a convex cone with its apex (peak) at the origin (note that a convex cone could also potentially cover the whole $\mathbb{R}^{d}$ space). We can combine these coefficients in a vector $\mathbf{x} \in \mathbb{R}^{n}_{\geq 0}$.For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ that goes through the origin between the convex cone and $\hat{\mathbf{b}}$. We can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &gt; 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &lt; 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-sapce than and all vectors $\mathbf{a}_i$.                                        Fig.4: Geometrical view of Farkas theorem: If $\mathbf{b}$ does not lie inside or on the blue cone, then we can fit a hyperplane $h$ between $\mathbf{b}$ and the cone  Summarized, exactly one of the following statements is true:  $(1)$ There exists $\mathbf{x} \in \mathbb{R}^{n}$, so that $\hat{\mathbf{A}} \mathbf{x} = \hat{\mathbf{b}}$ and $\mathbf{x} \geq \mathbf{0}$  $(2)$ There exists $\hat{\mathbf{y}} \in \mathbb{R}^{d}$, so that $\hat{\mathbf{A}}^T \hat{\mathbf{y}} \leq \mathbf{0}$ and $\hat{\mathbf{b}}^T \hat{\mathbf{y}} &gt; 0$This is called Farkas theorem, or Farkas alternatives. There exist slightly different versions and several proofs, but what we showed is sufficient for our purposes.Strong DualityThe trick for the second part of this proof is to construct a problem that is related to our original LP forms, but with one additional dimension and in such a way that $\hat{\mathbf{b}}$ lies right at the edge of the convex cone. Then according to Farkas, for some $\hat{\mathbf{y}}$, the corresponding hyperplane comes arbitrarily close to $\hat{\mathbf{b}}$. From this, in combination with the Weak Duality theorem, we will proof the Strong Duality.Let the minimal solution to the primal problem be ${z^* } = \mathbf{c}^T \mathbf{x}^{* }$. Then we definewith $\epsilon, \alpha \in \mathbb{R}$. For $\epsilon = 0$, we have Farkas case $(1)$, because $\hat{\mathbf{A}} \mathbf{x}^* = \hat{\mathbf{b}}_0$. For $\epsilon &gt; 0$, there exists no nonnegative solution (because $z^{* }$ is already minimal) and we have Farkas case $(2)$. This means there exist $\mathbf{y}$ and $\alpha$, such thator equivalentlyThe way we constructed it, we can find $\hat{\mathbf{y}}$ so that additionally $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} = 0$. Then changing $\epsilon$ to any number greater than $0$ has to result in $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} &gt; 0$. In our specific problem, this is only possible if $\alpha &gt; 0$, because $z^* &gt; 0$. We showed that $\hat{\mathbf{y}}$ is simply the normal vector of a hyperplane, and because of that we can freely scale it to any magnitude greater than zero. Particularly, we can scale it so that $\alpha = 1$. This means there exists a vector $\mathbf{y}$, so thatWe see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.Dual ImplementationNow we can confidently use the dual form to calculate the EMD. As we showed, the maximal value $\tilde{z}^* = \mathbf{b}^T \mathbf{y}^{* }$ is the EMD. Let’s definewith $\mathbf{f}, \mathbf{g} \in \mathbb{R}^d$. This means $\mathrm{EMD}(P_r, P_\theta) = \mathbf{f}^T P_r + \mathbf{g}^T P_\theta$. Recall the constraints of the dual form: $\mathbf{A}^T \mathbf{y} \leq \mathbf{c}$.We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i - \mathbf{g}_i$ has to be as great as possible. This means for the best $\mathbf{y}$ we have $g = - f$, which remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.                                                        Fig.5: Constraints for the dual solution. Blue and red lines depict the upper bounds for $\mathbf{f}$ and $\mathbf{g}$ respectively. For every $\mathbf{f} \neq \mathbf{g}$, there is a net loss of the optimization function.  For $g = - f$ the constraints become $f(x_i) - f(x_j) \leq \mathbf{D}_{i,j}$ and $f(x_i) - f(x_j) \geq -\mathbf{D}_{i,j}$. If we see the values $f(x_i)$ as connected with line segments, this means that the upward and the downward slope of these segments is limited. In our case, where we use Euclidian distances, these slope limits are $1$ and $-1$. We call this constraint Lipschitz continuity (with Lipschitz constant $1$) and write $\lVert f \lVert_{L \leq 1}$. With that, our dual form of the EMD isThe implementation is straightforward:# linprog() can only minimize the cost, because of that# we optimize the negative of the objective. Also, we are# not constrained to nonnegative values.opt_res = linprog(-b, A, c, bounds=(None, None))emd = -opt_res.funf = opt_res.x[0:d]g = opt_res.x[d:]                                            Fig.6: Element-wise multiplication of $\mathbf{f}$ and $P_r$, as well as $\mathbf{g} = -\mathbf{f}$  and $P_\theta.$  As we see, the optimal strategy is of course to set $f(x)$ to high values where $P_r(x) &gt; P_\theta(x)$, and to low values where $P_\theta &gt; P_r$.Wasserstein DistanceLastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined asIf we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:Now we have bilevel optimization. This means we take the optimal solution of the inner optimization ($\sup_f$) for every value of the outer optimization ($\inf_\gamma$), and from these possible solutions choose the one that is optimal for the outer optimization. To continue, we have to make use of the minimax-principle, which says that in certain cases we can invert the order of $\inf$ and $\sup$ without changing the solution. But first we have to show that our problem is indeed such a case.Consider some function $g: A, B \rightarrow \mathbb{R}$. Let $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ (‘the least of all maxima’) and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$ (‘the greatest of all minima’). The argument that $g(\hat{a}, \hat{b}) \geq g(\hat{a}’, \hat{b}’)$ is simple: Any $g(\hat{a}, \hat{b})$ is automatically allowed as a candidate for the infimum of $\sup_{\ b \in B} \inf_{a \in A} g(a,b)$, but not the other way around.For $g(\hat{a}, \hat{b}) &gt; g(\hat{a}’, \hat{b}’)$, at least one of these statements must be true:  $g(\hat{a}+t, \hat{b}) &lt; g(\hat{a}, \hat{b})$ for some $t \neq 0$. This is only possible if $\sup_{\ b \in B} g(a,b)$ is not convex in $a$, because $g(\hat{a}, \hat{b})$ is already an infimum for $\hat{a}$.  $g(\hat{a}’, \hat{b}’+t) &gt; g(\hat{a}’, \hat{b}’)$ for some $t \neq 0$. This is only possible if $\inf_{\ a \in A} g(a,b)$ is not concave in $b$, because $g(\hat{a}’, \hat{b}’)$ is already a supremum for $\hat{b}’$.This means of course that, if  $\sup_{\ b \in B} g(a,b)$ is convex and $\inf_{\ a \in A} g(a,b)$ is concave, then the minimax principle applies and $g(\hat{a}, \hat{b}) = g(\hat{a}’, \hat{b}’)$. In our case, we can above already see from the underbrace that the convexity condition is met. Let’s try changing to $\sup \inf$:We see that the infimum is concave, as required. Because all functions $f$ that are Lipschitz continuous produce the same optimal solution for $\inf_\gamma$, and only they are feasible solutions of $\sup_f$, we can turn this condition into a constraint. With that, we have the dual form of the Wasserstein distance:This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.Sources  Arjovsky, Chintala, Bottou: Wasserstein GAN  Matoušek, Gärtner: Understanding and Using Linear Programming  Villani: Optimal Transport - Old and New  Xia: Introductionto Monge-Kantorovich Problem (slides)  Zemel: Optimal Transportation: Continuous and Discrete">
+
+
+
+  <meta name="twitter:site" content="@idivinci">
+  <meta name="twitter:title" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
+  <meta name="twitter:description" content="From what I can tell, there is much interest in the recent Wasserstein GAN paper. In this post, I don’t want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or at least this excellent summary. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can download it from his homepage. That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in this lecture, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the nice discrete case and somewhat related problems in Linear Programming.If you’re interested, you can take a look at the Jupyter notebook that I created to plot some of the graphics in this post.Earth Mover’s DistanceFor discrete probability distributions, the Wasserstein distance is also descriptively called the earth mover’s distance (EMD). If we imagine the distributions as different heaps of a certain amount of earth, then the EMD is the minimal total amount of work it takes to transform one heap into the other. Work is defined as the amount of earth in a chunk times the distance it was moved. Let’s call our discrete distributions $P_r$ and $P_\theta$, each with $l$ possible states $x$ or $y$ respectively, and take two arbitrary distributions as an example.                                        Fig.1: Probability distribution $P_r$ and $P_\theta$, each with ten states  Calculating the EMD is in itself an optimization problem: There are infinitely many ways to move the earth around, and we need to find the optimal one. We call the transport plan that we are trying to find $\gamma(x,y)$. It simply states how we distribute the amount of earth from one place $x$ over the domain of $y$, or vice versa.To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover’s distance is:If you’re not familiar with the expression $\inf$, it stands for infimum, or greatest lower bound. It is simply a slight mathematical variation of the minimum. The opposite is $\sup$ or supremum, roughly meaning maximum, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\lVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can writewhere $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all the element-wise products).                        Fig.2: Transport plan $\mathbf{\Gamma}$ and distances $\mathbf{D}$  Linear ProgrammingIn the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is costrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^n$ and $\mathbf{x} \geq \mathbf{0}$.To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:This means $n = l^2$. For the constraints, we concatenate the target distributions, which makes $m=2l$:For $\mathbf{A}$, we have to construct a large sparse binary matrix that picks out the values from $\mathbf{x}$ and sums them to get $\mathbf{b}$. This schematic should make it clear:With that, we can call a standard LP routine, for example linprog() from scipy.import numpy as npfrom scipy.optimize import linprog# We construct our A matrix by creating two 3-way tensors,# and then reshaping and concatenating themA_r = np.zeros((l, l, l))A_t = np.zeros((l, l, l))for i in range(l):	for j in range(l):		A_r[i, i, j] = 1		A_t[i, j, i] = 1A = np.concatenate((A_r.reshape((l, l**2)), A_t.reshape((l, l**2))), axis=0)b = np.concatenate((P_r, P_t), axis=0)c = D.reshape((l**2))opt_res = linprog(c, A_eq=A, b_eq=b)emd = opt_res.fungamma = opt_res.x.reshape((l, l))Now we have our transference plan, as well as the EMD.                        Fig.3: Optimal transportation between $P_r$ and $P_\theta$  Dual FormUnfortunately, this kind of optimization is not practical in many cases, certainly not in domains where GANs are usually used. In our example, we use a one-dimensional random variable with ten possible states. The number of possible discrete states scales exponentially with the number of dimensions of the input variable. For many applications, e.g. images, the input can easily have thousands of dimensions. Even an approximation of $\gamma$ is then virtually impossible.But actually we don’t care about $\gamma$. We only want a single number, the EMD. Also, we want to use it to train our generator network, which generates the distribution $P_\theta$. To do this, we must be able to calculate the gradient $\nabla_{P_\theta} \mathrm{EMD}(P_r, P_\theta)$. Since $P_r$ and $P_\theta$ are only constraints of our optimization, this not possible in any straightforward way.As it turns out, there is another way of calculating the EMD that is much more convenient. Any LP has two ways in which the problem can be formulated: The primal form, which we just used, and the dual form.By changing the relations between the same values, we can turn our minimization problem into a maximization problem. Here the objective $\tilde{z}$ directly depends on $\mathbf{b}$, which contains the our distributions $P_r$ and $P_\theta$. This is exactly that we want. It is easy to see that $\tilde{z}$ is a lower bound of $z$:This is called the Weak Duality theorem. As you might have guessed, there also exists a Strong Duality theorem, which states that, should we find an optimal solution for $\tilde{z}$, then $z=\tilde{z}$. Proving it is a bit more complicated and requires Farkas theorem as an intermediate result.Farkas TheoremWe can regard the columns of a matrix $\hat{\mathbf{A}} \in \mathbb{R}^{d \times n}$ as vectors $\mathbf{a}_{1}, \mathbf{a}_{2}, …, \mathbf{a}_{n}\in \mathbb{R}^{d}$. The set of all possible linear combinations of these vectors with nonnegative coefficients is a convex cone with its apex (peak) at the origin (note that a convex cone could also potentially cover the whole $\mathbb{R}^{d}$ space). We can combine these coefficients in a vector $\mathbf{x} \in \mathbb{R}^{n}_{\geq 0}$.For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ that goes through the origin between the convex cone and $\hat{\mathbf{b}}$. We can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &gt; 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &lt; 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-sapce than and all vectors $\mathbf{a}_i$.                                        Fig.4: Geometrical view of Farkas theorem: If $\mathbf{b}$ does not lie inside or on the blue cone, then we can fit a hyperplane $h$ between $\mathbf{b}$ and the cone  Summarized, exactly one of the following statements is true:  $(1)$ There exists $\mathbf{x} \in \mathbb{R}^{n}$, so that $\hat{\mathbf{A}} \mathbf{x} = \hat{\mathbf{b}}$ and $\mathbf{x} \geq \mathbf{0}$  $(2)$ There exists $\hat{\mathbf{y}} \in \mathbb{R}^{d}$, so that $\hat{\mathbf{A}}^T \hat{\mathbf{y}} \leq \mathbf{0}$ and $\hat{\mathbf{b}}^T \hat{\mathbf{y}} &gt; 0$This is called Farkas theorem, or Farkas alternatives. There exist slightly different versions and several proofs, but what we showed is sufficient for our purposes.Strong DualityThe trick for the second part of this proof is to construct a problem that is related to our original LP forms, but with one additional dimension and in such a way that $\hat{\mathbf{b}}$ lies right at the edge of the convex cone. Then according to Farkas, for some $\hat{\mathbf{y}}$, the corresponding hyperplane comes arbitrarily close to $\hat{\mathbf{b}}$. From this, in combination with the Weak Duality theorem, we will proof the Strong Duality.Let the minimal solution to the primal problem be ${z^* } = \mathbf{c}^T \mathbf{x}^{* }$. Then we definewith $\epsilon, \alpha \in \mathbb{R}$. For $\epsilon = 0$, we have Farkas case $(1)$, because $\hat{\mathbf{A}} \mathbf{x}^* = \hat{\mathbf{b}}_0$. For $\epsilon &gt; 0$, there exists no nonnegative solution (because $z^{* }$ is already minimal) and we have Farkas case $(2)$. This means there exist $\mathbf{y}$ and $\alpha$, such thator equivalentlyThe way we constructed it, we can find $\hat{\mathbf{y}}$ so that additionally $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} = 0$. Then changing $\epsilon$ to any number greater than $0$ has to result in $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} &gt; 0$. In our specific problem, this is only possible if $\alpha &gt; 0$, because $z^* &gt; 0$. We showed that $\hat{\mathbf{y}}$ is simply the normal vector of a hyperplane, and because of that we can freely scale it to any magnitude greater than zero. Particularly, we can scale it so that $\alpha = 1$. This means there exists a vector $\mathbf{y}$, so thatWe see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.Dual ImplementationNow we can confidently use the dual form to calculate the EMD. As we showed, the maximal value $\tilde{z}^* = \mathbf{b}^T \mathbf{y}^{* }$ is the EMD. Let’s definewith $\mathbf{f}, \mathbf{g} \in \mathbb{R}^d$. This means $\mathrm{EMD}(P_r, P_\theta) = \mathbf{f}^T P_r + \mathbf{g}^T P_\theta$. Recall the constraints of the dual form: $\mathbf{A}^T \mathbf{y} \leq \mathbf{c}$.We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i - \mathbf{g}_i$ has to be as great as possible. This means for the best $\mathbf{y}$ we have $g = - f$, which remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.                                                        Fig.5: Constraints for the dual solution. Blue and red lines depict the upper bounds for $\mathbf{f}$ and $\mathbf{g}$ respectively. For every $\mathbf{f} \neq \mathbf{g}$, there is a net loss of the optimization function.  For $g = - f$ the constraints become $f(x_i) - f(x_j) \leq \mathbf{D}_{i,j}$ and $f(x_i) - f(x_j) \geq -\mathbf{D}_{i,j}$. If we see the values $f(x_i)$ as connected with line segments, this means that the upward and the downward slope of these segments is limited. In our case, where we use Euclidian distances, these slope limits are $1$ and $-1$. We call this constraint Lipschitz continuity (with Lipschitz constant $1$) and write $\lVert f \lVert_{L \leq 1}$. With that, our dual form of the EMD isThe implementation is straightforward:# linprog() can only minimize the cost, because of that# we optimize the negative of the objective. Also, we are# not constrained to nonnegative values.opt_res = linprog(-b, A, c, bounds=(None, None))emd = -opt_res.funf = opt_res.x[0:d]g = opt_res.x[d:]                                            Fig.6: Element-wise multiplication of $\mathbf{f}$ and $P_r$, as well as $\mathbf{g} = -\mathbf{f}$  and $P_\theta.$  As we see, the optimal strategy is of course to set $f(x)$ to high values where $P_r(x) &gt; P_\theta(x)$, and to low values where $P_\theta &gt; P_r$.Wasserstein DistanceLastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined asIf we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:Now we have bilevel optimization. This means we take the optimal solution of the inner optimization ($\sup_f$) for every value of the outer optimization ($\inf_\gamma$), and from these possible solutions choose the one that is optimal for the outer optimization. To continue, we have to make use of the minimax-principle, which says that in certain cases we can invert the order of $\inf$ and $\sup$ without changing the solution. But first we have to show that our problem is indeed such a case.Consider some function $g: A, B \rightarrow \mathbb{R}$. Let $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ (‘the least of all maxima’) and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$ (‘the greatest of all minima’). The argument that $g(\hat{a}, \hat{b}) \geq g(\hat{a}’, \hat{b}’)$ is simple: Any $g(\hat{a}, \hat{b})$ is automatically allowed as a candidate for the infimum of $\sup_{\ b \in B} \inf_{a \in A} g(a,b)$, but not the other way around.For $g(\hat{a}, \hat{b}) &gt; g(\hat{a}’, \hat{b}’)$, at least one of these statements must be true:  $g(\hat{a}+t, \hat{b}) &lt; g(\hat{a}, \hat{b})$ for some $t \neq 0$. This is only possible if $\sup_{\ b \in B} g(a,b)$ is not convex in $a$, because $g(\hat{a}, \hat{b})$ is already an infimum for $\hat{a}$.  $g(\hat{a}’, \hat{b}’+t) &gt; g(\hat{a}’, \hat{b}’)$ for some $t \neq 0$. This is only possible if $\inf_{\ a \in A} g(a,b)$ is not concave in $b$, because $g(\hat{a}’, \hat{b}’)$ is already a supremum for $\hat{b}’$.This means of course that, if  $\sup_{\ b \in B} g(a,b)$ is convex and $\inf_{\ a \in A} g(a,b)$ is concave, then the minimax principle applies and $g(\hat{a}, \hat{b}) = g(\hat{a}’, \hat{b}’)$. In our case, we can above already see from the underbrace that the convexity condition is met. Let’s try changing to $\sup \inf$:We see that the infimum is concave, as required. Because all functions $f$ that are Lipschitz continuous produce the same optimal solution for $\inf_\gamma$, and only they are feasible solutions of $\sup_f$, we can turn this condition into a constraint. With that, we have the dual form of the Wasserstein distance:This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.Sources  Arjovsky, Chintala, Bottou: Wasserstein GAN  Matoušek, Gärtner: Understanding and Using Linear Programming  Villani: Optimal Transport - Old and New  Xia: Introductionto Monge-Kantorovich Problem (slides)  Zemel: Optimal Transportation: Continuous and Discrete">
+  <meta name="twitter:url" content="https://vincentherrmann.github.io/wasserstein-draft/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-02-24T00:00:00+01:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Vincent Herrmann",
+      "url" : "https://vincentherrmann.github.io",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://vincentherrmann.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://vincentherrmann.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://vincentherrmann.github.io/">Vincent Herrmann</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/piano/">Piano</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/composition/">Composition</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/blog/">Blog</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
+    <meta itemprop="description" content="From what I can tell, there is much interest in the recent Wasserstein GAN paper. In this post, I don’t want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or at least this excellent summary. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can download it from his homepage. That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in this lecture, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the nice discrete case and somewhat related problems in Linear Programming.If you’re interested, you can take a look at the Jupyter notebook that I created to plot some of the graphics in this post.Earth Mover’s DistanceFor discrete probability distributions, the Wasserstein distance is also descriptively called the earth mover’s distance (EMD). If we imagine the distributions as different heaps of a certain amount of earth, then the EMD is the minimal total amount of work it takes to transform one heap into the other. Work is defined as the amount of earth in a chunk times the distance it was moved. Let’s call our discrete distributions $P_r$ and $P_\theta$, each with $l$ possible states $x$ or $y$ respectively, and take two arbitrary distributions as an example.                                        Fig.1: Probability distribution $P_r$ and $P_\theta$, each with ten states  Calculating the EMD is in itself an optimization problem: There are infinitely many ways to move the earth around, and we need to find the optimal one. We call the transport plan that we are trying to find $\gamma(x,y)$. It simply states how we distribute the amount of earth from one place $x$ over the domain of $y$, or vice versa.To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover’s distance is:If you’re not familiar with the expression $\inf$, it stands for infimum, or greatest lower bound. It is simply a slight mathematical variation of the minimum. The opposite is $\sup$ or supremum, roughly meaning maximum, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\lVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can writewhere $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all the element-wise products).                        Fig.2: Transport plan $\mathbf{\Gamma}$ and distances $\mathbf{D}$  Linear ProgrammingIn the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is costrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^n$ and $\mathbf{x} \geq \mathbf{0}$.To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:This means $n = l^2$. For the constraints, we concatenate the target distributions, which makes $m=2l$:For $\mathbf{A}$, we have to construct a large sparse binary matrix that picks out the values from $\mathbf{x}$ and sums them to get $\mathbf{b}$. This schematic should make it clear:With that, we can call a standard LP routine, for example linprog() from scipy.import numpy as npfrom scipy.optimize import linprog# We construct our A matrix by creating two 3-way tensors,# and then reshaping and concatenating themA_r = np.zeros((l, l, l))A_t = np.zeros((l, l, l))for i in range(l):	for j in range(l):		A_r[i, i, j] = 1		A_t[i, j, i] = 1A = np.concatenate((A_r.reshape((l, l**2)), A_t.reshape((l, l**2))), axis=0)b = np.concatenate((P_r, P_t), axis=0)c = D.reshape((l**2))opt_res = linprog(c, A_eq=A, b_eq=b)emd = opt_res.fungamma = opt_res.x.reshape((l, l))Now we have our transference plan, as well as the EMD.                        Fig.3: Optimal transportation between $P_r$ and $P_\theta$  Dual FormUnfortunately, this kind of optimization is not practical in many cases, certainly not in domains where GANs are usually used. In our example, we use a one-dimensional random variable with ten possible states. The number of possible discrete states scales exponentially with the number of dimensions of the input variable. For many applications, e.g. images, the input can easily have thousands of dimensions. Even an approximation of $\gamma$ is then virtually impossible.But actually we don’t care about $\gamma$. We only want a single number, the EMD. Also, we want to use it to train our generator network, which generates the distribution $P_\theta$. To do this, we must be able to calculate the gradient $\nabla_{P_\theta} \mathrm{EMD}(P_r, P_\theta)$. Since $P_r$ and $P_\theta$ are only constraints of our optimization, this not possible in any straightforward way.As it turns out, there is another way of calculating the EMD that is much more convenient. Any LP has two ways in which the problem can be formulated: The primal form, which we just used, and the dual form.By changing the relations between the same values, we can turn our minimization problem into a maximization problem. Here the objective $\tilde{z}$ directly depends on $\mathbf{b}$, which contains the our distributions $P_r$ and $P_\theta$. This is exactly that we want. It is easy to see that $\tilde{z}$ is a lower bound of $z$:This is called the Weak Duality theorem. As you might have guessed, there also exists a Strong Duality theorem, which states that, should we find an optimal solution for $\tilde{z}$, then $z=\tilde{z}$. Proving it is a bit more complicated and requires Farkas theorem as an intermediate result.Farkas TheoremWe can regard the columns of a matrix $\hat{\mathbf{A}} \in \mathbb{R}^{d \times n}$ as vectors $\mathbf{a}_{1}, \mathbf{a}_{2}, …, \mathbf{a}_{n}\in \mathbb{R}^{d}$. The set of all possible linear combinations of these vectors with nonnegative coefficients is a convex cone with its apex (peak) at the origin (note that a convex cone could also potentially cover the whole $\mathbb{R}^{d}$ space). We can combine these coefficients in a vector $\mathbf{x} \in \mathbb{R}^{n}_{\geq 0}$.For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ that goes through the origin between the convex cone and $\hat{\mathbf{b}}$. We can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &gt; 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &lt; 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-sapce than and all vectors $\mathbf{a}_i$.                                        Fig.4: Geometrical view of Farkas theorem: If $\mathbf{b}$ does not lie inside or on the blue cone, then we can fit a hyperplane $h$ between $\mathbf{b}$ and the cone  Summarized, exactly one of the following statements is true:  $(1)$ There exists $\mathbf{x} \in \mathbb{R}^{n}$, so that $\hat{\mathbf{A}} \mathbf{x} = \hat{\mathbf{b}}$ and $\mathbf{x} \geq \mathbf{0}$  $(2)$ There exists $\hat{\mathbf{y}} \in \mathbb{R}^{d}$, so that $\hat{\mathbf{A}}^T \hat{\mathbf{y}} \leq \mathbf{0}$ and $\hat{\mathbf{b}}^T \hat{\mathbf{y}} &gt; 0$This is called Farkas theorem, or Farkas alternatives. There exist slightly different versions and several proofs, but what we showed is sufficient for our purposes.Strong DualityThe trick for the second part of this proof is to construct a problem that is related to our original LP forms, but with one additional dimension and in such a way that $\hat{\mathbf{b}}$ lies right at the edge of the convex cone. Then according to Farkas, for some $\hat{\mathbf{y}}$, the corresponding hyperplane comes arbitrarily close to $\hat{\mathbf{b}}$. From this, in combination with the Weak Duality theorem, we will proof the Strong Duality.Let the minimal solution to the primal problem be ${z^* } = \mathbf{c}^T \mathbf{x}^{* }$. Then we definewith $\epsilon, \alpha \in \mathbb{R}$. For $\epsilon = 0$, we have Farkas case $(1)$, because $\hat{\mathbf{A}} \mathbf{x}^* = \hat{\mathbf{b}}_0$. For $\epsilon &gt; 0$, there exists no nonnegative solution (because $z^{* }$ is already minimal) and we have Farkas case $(2)$. This means there exist $\mathbf{y}$ and $\alpha$, such thator equivalentlyThe way we constructed it, we can find $\hat{\mathbf{y}}$ so that additionally $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} = 0$. Then changing $\epsilon$ to any number greater than $0$ has to result in $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} &gt; 0$. In our specific problem, this is only possible if $\alpha &gt; 0$, because $z^* &gt; 0$. We showed that $\hat{\mathbf{y}}$ is simply the normal vector of a hyperplane, and because of that we can freely scale it to any magnitude greater than zero. Particularly, we can scale it so that $\alpha = 1$. This means there exists a vector $\mathbf{y}$, so thatWe see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.Dual ImplementationNow we can confidently use the dual form to calculate the EMD. As we showed, the maximal value $\tilde{z}^* = \mathbf{b}^T \mathbf{y}^{* }$ is the EMD. Let’s definewith $\mathbf{f}, \mathbf{g} \in \mathbb{R}^d$. This means $\mathrm{EMD}(P_r, P_\theta) = \mathbf{f}^T P_r + \mathbf{g}^T P_\theta$. Recall the constraints of the dual form: $\mathbf{A}^T \mathbf{y} \leq \mathbf{c}$.We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i - \mathbf{g}_i$ has to be as great as possible. This means for the best $\mathbf{y}$ we have $g = - f$, which remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.                                                        Fig.5: Constraints for the dual solution. Blue and red lines depict the upper bounds for $\mathbf{f}$ and $\mathbf{g}$ respectively. For every $\mathbf{f} \neq \mathbf{g}$, there is a net loss of the optimization function.  For $g = - f$ the constraints become $f(x_i) - f(x_j) \leq \mathbf{D}_{i,j}$ and $f(x_i) - f(x_j) \geq -\mathbf{D}_{i,j}$. If we see the values $f(x_i)$ as connected with line segments, this means that the upward and the downward slope of these segments is limited. In our case, where we use Euclidian distances, these slope limits are $1$ and $-1$. We call this constraint Lipschitz continuity (with Lipschitz constant $1$) and write $\lVert f \lVert_{L \leq 1}$. With that, our dual form of the EMD isThe implementation is straightforward:# linprog() can only minimize the cost, because of that# we optimize the negative of the objective. Also, we are# not constrained to nonnegative values.opt_res = linprog(-b, A, c, bounds=(None, None))emd = -opt_res.funf = opt_res.x[0:d]g = opt_res.x[d:]                                            Fig.6: Element-wise multiplication of $\mathbf{f}$ and $P_r$, as well as $\mathbf{g} = -\mathbf{f}$  and $P_\theta.$  As we see, the optimal strategy is of course to set $f(x)$ to high values where $P_r(x) &gt; P_\theta(x)$, and to low values where $P_\theta &gt; P_r$.Wasserstein DistanceLastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined asIf we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:Now we have bilevel optimization. This means we take the optimal solution of the inner optimization ($\sup_f$) for every value of the outer optimization ($\inf_\gamma$), and from these possible solutions choose the one that is optimal for the outer optimization. To continue, we have to make use of the minimax-principle, which says that in certain cases we can invert the order of $\inf$ and $\sup$ without changing the solution. But first we have to show that our problem is indeed such a case.Consider some function $g: A, B \rightarrow \mathbb{R}$. Let $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ (‘the least of all maxima’) and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$ (‘the greatest of all minima’). The argument that $g(\hat{a}, \hat{b}) \geq g(\hat{a}’, \hat{b}’)$ is simple: Any $g(\hat{a}, \hat{b})$ is automatically allowed as a candidate for the infimum of $\sup_{\ b \in B} \inf_{a \in A} g(a,b)$, but not the other way around.For $g(\hat{a}, \hat{b}) &gt; g(\hat{a}’, \hat{b}’)$, at least one of these statements must be true:  $g(\hat{a}+t, \hat{b}) &lt; g(\hat{a}, \hat{b})$ for some $t \neq 0$. This is only possible if $\sup_{\ b \in B} g(a,b)$ is not convex in $a$, because $g(\hat{a}, \hat{b})$ is already an infimum for $\hat{a}$.  $g(\hat{a}’, \hat{b}’+t) &gt; g(\hat{a}’, \hat{b}’)$ for some $t \neq 0$. This is only possible if $\inf_{\ a \in A} g(a,b)$ is not concave in $b$, because $g(\hat{a}’, \hat{b}’)$ is already a supremum for $\hat{b}’$.This means of course that, if  $\sup_{\ b \in B} g(a,b)$ is convex and $\inf_{\ a \in A} g(a,b)$ is concave, then the minimax principle applies and $g(\hat{a}, \hat{b}) = g(\hat{a}’, \hat{b}’)$. In our case, we can above already see from the underbrace that the convexity condition is met. Let’s try changing to $\sup \inf$:We see that the infimum is concave, as required. Because all functions $f$ that are Lipschitz continuous produce the same optimal solution for $\inf_\gamma$, and only they are feasible solutions of $\sup_f$, we can turn this condition into a constraint. With that, we have the dual form of the Wasserstein distance:This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.Sources  Arjovsky, Chintala, Bottou: Wasserstein GAN  Matoušek, Gärtner: Understanding and Using Linear Programming  Villani: Optimal Transport - Old and New  Xia: Introductionto Monge-Kantorovich Problem (slides)  Zemel: Optimal Transportation: Continuous and Discrete">
+    <meta itemprop="datePublished" content="February 24, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Wasserstein GAN and the Kantorovich-Rubinstein Duality
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>From what I can tell, there is much interest in the recent <a href="https://arxiv.org/abs/1701.07875">Wasserstein GAN paper</a>. In this post, I don’t want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or at least <a href="http://www.alexirpan.com/2017/02/22/wasserstein-gan.html">this excellent summary</a>. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.</p>
+
+<p>The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can <a href="cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf">download it from his homepage</a>. That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in <a href="https://www.youtube.com/watch?v=zo46TEp6FB8">this lecture</a>, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.</p>
+
+<p>The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the nice discrete case and somewhat related problems in Linear Programming.</p>
+
+<p>If you’re interested, you can take a look at the <a href="https://github.com/vincentherrmann/wasserstein-notebook/blob/master/Wasserstein_Kantorovich.ipynb">Jupyter notebook</a> that I created to plot some of the graphics in this post.</p>
+
+<h2 id="earth-movers-distance">Earth Mover’s Distance</h2>
+
+<p>For discrete probability distributions, the Wasserstein distance is also descriptively called the earth mover’s distance (EMD). If we imagine the distributions as different heaps of a certain amount of earth, then the EMD is the minimal total amount of work it takes to transform one heap into the other. Work is defined as the amount of earth in a chunk times the distance it was moved. Let’s call our discrete distributions $P_r$ and $P_\theta$, each with $l$ possible states $x$ or $y$ respectively, and take two arbitrary distributions as an example.</p>
+
+<figure class="half ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/P_r.png" alt="" />
+    
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/P_theta.png" alt="" />
+    
+  
+  
+    <figcaption>Fig.1: Probability distribution $P_r$ and $P_\theta$, each with ten states
+</figcaption>
+  
+</figure>
+
+<!--$P_r$
+![p_r](/images/discrete_p_r.png)
+$P_\theta$
+![p_theta](/images/discrete_p_theta.png)-->
+
+<p>Calculating the EMD is in itself an optimization problem: There are infinitely many ways to move the earth around, and we need to find the optimal one. We call the transport plan that we are trying to find $\gamma(x,y)$. It simply states how we distribute the amount of earth from one place $x$ over the domain of $y$, or vice versa.</p>
+
+<p>To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover’s distance is:</p>
+
+<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \lVert x - y \lVert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \lVert x - y \lVert</script>
+
+<p>If you’re not familiar with the expression $\inf$, it stands for <em>infimum</em>, or greatest lower bound. It is simply a slight mathematical variation of the <em>minimum</em>. The opposite is $\sup$ or <em>supremum</em>, roughly meaning <em>maximum</em>, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\lVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can write</p>
+
+<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \langle \mathbf{D}, \mathbf{\Gamma} \rangle_\mathrm{F}</script>
+
+<p>where $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all the element-wise products).</p>
+
+<figure class=" ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png" alt="" />
+    
+  
+  
+    <figcaption>Fig.2: Transport plan $\mathbf{\Gamma}$ and distances $\mathbf{D}$
+</figcaption>
+  
+</figure>
+
+<h2 id="linear-programming">Linear Programming</h2>
+
+<p>In the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is costrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^n$ and $\mathbf{x} \geq \mathbf{0}$.</p>
+
+<p>To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\mathbf{x} &= \mathrm{vec}(\mathbf{\Gamma}) \\
+\mathbf{c} &= \mathrm{vec}(\mathbf{D}) \\
+\end{align} %]]></script>
+
+<p>This means $n = l^2$. For the constraints, we concatenate the target distributions, which makes $m=2l$:</p>
+
+<script type="math/tex; mode=display">\mathbf{b} = \begin{bmatrix} P_r \\ P_\theta\end{bmatrix}</script>
+
+<p>For $\mathbf{A}$, we have to construct a large sparse binary matrix that picks out the values from $\mathbf{x}$ and sums them to get $\mathbf{b}$. This schematic should make it clear:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\newcommand\FixWidth[1]{ \hspace{2.2em} \llap{#1}}
+
+\begin{array}{rc}
+
+&  \left. \left[ \begin{array} {rrrr|rrrr}
+\FixWidth{P_r(x_1)} & \FixWidth{P_r(x_2)} & \FixWidth{\dots} & \FixWidth{P_r(x_n)} & \FixWidth{P_\theta(y_1)} & \FixWidth{P_\theta(y_2)} & \FixWidth{\dots} & \FixWidth{P_\theta(y_n)}
+\end{array} \right]  \, \right\} \; \mathbf{b}^T \\ \\
+
+\mathbf{x} \left\{ \begin{bmatrix}
+\gamma(x_1, y_1) \\
+\gamma(x_1, y_2) \\
+\vdots \\ \hline
+\gamma(x_2, y_1) \\
+\gamma(x_2, y_2) \\
+\vdots \\ \hline
+\vdots \\ \hline
+\gamma(x_n, y_1) \\
+\gamma(x_n, y_2) \\
+\vdots \\
+\end{bmatrix} \right.
+
+& \left. \left[ \begin{array}{rrrr|rrrr}
+1 & 0 & \dots & 0 & 1 & 0 & \dots & 0 \cr
+1 & 0 & \dots & 0 & 0 & 1 & \dots & 0 \cr
+\vdots & \vdots & \dots & \vdots & \vdots & \vdots & \ddots & \vdots \cr \hline
+0 & 1 & \dots & 0 & 1 & 0 & \dots & 0 \cr
+0 & 1 & \dots & 0 & 0 & 1 & \dots & 0 \cr
+\vdots & \vdots & \dots & \vdots & \vdots & \vdots & \ddots & \vdots \cr \hline
+\FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} &
+\FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} \cr \hline
+0 & 0 & \dots & 1 & 1 & 0 & \dots & 0 \cr
+0 & 0 & \dots & 1 & 0 & 1 & \dots & 0 \cr
+\vdots & \vdots & \dots & \vdots & \vdots & \vdots & \ddots & \vdots \cr
+\end{array} \right] \right\} \mathbf{A}^T
+
+\end{array} %]]></script>
+
+<p>With that, we can call a standard LP routine, for example <code class="highlighter-rouge">linprog()</code> from scipy.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
+
+<span class="c"># We construct our A matrix by creating two 3-way tensors,</span>
+<span class="c"># and then reshaping and concatenating them</span>
+<span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="n">A_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+		<span class="n">A_r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="n">A_t</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A_r</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span> <span class="n">A_t</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">P_r</span><span class="p">,</span> <span class="n">P_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+<span class="n">emd</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<p>Now we have our transference plan, as well as the EMD.</p>
+
+<figure class=" ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/earth_move.png" alt="" />
+    
+  
+  
+    <figcaption>Fig.3: Optimal transportation between $P_r$ and $P_\theta$
+</figcaption>
+  
+</figure>
+
+<!--![p_r](/images/transfer_plan.png)
+
+![p_r](/images/earth_move.png)-->
+
+<h2 id="dual-form">Dual Form</h2>
+<p>Unfortunately, this kind of optimization is not practical in many cases, certainly not in domains where GANs are usually used. In our example, we use a one-dimensional random variable with ten possible states. The number of possible discrete states scales exponentially with the number of dimensions of the input variable. For many applications, e.g. images, the input can easily have thousands of dimensions. Even an approximation of $\gamma$ is then virtually impossible.</p>
+
+<p>But actually we don’t care about $\gamma$. We only want a single number, the EMD. Also, we want to use it to train our generator network, which generates the distribution $P_\theta$. To do this, we must be able to calculate the gradient $\nabla_{P_\theta} \mathrm{EMD}(P_r, P_\theta)$. Since $P_r$ and $P_\theta$ are only constraints of our optimization, this not possible in any straightforward way.</p>
+
+<p>As it turns out, there is another way of calculating the EMD that is much more convenient. Any LP has two ways in which the problem can be formulated: The primal form, which we just used, and the dual form.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{c|c}
+
+\mathbf{primal \ form:} & \mathbf{dual \ form:}\\
+
+\begin{array}{rrcl}
+\mathrm{minimize} \ & z & = & \ \mathbf{c}^T \mathbf{x}, \\
+\mathrm{so \ that} \ & \mathbf{A} \mathbf{x} & = & \ \mathbf{b} \\
+\mathrm{and}\  & \mathbf{x} & \geq &\ \mathbf{0}
+\end{array} &
+
+\begin{array}{rrcl}
+\mathrm{maximize} \ & \tilde{z} & = & \ \mathbf{b}^T \mathbf{y}, \\
+\mathrm{so \ that} \ & \mathbf{A}^T \mathbf{y} & \leq & \ \mathbf{c} \\ \\
+\end{array}
+
+\end{array} %]]></script>
+
+<p>By changing the relations between the same values, we can turn our minimization problem into a maximization problem. Here the objective $\tilde{z}$ directly depends on $\mathbf{b}$, which contains the our distributions $P_r$ and $P_\theta$. This is exactly that we want. It is easy to see that $\tilde{z}$ is a lower bound of $z$:</p>
+
+<script type="math/tex; mode=display">z = \mathbf{c}^T \mathbf{x} \geq \mathbf{y}^T \mathbf{A} \mathbf{x} = \mathbf{y}^T \mathbf{b} = \tilde{z}</script>
+
+<p>This is called the <em>Weak Duality</em> theorem. As you might have guessed, there also exists a <em>Strong Duality</em> theorem, which states that, should we find an optimal solution for $\tilde{z}$, then $z=\tilde{z}$. Proving it is a bit more complicated and requires Farkas theorem as an intermediate result.</p>
+
+<h2 id="farkas-theorem">Farkas Theorem</h2>
+
+<p>We can regard the columns of a matrix $\hat{\mathbf{A}} \in \mathbb{R}^{d \times n}$ as vectors $\mathbf{a}_{1}, \mathbf{a}_{2}, …, \mathbf{a}_{n}\in \mathbb{R}^{d}$. The set of all possible linear combinations of these vectors with nonnegative coefficients is a convex cone with its apex (peak) at the origin (note that a convex cone could also potentially cover the whole $\mathbb{R}^{d}$ space). We can combine these coefficients in a vector $\mathbf{x} \in \mathbb{R}^{n}_{\geq 0}$.</p>
+
+<p>For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ that goes through the origin between the convex cone and $\hat{\mathbf{b}}$. We can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &gt; 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &lt; 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-sapce than and all vectors $\mathbf{a}_i$.</p>
+
+<!--![p_r](/images/farkas_b_i.png)
+![p_r](/images/farkas_b_ii.png)-->
+
+<figure class="half ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/farkas_i.png" alt="" />
+    
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/farkas_ii.png" alt="" />
+    
+  
+  
+    <figcaption>Fig.4: Geometrical view of Farkas theorem: If $\mathbf{b}$ does not lie inside or on the blue cone, then we can fit a hyperplane $h$ between $\mathbf{b}$ and the cone
+</figcaption>
+  
+</figure>
+
+<p>Summarized, exactly one of the following statements is true:</p>
+
+<ul>
+  <li>$(1)$ There exists $\mathbf{x} \in \mathbb{R}^{n}$, so that $\hat{\mathbf{A}} \mathbf{x} = \hat{\mathbf{b}}$ and $\mathbf{x} \geq \mathbf{0}$</li>
+  <li>$(2)$ There exists $\hat{\mathbf{y}} \in \mathbb{R}^{d}$, so that $\hat{\mathbf{A}}^T \hat{\mathbf{y}} \leq \mathbf{0}$ and $\hat{\mathbf{b}}^T \hat{\mathbf{y}} &gt; 0$</li>
+</ul>
+
+<p>This is called Farkas theorem, or Farkas alternatives. There exist slightly different versions and several proofs, but what we showed is sufficient for our purposes.</p>
+
+<h2 id="strong-duality">Strong Duality</h2>
+
+<p>The trick for the second part of this proof is to construct a problem that is related to our original LP forms, but with one additional dimension and in such a way that $\hat{\mathbf{b}}$ lies right at the edge of the convex cone. Then according to Farkas, for some $\hat{\mathbf{y}}$, the corresponding hyperplane comes arbitrarily close to $\hat{\mathbf{b}}$. From this, in combination with the Weak Duality theorem, we will proof the Strong Duality.</p>
+
+<p>Let the minimal solution to the primal problem be ${z^* } = \mathbf{c}^T \mathbf{x}^{* }$. Then we define</p>
+
+<script type="math/tex; mode=display">\hat{\mathbf{A}} = \begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}, \ \ \
+\hat{\mathbf{b}}_\epsilon = \begin{bmatrix} \mathbf{b} \\ -z^* + \epsilon \end{bmatrix}, \ \ \
+\hat{\mathbf{y}} = \begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix}</script>
+
+<p>with $\epsilon, \alpha \in \mathbb{R}$. For $\epsilon = 0$, we have Farkas case $(1)$, because $\hat{\mathbf{A}} \mathbf{x}^* = \hat{\mathbf{b}}_0$. For $\epsilon &gt; 0$, there exists no nonnegative solution (because $z^{* }$ is already minimal) and we have Farkas case $(2)$. This means there exist $\mathbf{y}$ and $\alpha$, such that</p>
+
+<script type="math/tex; mode=display">\begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}^T
+\begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} \leq \mathbf{0}, \ \ \ \
+\begin{bmatrix} \mathbf{b} \\ -z^* + \epsilon \end{bmatrix}
+\begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} > 0</script>
+
+<p>or equivalently</p>
+
+<script type="math/tex; mode=display">\mathbf{A}^T \mathbf{y} \leq \alpha \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} > \alpha(z^* - \epsilon).</script>
+
+<p>The way we constructed it, we can find $\hat{\mathbf{y}}$ so that additionally $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} = 0$. Then changing $\epsilon$ to any number greater than $0$ has to result in $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} &gt; 0$. In our specific problem, this is only possible if $\alpha &gt; 0$, because $z^* &gt; 0$. We showed that $\hat{\mathbf{y}}$ is simply the normal vector of a hyperplane, and because of that we can freely scale it to any magnitude greater than zero. Particularly, we can scale it so that $\alpha = 1$. This means there exists a vector $\mathbf{y}$, so that</p>
+
+<script type="math/tex; mode=display">\mathbf{A}^T \mathbf{y} \leq \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} > z^* - \epsilon.</script>
+
+<p>We see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.</p>
+
+<h2 id="dual-implementation">Dual Implementation</h2>
+
+<p>Now we can confidently use the dual form to calculate the EMD. As we showed, the maximal value $\tilde{z}^* = \mathbf{b}^T \mathbf{y}^{* }$ is the EMD. Let’s define</p>
+
+<script type="math/tex; mode=display">\mathbf{y}^* = \begin{bmatrix} \mathbf{f} \\ \mathbf{g} \end{bmatrix}</script>
+
+<p>with $\mathbf{f}, \mathbf{g} \in \mathbb{R}^d$. This means $\mathrm{EMD}(P_r, P_\theta) = \mathbf{f}^T P_r + \mathbf{g}^T P_\theta$. Recall the constraints of the dual form: $\mathbf{A}^T \mathbf{y} \leq \mathbf{c}$.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\newcommand\FixWidth[1]{ \hspace{1.6em} \llap{#1}}
+
+\begin{array}{rc}
+&  \left. \left[ \begin{array} {rrr|rrr|r|rrr}
+\FixWidth{\mathbf{D}_{1,1}} & \FixWidth{\mathbf{D}_{1,2}} & \FixWidth{\dots} & \FixWidth{\mathbf{D}_{2,1}} & \FixWidth{\mathbf{D}_{2,2}} & \FixWidth{\dots} & \FixWidth{\dots} & \FixWidth{\mathbf{D}_{n,1}} & \FixWidth{\mathbf{D}_{ n,2}} & \FixWidth{\dots}
+\end{array} \right]  \, \right\} \; \mathbf{c}^T \\ \\
+
+\mathbf{y} \left\{ \begin{bmatrix}
+f(x_1) \\
+f(x_2) \\
+\vdots \\
+f(x_n) \\ \hline
+g(x_1) \\
+g(x_2) \\
+\vdots \\
+g(x_n) \\
+\end{bmatrix} \right.
+
+& \left. \;\; \left[ \begin{array} {rrr|rrr|r|rrr}
+
+1 & 1 & \dots & 0 & 0 & \dots & \dots & 0 & 0 & \dots \cr
+0 & 0 & \dots & 1 & 1 & \dots & \dots & 0 & 0 & \dots \cr
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \dots & \vdots & \vdots & \vdots  \cr
+0 & 0 & \dots & 0 & 0 & \dots & \dots & 1 & 1 & \dots \cr \hline
+
+1 & 0 & \dots & 1 & 0 & \dots & \dots & 1 & 0 & \dots \cr
+0 & 1 & \dots & 0 & 1 & \dots & \dots & 0 & 1 & \dots \cr
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \dots & \vdots & \vdots & \ddots  \cr
+\FixWidth{0} & \FixWidth{0} & \FixWidth{\dots} & \FixWidth{0} & \FixWidth{0} & \FixWidth{\dots} & \FixWidth{\dots} & \FixWidth{0} & \FixWidth{0} & \FixWidth{\dots}
+\end{array} \right] \right\} \mathbf{A}\phantom{^T ;}
+
+\end{array} %]]></script>
+
+<p>We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i - \mathbf{g}_i$ has to be as great as possible. This means for the best $\mathbf{y}$ we have $g = - f$, which remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.</p>
+
+<!--![p_r](/images/Dual_Constraints_o.png)
+![p_r](/images/Dual_Constraints_f.png)
+![p_r](/images/Dual_Constraints_g.png)-->
+
+<figure class="third ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_o.png" alt="" />
+    
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_f.png" alt="" />
+    
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_g.png" alt="" />
+    
+  
+  
+    <figcaption>Fig.5: Constraints for the dual solution. Blue and red lines depict the upper bounds for $\mathbf{f}$ and $\mathbf{g}$ respectively. For every $\mathbf{f} \neq \mathbf{g}$, there is a net loss of the optimization function.
+</figcaption>
+  
+</figure>
+
+<p>For $g = - f$ the constraints become $f(x_i) - f(x_j) \leq \mathbf{D}_{i,j}$ and $f(x_i) - f(x_j) \geq -\mathbf{D}_{i,j}$. If we see the values $f(x_i)$ as connected with line segments, this means that the upward and the downward slope of these segments is limited. In our case, where we use Euclidian distances, these slope limits are $1$ and $-1$. We call this constraint Lipschitz continuity (with Lipschitz constant $1$) and write $\lVert f \lVert_{L \leq 1}$. With that, our dual form of the EMD is</p>
+
+<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{x \sim P_r} f(x) - \mathbb{E}_{x \sim P_\theta} f(x).</script>
+
+<p>The implementation is straightforward:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># linprog() can only minimize the cost, because of that</span>
+<span class="c"># we optimize the negative of the objective. Also, we are</span>
+<span class="c"># not constrained to nonnegative values.</span>
+<span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+<span class="n">emd</span> <span class="o">=</span> <span class="o">-</span><span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">d</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">:]</span>
+</code></pre>
+</div>
+
+<figure class=" ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Scaling_f.png" alt="" />
+    
+  
+  
+</figure>
+
+<figure class=" ">
+  
+    
+      <img src="https://vincentherrmann.github.io/images/wasserstein/Scaling_g.png" alt="" />
+    
+  
+  
+    <figcaption>Fig.6: Element-wise multiplication of $\mathbf{f}$ and $P_r$, as well as $\mathbf{g} = -\mathbf{f}$  and $P_\theta.$
+</figcaption>
+  
+</figure>
+
+<p>As we see, the optimal strategy is of course to set $f(x)$ to high values where $P_r(x) &gt; P_\theta(x)$, and to low values where $P_\theta &gt; P_r$.</p>
+
+<h2 id="wasserstein-distance">Wasserstein Distance</h2>
+
+<p>Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as</p>
+
+<script type="math/tex; mode=display">W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x,y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].</script>
+
+<p>If we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{rl}
+W(p_r, p_\theta) & = \inf\limits_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert ] \\
+
+&\begin{array}{cc}
+ = \inf\limits_{\gamma } \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert & + \; \underbrace{\sup\limits_{f} \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - \left( f(x) - f(y) \right)} ] \\
+&= \cases{\begin{align} 0, & \ \ \ \mathrm{if \ \gamma \in \mathrm{\pi}} \\ + \infty  &  \ \ \ \mathrm{else} \end{align}} \end{array}\\
+
+& = \inf\limits_{\gamma} \ \sup\limits_{f} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - \left( f(x) - f(y) \right) ]
+\end{array} %]]></script>
+
+<p>Now we have bilevel optimization. This means we take the optimal solution of the inner optimization ($\sup_f$) for every value of the outer optimization ($\inf_\gamma$), and from these possible solutions choose the one that is optimal for the outer optimization. To continue, we have to make use of the minimax-principle, which says that in certain cases we can invert the order of $\inf$ and $\sup$ without changing the solution. But first we have to show that our problem is indeed such a case.</p>
+
+<p>Consider some function $g: A, B \rightarrow \mathbb{R}$. Let $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ (<em>‘the least of all maxima’</em>) and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$ (<em>‘the greatest of all minima’</em>). The argument that $g(\hat{a}, \hat{b}) \geq g(\hat{a}’, \hat{b}’)$ is simple: Any $g(\hat{a}, \hat{b})$ is automatically allowed as a candidate for the infimum of $\sup_{\ b \in B} \inf_{a \in A} g(a,b)$, but not the other way around.</p>
+
+<p>For $g(\hat{a}, \hat{b}) &gt; g(\hat{a}’, \hat{b}’)$, at least one of these statements must be true:</p>
+
+<ul>
+  <li>$g(\hat{a}+t, \hat{b}) &lt; g(\hat{a}, \hat{b})$ for some $t \neq 0$. This is only possible if $\sup_{\ b \in B} g(a,b)$ is not convex in $a$, because $g(\hat{a}, \hat{b})$ is already an infimum for $\hat{a}$.</li>
+  <li>$g(\hat{a}’, \hat{b}’+t) &gt; g(\hat{a}’, \hat{b}’)$ for some $t \neq 0$. This is only possible if $\inf_{\ a \in A} g(a,b)$ is not concave in $b$, because $g(\hat{a}’, \hat{b}’)$ is already a supremum for $\hat{b}’$.</li>
+</ul>
+
+<p>This means of course that, if  $\sup_{\ b \in B} g(a,b)$ is convex and $\inf_{\ a \in A} g(a,b)$ is concave, then the minimax principle applies and $g(\hat{a}, \hat{b}) = g(\hat{a}’, \hat{b}’)$. In our case, we can above already see from the underbrace that the convexity condition is met. Let’s try changing to $\sup \inf$:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{ll}
+&\phantom{= , } \sup\limits_{f} \ \inf\limits_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - (f(x) - f(y)) ] \\
+
+&\begin{array}{cc}
+= \sup\limits_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + & \underbrace{ \inf\limits_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y))} ] \\
+&= \cases{\begin{align} 0, & \ \ \ \mathrm{if} \ \| f \| {}_{L} \leq 1\\ - \infty  &  \ \ \ \mathrm{else} \end{align}}
+\end{array}
+\end{array} %]]></script>
+
+<p>We see that the infimum is concave, as required. Because all functions $f$ that are Lipschitz continuous produce the same optimal solution for $\inf_\gamma$, and only they are feasible solutions of $\sup_f$, we can turn this condition into a constraint. With that, we have the dual form of the Wasserstein distance:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y)) ] \\
+& = \sup_{\lVert f \lVert \leq 1} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
+\end{align} %]]></script>
+
+<p>This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.</p>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://arxiv.org/abs/1701.07875">Arjovsky, Chintala, Bottou: Wasserstein GAN</a></li>
+  <li><a href="http://www.springer.com/la/book/9783540306979">Matoušek, Gärtner: Understanding and Using Linear Programming</a></li>
+  <li><a href="http://www.springer.com/br/book/9783540710493">Villani: Optimal Transport - Old and New</a></li>
+  <li><a href="https://www.math.ucdavis.edu/~qlxia/Research/monge.pdf">Xia: Introductionto Monge-Kantorovich Problem (slides)</a></li>
+  <li><a href="smat.epfl.ch/~zemel/vt/pdm.pdf">Zemel: Optimal Transportation: Continuous and Discrete</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-02-24T00:00:00+01:00">February 24, 2017</time></p>
+        
+      </footer>
+
+      
+
+      
+
+
+  <nav class="pagination">
+    
+      <a href="https://vincentherrmann.github.io/wavelet-construction-and-spectral-factorization/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://twitter.com/idivinci"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+    
+    
+    
+      <li><a href="http://github.com/vincentherrmann"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="https://vincentherrmann.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="https://vincentherrmann.github.io/assets/js/main.min.js"></script>
+
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/javascript">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/SVG"],
+
+    "HTML-CSS": {
+      minScaleAdjust: 50,
+      scale: 90,
+      availableFonts: ["TeX"],
+      preferredFont: "TeX",
+      mtextFontInherit: false,
+      matchFontHeight: true,
+    },
+
+    tex2jax: {
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+<!-- <script src="MathJax.Hub.Config(
+  { extensions: ["MatchWebFonts.js"],
+
+  MatchWebFonts: {
+    matchFor: {
+      "HTML-CSS": true,
+      NativeMML: false,
+      SVG: false
+    },
+    fontCheckDelay: 20000,
+    fontCheckTimeout: 300 * 1000
+  },
+  tex2jax: {
+    inlineMath: [['\\(','\\)']]
+  },
+
+  "HTML-CSS": {
+    linebreaks: {
+      automatic: true
+    },
+    scale: 40,
+    preferredFont: "TeX",
+    mtextFontInherit: true,
+    matchFontHeight: true
+  }
+
+});" type="text/javascript" ></script> -->
+
+
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-84550896-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+  </body>
+</html>

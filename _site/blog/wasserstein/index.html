@@ -180,7 +180,7 @@
       <section class="page__content" itemprop="text">
         <p>From what I can tell, there is much interest in the recent <a href="https://arxiv.org/abs/1701.07875">Wasserstein GAN paper</a>. In this post, I don’t want to repeat the justifications, mechanics and promised benefit of WGANs, for this you should read the original paper or <a href="http://www.alexirpan.com/2017/02/22/wasserstein-gan.html">this excellent summary</a>. Instead, we will focus mainly on one detail that is only mentioned quickly, but I think lies in some sense at the heart of it: the Kantorovich-Rubinstein duality, or rather a special case of it. This is of course not a new result, but the application is very clever and attractive.</p>
 
-<p>The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can <a href="https://www.cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf">download it from his homepage</a>. That’s about a thousand pages targeted at math PHDs and researchers - have fun! Villani also talks about this topic in an accessible way in <a href="https://www.youtube.com/watch?v=zo46TEp6FB8">this lecture</a>, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.</p>
+<p>The paper cites the book “Optimal Transport - Old and New” by Fields-Medal winner and french eccentric Cedric Villani, you can <a href="https://www.cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf">download it from his homepage</a>. That’s about a thousand pages targeted at math PhDs and researchers - have fun! Villani also talks about this topic in an accessible way in <a href="https://www.youtube.com/watch?v=zo46TEp6FB8">this lecture</a>, at around the 28 minute mark. Generally though, I found it very hard to find material that gives real explanations but is not bursting with definitions and references to theorems I didn’t know. Maybe this post will help to fill this gap little bit. We will only use basic linear algebra, probability theory and optimization. These will not be rigorous proofs, and we will generously imply many regularity conditions. But I tried to make the chains of reasoning as clear and complete as possible, so it should be enough get some intuition for this subject.</p>
 
 <p>The argument for our case of the Kantorovich-Rubinstein duality is actually not too complicated and stands for itself. It is, however, very abstract, which is why I decided to defer it to the end and start with the nice discrete case and somewhat related problems in Linear Programming.</p>
 
@@ -369,7 +369,7 @@ $P_\theta$
 
 <p>We can regard the columns of a matrix $\hat{\mathbf{A}} \in \mathbb{R}^{d \times n}$ as vectors $\mathbf{a}_{1}, \mathbf{a}_{2}, …, \mathbf{a}_{n}\in \mathbb{R}^{d}$. The set of all possible linear combinations of these vectors with nonnegative coefficients is a convex cone with its apex (peak) at the origin (note that a convex cone could also potentially cover the whole $\mathbb{R}^{d}$ space). We can combine these coefficients in a vector $\mathbf{x} \in \mathbb{R}^{n}_{\geq 0}$.</p>
 
-<p>For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ that goes through the origin between the convex cone and $\hat{\mathbf{b}}$. We can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &gt; 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &lt; 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-sapce than and all vectors $\mathbf{a}_i$.</p>
+<p>For a vector $\hat{\mathbf{b}} \in \mathbb{R}^{d}$, there are now exactly two possibilities: Either $\hat{\mathbf{b}}$ is contained in the cone, or not. If $\hat{\mathbf{b}}$ is not contained, then we can fit a hyperplane $h$ that goes through the origin between the convex cone and $\hat{\mathbf{b}}$. We can define it in terms of only its normal vector $\hat{\mathbf{y}} \in \mathbb{R}^{d}$. If a vector $\mathbf{v} \in \mathbb{R}^{d}$ lies on $h$, then $\mathbf{v}^T \hat{\mathbf{y}} = 0$, if $\mathbf{v}$ lies in the upper half-space of $h$ (the same side as $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &gt; 0$ and if $\mathbf{v}$ lies in the lower half-space (the opposite side of $\hat{\mathbf{y}}$), then $\mathbf{v}^T \hat{\mathbf{y}} &lt; 0$. As we specified, if $h$ exists, then  $\hat{\mathbf{b}}$ lies in a different half-space than all vectors $\mathbf{a}_i$.</p>
 
 <!--![p_r](/images/farkas_b_i.png)
 ![p_r](/images/farkas_b_ii.png)-->
@@ -506,8 +506,8 @@ g(x_n) \\
 <span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
 
 <span class="n">emd</span> <span class="o">=</span> <span class="o">-</span><span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">d</span><span class="p">]</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">:]</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">l</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">l</span><span class="p">:]</span>
 </code></pre>
 </div>
 
@@ -536,7 +536,7 @@ g(x_n) \\
 
 <h2 id="wasserstein-distance">Wasserstein Distance</h2>
 
-<p>Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the joined distribution with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as</p>
+<p>Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the set of joined distributions with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as</p>
 
 <script type="math/tex; mode=display">W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x,y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].</script>
 
@@ -581,7 +581,7 @@ W(p_r, p_\theta) & = \inf\limits_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} [
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
 W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y)) ] \\
-& = \sup_{\lVert f \lVert \leq 1} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
+& = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
 \end{align} %]]></script>
 
 <p>This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.</p>
@@ -635,7 +635,8 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="https://vincentherrmann.github.io/blog/d3-test/" class="pagination--pager" title="Some Wavelet Visualizations
+">Next</a>
     
   </nav>
 
