@@ -58,10 +58,10 @@ Calculating the EMD is in itself an optimization problem: There are infinitely m
 To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover's distance is:
 
 $$
-\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \lVert x - y \lVert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \lVert x - y \lVert
+\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \lVert x - y \rVert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \lVert x - y \rVert
 $$
 
-If you're not familiar with the expression $\inf$, it stands for *infimum*, or greatest lower bound. It is simply a slight mathematical variation of the *minimum*. The opposite is $\sup$ or *supremum*, roughly meaning *maximum*, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\lVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can write
+If you're not familiar with the expression $\inf$, it stands for *infimum*, or greatest lower bound. It is simply a slight mathematical variation of the *minimum*. The opposite is $\sup$ or *supremum*, roughly meaning *maximum*, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\rVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can write
 
 $$
 \mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \langle \mathbf{D}, \mathbf{\Gamma} \rangle_\mathrm{F}
