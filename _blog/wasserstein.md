@@ -73,7 +73,7 @@ where $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all 
 
 ## Linear Programming
 
-In the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is costrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^n$ and $\mathbf{x} \geq \mathbf{0}$.
+In the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is constrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^m$ and $\mathbf{x} \geq \mathbf{0}$.
 
 To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:
 
