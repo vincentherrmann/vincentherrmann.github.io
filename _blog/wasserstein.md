@@ -248,7 +248,7 @@ $$
 \mathbf{A}^T \mathbf{y} \leq \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} > z^* - \epsilon.
 $$
 
-We see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon > 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.
+We see that $\tilde{z} := z^* - \epsilon$ for any $\epsilon > 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.
 
 
 ## Dual Implementation
@@ -296,7 +296,7 @@ g(x_n) \\
 \end{array}
 $$
 
-We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}\_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}\_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i - \mathbf{g}_i$ has to be as great as possible. This means for the best $\mathbf{y}$ we have $g = - f$, which remains true given all additional constraints: Choosing $g(x\_{i}) < - f(x\_{i})$ would only make sense if it had benefits for values $f(x\_{j})$ and $g(x\_{j})$ with $j \neq i$. Since $f(x\_{j})$ and $g(x\_{j})$ remain upper-bounded by the other constraints, this is not the case.
+We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}\_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}\_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i + \mathbf{g}_i$ has to be as great as possible. This sum has a maximum value of $0$, which we achieve with $g = - f$. This remains true given all additional constraints: Choosing $g(x\_{i}) < - f(x\_{i})$ would only make sense if it had benefits for values $f(x\_{j})$ and $g(x\_{j})$ with $j \neq i$. Since $f(x\_{j})$ and $g(x\_{j})$ remain upper-bounded by the other constraints, this is not the case.
 
 <!--![p_r](/images/Dual_Constraints_o.png)
 ![p_r](/images/Dual_Constraints_f.png)
@@ -333,7 +333,7 @@ As we see, the optimal strategy is of course to set $f(x)$ to high values where 
 Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the set of joined distributions with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as
 
 $$
-W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x,y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].
+W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x \, \mathrm{d} y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].
 $$
 
 If we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:
