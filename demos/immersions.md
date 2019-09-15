@@ -9,16 +9,28 @@ youtubeID2: "kEjAZEUFPcI"
 
 gui:
  - image_path: immersions/gui.png
+
+nodes_gif:
+ - image_path: immersions/nodes.gif
+
+connections_gif:
+ - image_path: immersions/connections.gif
 ---
 
 ## Immersions Demo Material
 
+### Finding the layout of the neural network
+{% include youtube-player.html id=page.youtubeID2 %}
+
+### Network connections
+{% include gallery id="connections_gif"%}
+
+### Network nodes
+{% include gallery id="nodes_gif"%}
+
 ### Demo performance
 outdated, will be replaced very soon!
 {% include youtube-player.html id=page.youtubeID1 %}
-
-### Finding the layout of the neural network
-{% include youtube-player.html id=page.youtubeID2 %}
 
 ### GUI
 {% include gallery id="gui"%}
