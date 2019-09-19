@@ -6,6 +6,7 @@ author_profile: false
 permalink: /demos/immersions
 youtubeID1: "D7v1uVH_MSk"
 youtubeID2: "kEjAZEUFPcI"
+youtubeID3: "B65WTvFB--4"
 
 gui:
  - image_path: immersions/gui.png
@@ -27,6 +28,9 @@ connections_gif:
 
 ### Network nodes
 {% include gallery id="nodes_gif"%}
+
+### Activation selection
+{% include youtube-player.html id=page.youtubeID3 %}
 
 ### Demo performance
 outdated, will be replaced very soon!
