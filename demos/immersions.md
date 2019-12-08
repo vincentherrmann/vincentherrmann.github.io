@@ -18,7 +18,6 @@ connections_gif:
  - image_path: immersions/connections.gif
 ---
 
-# Immersions Demo Material
 ## Visualizing and sonifying how an artificial ear hears music
 
 [Paper](/assets/pdfs/Immersions_NeurIPS.pdf)
