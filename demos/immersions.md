@@ -18,7 +18,14 @@ connections_gif:
  - image_path: immersions/connections.gif
 ---
 
-## Immersions Demo Material
+# Immersions Demo Material
+## Visualizing and sonifying how an artificial ear hears music
+
+[Paper](/assets/pdfs/Immersions_NeurIPS.pdf)
+[Poster](/assets/pdfs/Immersions_Poster.pdf)
+
+[Neural layout & visualization code](https://github.com/vincentherrmann/neural-layout)
+
 
 ### Finding the layout of the neural network
 {% include youtube-player.html id=page.youtubeID2 %}
