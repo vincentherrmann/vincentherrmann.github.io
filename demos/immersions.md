@@ -60,9 +60,5 @@ For more informations, please the the paper or the poster, as well as the visual
 ### Activation selection
 {% include youtube-player.html id=page.youtubeID3 %}
 
-/*### Demo performance
-outdated, will be replaced very soon!
-{% include youtube-player.html id=page.youtubeID1 %}*/
-
 ### GUI
 {% include gallery id="gui"%}
