@@ -1,15 +1,17 @@
 ---
 title: "Immersions"
 type: pages
-layout: single
+layout: splash
 author_profile: false
+header:
+  image: immersions/high_res_main_viz.png
 permalink: /demos/immersions
 youtubeID1: "D7v1uVH_MSk"
 youtubeID2: "kEjAZEUFPcI"
 youtubeID3: "B65WTvFB--4"
 youtubeNeuralLayoutHouse: "vxjq58dAG94"
 youtubeNeuralLayoutVGG: "SWlDVlyZ4R8"
-youtubeNeuralLayoutResNet: qzvSUATPOB4"
+youtubeNeuralLayoutResNet: "qzvSUATPOB4"
 gui:
  - image_path: immersions/gui.png
 
@@ -47,11 +49,12 @@ For more informations, please the the paper or the poster, as well as the visual
 ### ResNet 18 architecture
 {% include youtube-player.html id=page.youtubeNeuralLayoutResNet %}
 
+## Other visualizations
+
 ### Network connections
 {% include gallery id="connections_gif"%}
 
-## Other visualizations
-## Network nodes
+### Network nodes
 {% include gallery id="nodes_gif"%}
 
 ### Activation selection
