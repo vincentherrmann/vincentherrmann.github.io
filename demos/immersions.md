@@ -4,7 +4,7 @@ type: pages
 layout: splash
 author_profile: false
 header:
-  image: immersions/high_res_main_viz.png
+  image: immersions/immersions_header.png
 permalink: /demos/immersions
 youtubeID1: "D7v1uVH_MSk"
 youtubeID2: "kEjAZEUFPcI"
@@ -21,7 +21,7 @@ nodes_gif:
 connections_gif:
  - image_path: immersions/connections.gif
 ---
-
+# Immersions
 ## Visualizing and sonifying how an artificial ear hears music
 
 Immersions is a system that lets us interact with and explore an audio processing neural network, or what I call an "artificial ear".
