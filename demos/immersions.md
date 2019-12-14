@@ -1,5 +1,6 @@
 ---
 title: "Immersions"
+description: "Visualizing and sonifying how an artificial ear hears music"
 type: pages
 layout: splash
 author_profile: false
