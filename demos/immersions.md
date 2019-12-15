@@ -63,13 +63,10 @@ For more informations, please the the paper or the poster, as well as the visual
 {% include gallery id="connections_gif"%}
 
 ### Network nodes
-{% include gallery id="activations_gif"%}
+{% include gallery id="nodes_gif"%}
 
 ### Live activations
-{% include gallery id="live_activations_gif"%}
-
-### Activation selection
-{% include youtube-player.html id=page.youtubeID3 %}
+{% include gallery id="live_gif"%}
 
 ## Input optimization examples
 ### Original input
