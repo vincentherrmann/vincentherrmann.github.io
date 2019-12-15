@@ -13,14 +13,21 @@ youtubeID3: "B65WTvFB--4"
 youtubeNeuralLayoutHouse: "vxjq58dAG94"
 youtubeNeuralLayoutVGG: "SWlDVlyZ4R8"
 youtubeNeuralLayoutResNet: "qzvSUATPOB4"
+youtubeImmersionsZoomed: "PV7eAF41qV0"
+youtubeImmersionsUnmodified: "bsxYVDbmWfo"
+youtubeImmersionsModified: "aBkHO6oV-Mc"
 gui:
- - image_path: immersions/gui.png
+ - image_path: immersions/gui_new.png
 
 nodes_gif:
- - image_path: immersions/nodes.gif
+ - image_path: immersions/activations.gif
 
 connections_gif:
- - image_path: immersions/connections.gif
+ - image_path: immersions/connections_new.gif
+
+live_gif:
+ - image_path: immersions/live_activations.gif
+
 ---
 # Immersions
 ## Visualizing and sonifying how an artificial ear hears music
@@ -56,10 +63,23 @@ For more informations, please the the paper or the poster, as well as the visual
 {% include gallery id="connections_gif"%}
 
 ### Network nodes
-{% include gallery id="nodes_gif"%}
+{% include gallery id="activations_gif"%}
+
+### Live activations
+{% include gallery id="live_activations_gif"%}
 
 ### Activation selection
 {% include youtube-player.html id=page.youtubeID3 %}
+
+## Input optimization examples
+### Original input
+{% include youtube-player.html id=page.youtubeImmersionsUnmodified %}
+
+### Optimized input for selected neurons
+{% include youtube-player.html id=page.youtubeImmersionsZoomed %}
+
+### Full view of optimized input
+{% include youtube-player.html id=page.youtubeImmersionsModified %}
 
 ### GUI
 {% include gallery id="gui"%}
