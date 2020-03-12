@@ -47,15 +47,13 @@ For more informations, please the the paper or the poster, as well as the visual
 
 <div class="row">
   <div class="column">
-    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" height="400">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" width="400" height="400">
   </div>
   <div class="column">
-    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png" height="400">
-  </div>
-  <div class="column">
-    <source src="../assets/audio/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png" width="400" height="400">
   </div>
 </div>
+<source src="../assets/audio/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
 
 ## Finding the layout of the neural network
 ### Immersions model architecture
