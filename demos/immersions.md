@@ -28,6 +28,10 @@ connections_gif:
 live_gif:
  - image_path: immersions/live_activations.gif
 
+g1:
+ - image_path: ../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png
+ - image_path: ../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png
+
 ---
 # Immersions
 ## Visualizing and sonifying how an artificial ear hears music
@@ -45,6 +49,8 @@ For more informations, please the the paper or the poster, as well as the visual
 
 [Neural layout & visualization code](https://github.com/vincentherrmann/neural-layout)
 
+{% include gallery id="g1" layout="half" %}
+
 <div class="row">
   <div class="column">
     <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" width="300" height="300">
@@ -57,7 +63,7 @@ For more informations, please the the paper or the poster, as well as the visual
 
 
 <audio controls>
-  <source src="../assets/audio/immersions/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+  <source src="../assets/audio/immersions/house_3_ar_block_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
 </audio>
 
 <audio controls>
