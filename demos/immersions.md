@@ -47,17 +47,17 @@ For more informations, please the the paper or the poster, as well as the visual
 
 <div class="row">
   <div class="column">
-    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" width="400" height="400">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" width="300" height="300">
   </div>
   <div class="column">
-    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png" width="400" height="400">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png" width="300" height="300">
   </div>
 </div>
 
 
 
 <audio controls>
-  <source src="../assets/audio/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+  <source src="../assets/audio/immersions/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
 </audio>
 
 ## Finding the layout of the neural network
