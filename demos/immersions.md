@@ -45,8 +45,9 @@ For more informations, please the the paper or the poster, as well as the visual
 
 [Neural layout & visualization code](https://github.com/vincentherrmann/neural-layout)
 
+<img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" width="500">
 <audio controls>
-  <source src="../images/immersions/audio_clips/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+  <source src="../assets/audio/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
 </audio>
 
 ## Finding the layout of the neural network
