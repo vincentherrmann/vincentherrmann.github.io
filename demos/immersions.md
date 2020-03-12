@@ -60,6 +60,16 @@ For more informations, please the the paper or the poster, as well as the visual
   <source src="../assets/audio/immersions/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
 </audio>
 
+<audio controls>
+  <source src="../assets/audio/immersions/house_3_scalogram.mp3" type="audio/mp3">
+</audio>
+
+<audio controls>
+  <source src="../assets/audio/immersions/house_3_encoder_block_0_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+</audio>
+
+
+
 ## Finding the layout of the neural network
 ### Immersions model architecture
 {% include youtube-player.html id=page.youtubeNeuralLayoutHouse %}
