@@ -98,13 +98,16 @@ For more informations, please the the paper or the poster, as well as the visual
   <div class="column">
     <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png" width="300" height="300">
   </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
 </div>
 
 
 
-<audio controls>
-  <source src="../assets/audio/immersions/house_3_ar_block_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
-</audio>
+
 
 <audio controls>
   <source src="../assets/audio/immersions/house_3_scalogram.mp3" type="audio/mp3">
