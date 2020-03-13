@@ -113,3 +113,115 @@ For more informations, please the the paper or the poster, as well as the visual
     </audio>
   </div>
 </div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_3_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_3_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_1_ch_0_3_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_4_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_4_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_4_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_5_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_5_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_5_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_6_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_6_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_6_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_7_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_7_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_7_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_8_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_ar_block_8_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_8_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
