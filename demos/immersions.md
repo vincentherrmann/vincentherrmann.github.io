@@ -85,6 +85,260 @@ For more informations, please the the paper or the poster, as well as the visual
 ### GUI
 {% include gallery id="gui"%}
 
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_scalogram_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_scalogram.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_scalogram.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_0_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_0_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_0_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_0_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_0_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_0_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_1_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_1_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_1_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_1_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_1_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_1_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_2_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_2_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_2_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_2_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_2_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_2_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_3_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_3_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_3_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_3_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_3_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_3_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_4_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_4_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_4_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_4_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_4_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_4_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_5_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_5_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_5_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_5_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_5_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_5_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_6_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_6_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_6_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_6_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_6_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_6_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_7_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_7_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_7_conv_1_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_7_conv_2_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_7_conv_2_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_encoder_block_7_conv_2_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_0_conv_1_ch_0_1_from_low_noise_selection.png" height="300">
+  </div>
+  <div class="column">
+    <img src="../images/immersions/clip_visualizations/house_3_encoder_block_0_conv_1_ch_0_1_from_low_noise.png" height="300">
+  </div>
+  <div class="column">
+    <audio controls>
+      <source src="../assets/audio/immersions/house_3_ar_block_0_ch_0_1_from_low_noise.mp3" type="audio/mp3">
+    </audio>
+  </div>
+</div>
+
 
 <div class="row">
   <div class="column">
