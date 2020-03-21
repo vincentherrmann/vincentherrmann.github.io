@@ -66,7 +66,7 @@
 
 
   <meta property="og:type" content="article">
-  <meta property="article:published_time" content="2020-03-21T16:08:40+01:00">
+  <meta property="article:published_time" content="2020-03-21T16:59:40+01:00">
 
 
 
@@ -554,7 +554,7 @@ They are connected in different patterns by edges, depending on the type of laye
 There exist methods to lay out graphs into suitable shapes.
 For our purposes, the force <a href="https://en.wikipedia.org/wiki/Force-directed_graph_drawing">layout technique</a> is the best fit.
 Here the graph is modelled as a physical system with different forces acting on the vertices.
-The system, starting from random initial conditions, can be simulated using numerical methods, e.g. Verlet integration \citep{verlet1967computer}</p>
+The system, starting from random initial conditions, can be simulated using numerical methods, e.g. <a href="https://en.wikipedia.org/wiki/Verlet_integration">Verlet integration</a>.</p>
 
 <p>In our setting, there are three types of forces acting on each vertex.
 The first force pulls together vertices that are directly connected.
@@ -590,7 +590,7 @@ On the other hand, low values of $k$ result in dense clusters of vertices.</p>
 
 <script type="math/tex; mode=display">\mathbf{c}_{i} = -l  \, \mathbf{p}_i</script>
 
-<p>With that, the combined $\mathbf{f}$ force acting on vertex $i$, can be defined as:</p>
+<p>With that, the combined force $\mathbf{f}$ acting on vertex $i$, can be defined as:</p>
 
 <script type="math/tex; mode=display">\mathbf{f}_{i} = \mathbf{c}_{i} + \sum_{j \neq i} \mathbf{r}_{ij} + \mathbf{a}_{ij}</script>
 
@@ -633,11 +633,11 @@ Once the layout is worked out the current state of the net can be depicted by li
 </figcaption>
 
 <p>Today’s neural networks usually are completely differentiable.
-This means we can generate inputs for a trained model that maximize the activations of certain neurons in the network using iterative gradient-based optimization \citep{erhan2009visualizing, mordvintsev2015inceptionism, olah2017feature}.
+This means we can generate inputs for a trained model that maximize the activations of certain neurons in the network using iterative gradient-based optimization.
 These inputs can then be directly experienced by humans and show which particular stimuli the selected neurons respond to.
 In our case, this procedure sonifies the features activating the selected neurons.</p>
 
-<p>Neural nets, especially if they did not receive adversarial training \cite{engstrom2019learning}, are susceptible to small changes in the input.
+<p>Neural nets, especially if they did not receive <a href="https://arxiv.org/abs/1906.00945">adversarial training</a>, are susceptible to small changes in the input.
 These can lead to local optima that are not perceptible by humans but still have the required properties.
 To prevent this, several types of regularization are applied: temporal shifting of the input, small pitch changes, masking of random regions in the scaleogram, noisy gradients and de-noising of the input.
 All these methods make the input optimization more difficult in certain ways and thus enforce more robust and distinct results.</p>
@@ -1125,6 +1125,31 @@ The setup described here is very flexible, other networks trained on different d
       <footer class="page__meta">
         
         
+
+
+  
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/tags/#audio" class="page__taxonomy-item" rel="tag">Audio</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#machine-learning" class="page__taxonomy-item" rel="tag">Machine Learning</a>
+    
+    </span>
+  </p>
 
 
 

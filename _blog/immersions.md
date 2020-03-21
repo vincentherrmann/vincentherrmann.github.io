@@ -6,10 +6,10 @@ type: pages
 layout: single
 author_profile: false
 related: true
+tags: [Machine Learning, Audio]
 header:
   image: immersions/header_loop.gif
   teaser: immersions/teaser.jpg
-
 
 g1:
  - image_path: ../../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png
@@ -365,7 +365,7 @@ They are connected in different patterns by edges, depending on the type of laye
 There exist methods to lay out graphs into suitable shapes.
 For our purposes, the force [layout technique](https://en.wikipedia.org/wiki/Force-directed_graph_drawing) is the best fit.
 Here the graph is modelled as a physical system with different forces acting on the vertices.
-The system, starting from random initial conditions, can be simulated using numerical methods, e.g. Verlet integration \citep{verlet1967computer}
+The system, starting from random initial conditions, can be simulated using numerical methods, e.g. [Verlet integration](https://en.wikipedia.org/wiki/Verlet_integration).
 
 In our setting, there are three types of forces acting on each vertex.
 The first force pulls together vertices that are directly connected.
@@ -399,7 +399,7 @@ $$
 \mathbf{c}_{i} = -l  \, \mathbf{p}_i
 $$
 
-With that, the combined $\mathbf{f}$ force acting on vertex $i$, can be defined as:
+With that, the combined force $\mathbf{f}$ acting on vertex $i$, can be defined as:
 
 $$
 \mathbf{f}_{i} = \mathbf{c}_{i} + \sum_{j \neq i} \mathbf{r}_{ij} + \mathbf{a}_{ij}
@@ -436,11 +436,11 @@ The code for the GPU accelerated layout calculation (implemented in PyTorch) and
 </figcaption>
 
 Today's neural networks usually are completely differentiable.
-This means we can generate inputs for a trained model that maximize the activations of certain neurons in the network using iterative gradient-based optimization \citep{erhan2009visualizing, mordvintsev2015inceptionism, olah2017feature}.
+This means we can generate inputs for a trained model that maximize the activations of certain neurons in the network using iterative gradient-based optimization.
 These inputs can then be directly experienced by humans and show which particular stimuli the selected neurons respond to.
 In our case, this procedure sonifies the features activating the selected neurons.
 
-Neural nets, especially if they did not receive adversarial training \cite{engstrom2019learning}, are susceptible to small changes in the input.
+Neural nets, especially if they did not receive [adversarial training](https://arxiv.org/abs/1906.00945), are susceptible to small changes in the input.
 These can lead to local optima that are not perceptible by humans but still have the required properties.
 To prevent this, several types of regularization are applied: temporal shifting of the input, small pitch changes, masking of random regions in the scaleogram, noisy gradients and de-noising of the input.
 All these methods make the input optimization more difficult in certain ways and thus enforce more robust and distinct results.
