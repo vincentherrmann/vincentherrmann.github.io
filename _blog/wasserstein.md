@@ -8,7 +8,7 @@ title: Wasserstein GAN and the Kantorovich-Rubinstein Duality
 header:
   teaser: wasserstein/transport_plan.png
 excerpt: "Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks"
-tags: [Machine Learnings, GANs]
+tags: AI GANs
 
 discrete_distributions:
  - image_path: wasserstein/P_r.png

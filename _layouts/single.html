@@ -60,15 +60,39 @@ layout: default
     {% endif %}
   </article>
 
+
   {% comment %}<!-- only show related on a post page when not disabled -->{% endcomment %}
-  {% if page.id and page.related and site.related_posts.size > 0 %}
+  {% if page.id and page.related and site.posts.size > 0 %}
+    {% assign maxRelated = 4 %}
+    {% assign minCommonTags =  1 %}
+    {% assign maxRelatedCounter = 0 %}
     <div class="page__related">
       {% if site.data.ui-text[site.locale].related_label %}
         <h4 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h4>
       {% endif %}
       <div class="grid__wrapper">
-        {% for post in site.related_posts limit:4 %}
-          {% include archive-single.html type="grid" %}
+        {% for post in site.posts %}
+          {% assign sameTagCount = 0 %}
+          {% assign commonTags = '' %}
+
+          {% for tag in post.tags %}
+            <h5>{{tag}} bla</h5>
+            {% if post.url != page.url %}
+              {% if page.tags contains tag %}
+                {% assign sameTagCount = sameTagCount | plus: 1 %}
+                {% capture tagmarkup %} <span class="label label-default">{{ tag }}</span> {% endcapture %}
+                {% assign commonTags = commonTags | append: tagmarkup %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          {% if sameTagCount >= minCommonTags %}
+            {% include archive-single.html type="grid" %}
+            {% assign maxRelatedCounter = maxRelatedCounter | plus: 1 %}
+            {% if maxRelatedCounter >= maxRelated %}
+              {% break %}
+            {% endif %}
+          {% endif %}
         {% endfor %}
       </div>
     </div>

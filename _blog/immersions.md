@@ -5,8 +5,7 @@ excerpt: "Visualizing and sonifying how an artificial ear hears music. Real-time
 type: pages
 layout: single
 author_profile: false
-related: true
-tags: [Machine Learning, Audio]
+related: false
 header:
   image: immersions/header_loop.gif
   teaser: immersions/teaser.jpg
