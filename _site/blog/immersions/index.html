@@ -66,7 +66,7 @@
 
 
   <meta property="og:type" content="article">
-  <meta property="article:published_time" content="2020-03-21T16:59:40+01:00">
+  <meta property="article:published_time" content="2020-03-21T17:20:03+01:00">
 
 
 
@@ -597,8 +597,7 @@ On the other hand, low values of $k$ result in dense clusters of vertices.</p>
 <p>Since the number of individual forces that have to be calculated scales quadratically with the number of vertices, for large networks it is necessary to approximate the forces $\mathbf{r}_{ij}$ in a computationally efficient way using the <a href="https://en.wikipedia.org/wiki/Barnes–Hut_simulation">Barnes-Hut-tree method</a>.</p>
 
 <p>To avoid local energy minima, it is helpful to start the simulation with a low-resolution graph and increasing the resolution in steps until the full graph reached.
-For our neural networks, the construction of lower resolution levels can be done by iteratively consolidating vertices that are neighbouring in the channel or the frequency dimension. The expansion is done in the inverse order. This can be seen in Figure \ref{fig:levels}.
-Also, it can be helpful to slowly increase the centring force factor with each new resolution level.</p>
+For our neural networks, the construction of lower resolution levels can be done by iteratively consolidating vertices that are neighbouring in the channel or the frequency dimension. The expansion is done in the inverse order. Also, it can be helpful to slowly increase the centering force factor with each new resolution level.</p>
 
 <figure class="">
   <img src="/images/immersions/vgg_resnet_layouts.jpg" alt="" />

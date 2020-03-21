@@ -409,8 +409,7 @@ $$
 Since the number of individual forces that have to be calculated scales quadratically with the number of vertices, for large networks it is necessary to approximate the forces $\mathbf{r}_{ij}$ in a computationally efficient way using the [Barnes-Hut-tree method](https://en.wikipedia.org/wiki/Barnes–Hut_simulation).
 
 To avoid local energy minima, it is helpful to start the simulation with a low-resolution graph and increasing the resolution in steps until the full graph reached.
-For our neural networks, the construction of lower resolution levels can be done by iteratively consolidating vertices that are neighbouring in the channel or the frequency dimension. The expansion is done in the inverse order. This can be seen in Figure \ref{fig:levels}.
-Also, it can be helpful to slowly increase the centring force factor with each new resolution level.
+For our neural networks, the construction of lower resolution levels can be done by iteratively consolidating vertices that are neighbouring in the channel or the frequency dimension. The expansion is done in the inverse order. Also, it can be helpful to slowly increase the centering force factor with each new resolution level.
 
 {% include figure image_path="/images/immersions/vgg_resnet_layouts.jpg" caption="Layouts calculated with the same method for slices of a VGG 16 and a ResNet 18 network." %}
 
