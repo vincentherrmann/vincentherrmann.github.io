@@ -32,8 +32,8 @@
 <meta property="og:title" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
 
 
-  <link rel="canonical" href="https://vincentherrmann.github.io/blog/wasserstein/">
-  <meta property="og:url" content="https://vincentherrmann.github.io/blog/wasserstein/">
+  <link rel="canonical" href="http://localhost:4000/blog/wasserstein/">
+  <meta property="og:url" content="http://localhost:4000/blog/wasserstein/">
 
 
 
@@ -44,12 +44,12 @@
   <meta name="twitter:site" content="@idivinci">
   <meta name="twitter:title" content="Wasserstein GAN and the Kantorovich-Rubinstein Duality">
   <meta name="twitter:description" content="Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks">
-  <meta name="twitter:url" content="https://vincentherrmann.github.io/blog/wasserstein/">
+  <meta name="twitter:url" content="http://localhost:4000/blog/wasserstein/">
 
   
     <meta name="twitter:card" content="summary">
     
-      <meta name="twitter:image" content="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png">
+      <meta name="twitter:image" content="http://localhost:4000/images/wasserstein/transport_plan.png">
     
   
 
@@ -63,7 +63,7 @@
 
 
 
-  <meta property="og:image" content="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png">
+  <meta property="og:image" content="http://localhost:4000/images/wasserstein/transport_plan.png">
 
 
 
@@ -82,7 +82,7 @@
       "@context" : "http://schema.org",
       "@type" : "Person",
       "name" : "Vincent Herrmann",
-      "url" : "https://vincentherrmann.github.io",
+      "url" : "http://localhost:4000",
       "sameAs" : null
     }
   </script>
@@ -95,7 +95,7 @@
 <!-- end SEO -->
 
 
-<link href="https://vincentherrmann.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -107,7 +107,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="https://vincentherrmann.github.io/assets/css/main.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
 
 <meta http-equiv="cleartype" content="on">
     <!-- start custom head snippets -->
@@ -130,19 +130,19 @@
       <nav id="site-nav" class="greedy-nav">
         <button><div class="navicon"></div></button>
         <ul class="visible-links">
-          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://vincentherrmann.github.io/">Vincent Herrmann</a></li>
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Vincent Herrmann</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/about/">About</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/piano/">Piano</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/piano/">Piano</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/composition/">Composition</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/composition/">Composition</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/blog/">Blog</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/blog/">Blog</a></li>
           
         </ul>
         <ul class="hidden-links hidden"></ul>
@@ -193,11 +193,11 @@
 <figure class="half ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/P_r.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/P_r.png" alt="" />
     
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/P_theta.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/P_theta.png" alt="" />
     
   
   
@@ -215,9 +215,9 @@ $P_\theta$
 
 <p>To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover’s distance is:</p>
 
-<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \lVert x - y \lVert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \lVert x - y \lVert</script>
+<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \Vert x - y \Vert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \Vert x - y \Vert</script>
 
-<p>If you’re not familiar with the expression $\inf$, it stands for <em>infimum</em>, or greatest lower bound. It is simply a slight mathematical variation of the <em>minimum</em>. The opposite is $\sup$ or <em>supremum</em>, roughly meaning <em>maximum</em>, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \lVert x - y\lVert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can write</p>
+<p>If you’re not familiar with the expression $\inf$, it stands for <em>infimum</em>, or greatest lower bound. It is simply a slight mathematical variation of the <em>minimum</em>. The opposite is $\sup$ or <em>supremum</em>, roughly meaning <em>maximum</em>, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \Vert x - y \Vert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can write</p>
 
 <script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \langle \mathbf{D}, \mathbf{\Gamma} \rangle_\mathrm{F}</script>
 
@@ -226,7 +226,7 @@ $P_\theta$
 <figure class=" ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/transport_plan.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/transport_plan.png" alt="" />
     
   
   
@@ -237,7 +237,7 @@ $P_\theta$
 
 <h2 id="linear-programming">Linear Programming</h2>
 
-<p>In the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is costrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^n$ and $\mathbf{x} \geq \mathbf{0}$.</p>
+<p>In the picture above you can see the optimal transport plan $\mathbf{\Gamma}$. It can be calculated using the generic method of Linear Programming (LP). With LP, we can solve problems of a certain canonical form: Find a vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes the cost $z = \mathbf{c}^T \mathbf{x}, \ \mathbf{c} \in \mathbb{R}^n$. Additionally, $\mathbf{x}$ is constrained by the equation $\mathbf{A} \mathbf{x} = \mathbf{b}, \ \mathbf{A} \in \mathbb{R}^{m \times n}, \mathbf{b} \in \mathbb{R}^m$ and $\mathbf{x} \geq \mathbf{0}$.</p>
 
 <p>To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:</p>
 
@@ -291,14 +291,14 @@ $P_\theta$
 
 \end{array} %]]></script>
 
-<p>With that, we can call a standard LP routine, for example <code class="highlighter-rouge">linprog()</code> from scipy.</p>
+<p>With that, we can call a standard LP routine, for example <code class="language-plaintext highlighter-rouge">linprog()</code> from scipy.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
 
-<span class="c"># We construct our A matrix by creating two 3-way tensors,</span>
-<span class="c"># and then reshaping and concatenating them</span>
-<span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="c1"># We construct our A matrix by creating two 3-way tensors,
+# and then reshaping and concatenating them
+</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 <span class="n">A_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
@@ -313,15 +313,14 @@ $P_\theta$
 <span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
 <span class="n">emd</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
 <span class="n">gamma</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now we have our transference plan, as well as the EMD.</p>
 
 <figure class=" ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/earth_move.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/earth_move.png" alt="" />
     
   
   
@@ -377,11 +376,11 @@ $P_\theta$
 <figure class="half ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/farkas_i.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/farkas_i.png" alt="" />
     
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/farkas_ii.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/farkas_ii.png" alt="" />
     
   
   
@@ -424,7 +423,7 @@ $P_\theta$
 
 <script type="math/tex; mode=display">\mathbf{A}^T \mathbf{y} \leq \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} > z^* - \epsilon.</script>
 
-<p>We see that $\tilde{z} = z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.</p>
+<p>We see that $\tilde{z} := z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.</p>
 
 <h2 id="dual-implementation">Dual Implementation</h2>
 
@@ -468,7 +467,7 @@ g(x_n) \\
 
 \end{array} %]]></script>
 
-<p>We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i - \mathbf{g}_i$ has to be as great as possible. This means for the best $\mathbf{y}$ we have $g = - f$, which remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.</p>
+<p>We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i + \mathbf{g}_i$ has to be as great as possible. This sum has a maximum value of $0$, which we achieve with $g = - f$. This remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.</p>
 
 <!--![p_r](/images/Dual_Constraints_o.png)
 ![p_r](/images/Dual_Constraints_f.png)
@@ -477,15 +476,15 @@ g(x_n) \\
 <figure class="third ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_o.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/Dual_Constraints_o.png" alt="" />
     
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_f.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/Dual_Constraints_f.png" alt="" />
     
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/Dual_Constraints_g.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/Dual_Constraints_g.png" alt="" />
     
   
   
@@ -500,21 +499,20 @@ g(x_n) \\
 
 <p>The implementation is straightforward:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># linprog() can only minimize the cost, because of that</span>
-<span class="c"># we optimize the negative of the objective. Also, we are</span>
-<span class="c"># not constrained to nonnegative values.</span>
-<span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># linprog() can only minimize the cost, because of that
+# we optimize the negative of the objective. Also, we are
+# not constrained to nonnegative values.
+</span><span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
 
 <span class="n">emd</span> <span class="o">=</span> <span class="o">-</span><span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">l</span><span class="p">]</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">l</span><span class="p">:]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <figure class=" ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/Scaling_f.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/Scaling_f.png" alt="" />
     
   
   
@@ -523,7 +521,7 @@ g(x_n) \\
 <figure class=" ">
   
     
-      <img src="https://vincentherrmann.github.io/images/wasserstein/Scaling_g.png" alt="" />
+      <img src="http://localhost:4000/images/wasserstein/Scaling_g.png" alt="" />
     
   
   
@@ -538,7 +536,7 @@ g(x_n) \\
 
 <p>Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the set of joined distributions with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as</p>
 
-<script type="math/tex; mode=display">W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x,y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].</script>
+<script type="math/tex; mode=display">W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x \, \mathrm{d} y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].</script>
 
 <p>If we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:</p>
 
@@ -617,13 +615,13 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/blog/wasserstein/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/blog/wasserstein/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=http://localhost:4000/blog/wasserstein/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://vincentherrmann.github.io/blog/wasserstein/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/blog/wasserstein/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
       
@@ -631,11 +629,11 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
 
   <nav class="pagination">
     
-      <a href="https://vincentherrmann.github.io/blog/wavelets-ii/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
+      <a href="http://localhost:4000/blog/wavelets-ii/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
 ">Previous</a>
     
     
-      <a href="https://vincentherrmann.github.io/blog/d3-test/" class="pagination--pager" title="Some Wavelet Visualizations
+      <a href="http://localhost:4000/blog/d3-test/" class="pagination--pager" title="Some Wavelet Visualizations
 ">Next</a>
     
   </nav>
@@ -656,6 +654,103 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
   </article>
 
   
+  
+    <div class="page__related">
+      
+        <h4 class="page__related-title">You May Also Enjoy</h4>
+      
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "http://localhost:4000/images/vanishing-moments-daubechies-4-sum.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://localhost:4000/wavelets-ii/" rel="permalink">Wavelets II - Vanishing Moments and Spectral Factorization
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Explanation of the most important properties of Daubechies wavelets and the algorithm to calculate them
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "http://localhost:4000/images/wavelet-cascaded-filter-bank-analysis.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://localhost:4000/wavelets-i/" rel="permalink">Wavelets I - From Filter Banks to the Dilation Equation
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Derivation of the dilation and wavelet equation from an implementation of the Fast Wavelet Transform
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "http://localhost:4000/images/robot.jpg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://localhost:4000/robotics-essay/" rel="permalink">Werden Roboter jemals so werden wie wir? (German)
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Dies ist ein kurzes Essay, das ich im Frühjahr zu einer vorgegebenen Fragestellung geschrieben habe:
+
+Werden Roboter jemals so werden wie wir? Und wollen wir...</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
   
 </div>
 
@@ -679,17 +774,18 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
       <li><a href="http://github.com/vincentherrmann"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
     
     
-    <li><a href="https://vincentherrmann.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2017 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
       </footer>
     </div>
 
-    <script src="https://vincentherrmann.github.io/assets/js/main.min.js"></script>
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<!--<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?..." type="text/javascript"></script>
 <script type="text/javascript">
   MathJax.Hub.Config({
     extensions: ["tex2jax.js"],

@@ -32,8 +32,8 @@
 <meta property="og:title" content="Some Wavelet Visualizations">
 
 
-  <link rel="canonical" href="https://vincentherrmann.github.io/blog/d3-test/">
-  <meta property="og:url" content="https://vincentherrmann.github.io/blog/d3-test/">
+  <link rel="canonical" href="http://localhost:4000/blog/d3-test/">
+  <meta property="og:url" content="http://localhost:4000/blog/d3-test/">
 
 
 
@@ -44,12 +44,12 @@
   <meta name="twitter:site" content="@idivinci">
   <meta name="twitter:title" content="Some Wavelet Visualizations">
   <meta name="twitter:description" content="Recently I started to learn how to use d3.js, a JavaScript library for interactive data-driven visualizations. As a first little project, I decided to make interactive and animated versions of graphics that I originally created for two articles on wavelets (article 1, article 2). Besides being visually appealing, I hope that this shines a bit of light at some of the deep connections and fascinating properties of wavelets. Here I narrowed down the explanations to a bare minimum, but I linked the corresponding passages in my articles in case you want to dig a little deeper.The code is maybe a bit messy, and some things were quite tricky to accomplish or do not yet work completely as I wanted. But in general, I am very pleased with d3, it’s a really powerful and fun tool that produces beautiful results. Please let me know if you have any suggestions or questions!The Dilation and Wavelet EquationIn the Fast Wavelet Transform, the wavelets scaling function is defined by the dilation equation:This shows the fractal self-similarity of the scaling function: We can construct it from scaled and shifted versions of itself that are summed together. In a similar way, we can construct the wavelet function from the scaling function using the wavelet equation:Read more…Here you can see the construction of some famous scaling and wavelet functions:CodeThe Wavelet Dilation GraphHere we try to show a certain equivalence of two graphs. The first one is derived directly from the filterbank implementation of the Fast Wavelet Transform, and has the following construction formula:The second graph shows several steps of the cascading algorithm, using the dilation equation:Each node depicts the value of $x_n(t)$ or $\phi_n(t)$ at certain $n$ and $t$. These values are obtained by following all possible paths from the specified node to the bottom: The colors of the edges stand for the different factors $h_0$, these factors of each path are multiplied, and the products arising from the paths are summed together. We see that the paths from both graphs have always exactly the same color combinations (although in a different order) and so they result in the same value. Read more…The graphs get crowed pretty quickly if your choose long wavelets and many levels. Be careful, the number of paths increases exponentially!CodeVanishing MomentsSome wavelet function have a property called vanishing moments. This means that they are orthogonal to polynomials up to a certain degree. The scaling function then has the expressive power to exactly reconstruct any segment of these polynomials perfectly, from few coefficients. Polynomials of higher degrees require longer wavelets. The Daubechies wavelets in particular are named on the number of vanishing moments they have. Read more…Here we show the perfect reconstruction from a finite number of scaled and shifted scaling functions. Every time you press draw, an appropriate polynomial is randomly generated and reconstructed.Code">
-  <meta name="twitter:url" content="https://vincentherrmann.github.io/blog/d3-test/">
+  <meta name="twitter:url" content="http://localhost:4000/blog/d3-test/">
 
   
     <meta name="twitter:card" content="summary">
     
-      <meta name="twitter:image" content="https://vincentherrmann.github.io/images/wavelet-graph.jpg">
+      <meta name="twitter:image" content="http://localhost:4000/images/wavelet-graph.jpg">
     
   
 
@@ -63,7 +63,7 @@
 
 
 
-  <meta property="og:image" content="https://vincentherrmann.github.io/images/wavelet-graph.jpg">
+  <meta property="og:image" content="http://localhost:4000/images/wavelet-graph.jpg">
 
 
 
@@ -82,7 +82,7 @@
       "@context" : "http://schema.org",
       "@type" : "Person",
       "name" : "Vincent Herrmann",
-      "url" : "https://vincentherrmann.github.io",
+      "url" : "http://localhost:4000",
       "sameAs" : null
     }
   </script>
@@ -95,7 +95,7 @@
 <!-- end SEO -->
 
 
-<link href="https://vincentherrmann.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Vincent Herrmann Feed">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -107,7 +107,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="https://vincentherrmann.github.io/assets/css/main.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
 
 <meta http-equiv="cleartype" content="on">
     <!-- start custom head snippets -->
@@ -130,19 +130,19 @@
       <nav id="site-nav" class="greedy-nav">
         <button><div class="navicon"></div></button>
         <ul class="visible-links">
-          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://vincentherrmann.github.io/">Vincent Herrmann</a></li>
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Vincent Herrmann</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/about/">About</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/piano/">Piano</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/piano/">Piano</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/composition/">Composition</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/composition/">Composition</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://vincentherrmann.github.io/blog/">Blog</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/blog/">Blog</a></li>
           
         </ul>
         <ul class="hidden-links hidden"></ul>
@@ -263,13 +263,13 @@
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=https://vincentherrmann.github.io/blog/d3-test/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/blog/d3-test/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://vincentherrmann.github.io/blog/d3-test/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/blog/d3-test/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=https://vincentherrmann.github.io/blog/d3-test/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=http://localhost:4000/blog/d3-test/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://vincentherrmann.github.io/blog/d3-test/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/blog/d3-test/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
       
@@ -277,7 +277,7 @@
 
   <nav class="pagination">
     
-      <a href="https://vincentherrmann.github.io/blog/wasserstein/" class="pagination--pager" title="Wasserstein GAN and the Kantorovich-Rubinstein Duality
+      <a href="http://localhost:4000/blog/wasserstein/" class="pagination--pager" title="Wasserstein GAN and the Kantorovich-Rubinstein Duality
 ">Previous</a>
     
     
@@ -302,6 +302,103 @@
 
   
   
+    <div class="page__related">
+      
+        <h4 class="page__related-title">You May Also Enjoy</h4>
+      
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "http://localhost:4000/images/vanishing-moments-daubechies-4-sum.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://localhost:4000/wavelets-ii/" rel="permalink">Wavelets II - Vanishing Moments and Spectral Factorization
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Explanation of the most important properties of Daubechies wavelets and the algorithm to calculate them
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "http://localhost:4000/images/wavelet-cascaded-filter-bank-analysis.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://localhost:4000/wavelets-i/" rel="permalink">Wavelets I - From Filter Banks to the Dilation Equation
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Derivation of the dilation and wavelet equation from an implementation of the Fast Wavelet Transform
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "http://localhost:4000/images/robot.jpg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://localhost:4000/robotics-essay/" rel="permalink">Werden Roboter jemals so werden wie wir? (German)
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Dies ist ein kurzes Essay, das ich im Frühjahr zu einer vorgegebenen Fragestellung geschrieben habe:
+
+Werden Roboter jemals so werden wie wir? Und wollen wir...</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
 </div>
 
     <div class="page__footer">
@@ -324,17 +421,18 @@
       <li><a href="http://github.com/vincentherrmann"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
     
     
-    <li><a href="https://vincentherrmann.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2017 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
       </footer>
     </div>
 
-    <script src="https://vincentherrmann.github.io/assets/js/main.min.js"></script>
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<!--<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?..." type="text/javascript"></script>
 <script type="text/javascript">
   MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
