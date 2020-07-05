@@ -45,7 +45,7 @@ Institute for Music Informatics and Musicology, University of Music Karlsruhe
 {% include figure image_path="/images/master/beweis_original.pdf" alt="original" caption="Original *Beweis dein Macht, Herr Jesu Christ*." %}
 
 <audio controls>
-  <source src="../../assets/audio/master/original.mp3" type="audio/mp3">
+  <source src="../../assets/audio/master/bach_original.mp3" type="audio/mp3">
 </audio>
 
 ---
