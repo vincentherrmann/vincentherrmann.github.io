@@ -8,6 +8,7 @@ youtubeID3: "73EUdkMKZF8"
 youtubeID4: "Cu6cyCVioyU"
 header:
   teaser: http://img.youtube.com/vi/LLDXO5lwCYg/mqdefault.jpg
+date: 2015-08-01
 ---
 
 {% include youtube-player.html id=page.youtubeID1 %}

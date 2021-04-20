@@ -1,0 +1,26 @@
+---
+layout: archive
+author_profile: true
+header:
+  image: home-header.jpg
+---
+
+{% include base_path %}
+
+<div class="reduce-top-margin">
+  <br>
+  <small><b>recent posts:</b></small>
+</div>
+
+<div class="grid__wrapper"; margin-top: -50px;>
+  <div class="reduce-top-margin">
+    {% assign collection = site.piano %}
+    {% include archive-collection-single.html type="grid" %}
+
+    {% assign collection = site.composition %}
+    {% include archive-collection-single.html type="grid" %}
+
+    {% assign collection = site.blog limit:3 | sort:"date" | reverse %}
+    {% include archive-collection-single.html type="grid" %}
+  </div>
+</div>

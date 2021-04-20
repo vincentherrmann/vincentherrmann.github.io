@@ -14,7 +14,7 @@ description              : "Vincent's Website"
 url                      : https://vincentherrmann.github.io # http://localhost:4000 # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : db6SynthesisSum.png # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
+teaser                   : #clear.jpg # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
@@ -141,10 +141,10 @@ analytics:
 # Site Author
 author:
   name             : "Vincent Herrmann"
-  avatar           : "profil-picture-2.jpg"
-  bio              : #"Classically trained pianist and composer exploring the world of artificial intelligence"
-  location         : "Stuttgart / Karlsruhe, Germany"
-  email            :
+  avatar           : "Profile_Picture_2020.JPG"
+  bio              : "PhD in machine learning at IDSIA. Classical pianist. Interested in artificial and human creativity."
+  location         : "Lugano, Switzerland"
+  email            : vincent.herrmann@web.de
   uri              :
   bitbucket        :
   codepen          :

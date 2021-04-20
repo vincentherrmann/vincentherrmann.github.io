@@ -6,7 +6,7 @@ header:
 date: 2016-09-01
 ---
 
-Dies ist ein kurzes Essay, das ich im Frühjahr zu einer vorgegebenen Fragestellung geschrieben habe:
+Dies ist ein kurzes Essay, das ich im Frühjahr 2016 zu einer vorgegebenen Fragestellung geschrieben habe:
 
 ### Werden Roboter jemals so werden wie wir? Und wollen wir das überhaupt?
 
@@ -17,7 +17,7 @@ Die Funktionsweise von Mensch und Maschine ist natürlich grundverschieden. Das
 
 Schon heute sind die Einschränkungen des Menschen ein wichtiger Teil der Merkmale, die ihn von Maschinen unterscheiden. Uns bleibt nichts anderes übrig, zumindest solange wir keine Cyborgs sind, als das beste aus unserem zerbrechlichen Körper und fest eingeschlossenen Denkapparat zu machen. Wollen wir uns untereinander vernetzten, steht uns im Wesentlichen nur die Sprache als Schnittstelle mit verschwindend geringer Bandbreite zur Verfügung. Computer dagegen können bis zu einem gewissen Grad frei skaliert und miteinander verbunden werden. Doch in diesem Unterschied stecken vielleicht die Regulationen, welche am meisten zur spezifisch menschlichen Intelligenz, ihrer Subtilität, ihrem Abstraktionsvermögen, ihrer Resilienz, beitragen.
 
-Als Letztes bleibt sicherlich die Frage nach dem Bewusstsein. Ich persönlich bin nicht in der Lage mir vorzustellen, dass dieses Phänomen überhaupt erklärt werden könnte. Andererseits ist es durchausmöglich möglich, dass dies gar nicht notwendig ist um einen "selbst-bewussten" Roboter zu kreieren. Schmidhuber (Journal of Consciousness, 2012) argumentiert, es sei für komplexe lernende Agenten naheliegend, sich selbst in Bezug zur Umwelt zu stellen, und dafür eine Art Selbstsymbol zu schaffen. Wir wissen freilich nicht, ob das dann schon ein Bewusstsein wie das Unsere wäre.
+Als Letztes bleibt sicherlich die Frage nach dem Bewusstsein. Ich persönlich bin nicht in der Lage mir vorzustellen, dass dieses Phänomen überhaupt erklärt werden könnte. Andererseits ist es durchaus möglich möglich, dass dies gar nicht notwendig ist um einen "selbst-bewussten" Roboter zu kreieren. Schmidhuber (Journal of Consciousness, 2012) argumentiert, es sei für komplexe lernende Agenten naheliegend, sich selbst in Bezug zur Umwelt zu stellen, und dafür eine Art Selbstsymbol zu schaffen. Wir wissen freilich nicht, ob das dann schon ein Bewusstsein wie das Unsere wäre.
 
 Eine künstliche Intelligenz, die in manchen Bereichen mit der menschlichen vergleichbar ist halte ich durchaus für möglich. So etwas wie eine asymptotische Annäherung von Maschinen an den Menschen kann ich mir dagegen nicht vorstellen. Wenn man das aber doch erreichen wollte, wären humanoide Roboter sicherlich am ehesten dazu in der Lage. Humanoid müsste dabei nicht nur die Erscheinung sein, sondern mehr noch die kognitive und sensomotorische Arbeitsweise. Ist das dem Menschen ähnlich Werden allerdings ein explizites Ziel, unterscheidet sich der Roboter gerade dadurch schon vom Menschen.
 

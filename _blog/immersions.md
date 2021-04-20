@@ -9,6 +9,7 @@ related: false
 header:
   image: immersions/header_loop.gif
   teaser: immersions/teaser.jpg
+date: 2020-01-01
 
 g1:
  - image_path: ../../images/immersions/clip_visualizations/house_3_ar_block_0_ch_0_1_from_low_noise_selection.png

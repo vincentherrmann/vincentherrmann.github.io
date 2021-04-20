@@ -142,7 +142,7 @@
             <li class="masthead__menu-item"><a href="http://localhost:4000/composition/">Composition</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/blog/">Blog</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/research/">Research</a></li>
           
         </ul>
         <ul class="hidden-links hidden"></ul>
@@ -553,7 +553,7 @@ W(p_r, p_\theta) & = \inf\limits_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} [
 
 <p>Now we have bilevel optimization. This means we take the optimal solution of the inner optimization ($\sup_f$) for every value of the outer optimization ($\inf_\gamma$), and from these possible solutions choose the one that is optimal for the outer optimization. To continue, we have to make use of the minimax-principle, which says that in certain cases we can invert the order of $\inf$ and $\sup$ without changing the solution. But first we have to show that our problem is indeed such a case.</p>
 
-<p>Consider some function $g: A, B \rightarrow \mathbb{R}$. Let $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ (<em>‘the least of all maxima’</em>) and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$ (<em>‘the greatest of all minima’</em>). The argument that $g(\hat{a}, \hat{b}) \geq g(\hat{a}’, \hat{b}’)$ is simple: Any $g(\hat{a}, \hat{b})$ is automatically allowed as a candidate for the infimum of $\sup_{\ b \in B} \inf_{a \in A} g(a,b)$, but not the other way around.</p>
+<p>Consider some function $g: A, B \rightarrow \mathbb{R}$. Let $g(\hat{a}, \hat{b}) = \inf_{a \in A} \sup_{\ b \in B} g(a,b)$ (<em>‘the least of all maxima’</em>) and $g(\hat{a}’, \hat{b}’) = \sup_{\ b \in B} \inf_{a \in A} g(a,b)$ (<em>‘the greatest of all minima’</em>). The argument that $g(\hat{a}, \hat{b}) \geq g(\hat{a}’, \hat{b}’)$ is simple: Any $g(\hat{a}, \hat{b})$ is automatically allowed as a candidate for the infimum of $\sup_{\ b \in B} \inf_{a \in A} g(a,b)$, but not the other way around. This is equivalent to the statement $\sup_b g(a’, b) \geq g(a’, b’) \geq \inf_a g(a, b’) \forall a’, b’$, which is true by definition.</p>
 
 <p>For $g(\hat{a}, \hat{b}) &gt; g(\hat{a}’, \hat{b}’)$, at least one of these statements must be true:</p>
 
@@ -649,20 +649,6 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
   <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/blog/wasserstein/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
-      
-
-
-  <nav class="pagination">
-    
-      <a href="http://localhost:4000/blog/wavelets-ii/" class="pagination--pager" title="Wavelets II - Vanishing Moments and Spectral Factorization
-">Previous</a>
-    
-    
-      <a href="http://localhost:4000/blog/d3-test/" class="pagination--pager" title="Some Wavelet Visualizations
-">Next</a>
-    
-  </nav>
-
     </div>
 
     
@@ -741,7 +727,7 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2020 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2021 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
       </footer>
     </div>
 

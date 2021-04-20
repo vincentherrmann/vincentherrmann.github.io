@@ -10,8 +10,12 @@ permalink: /composition/
 
 {% include base_path %}
 
-<div class="grid__wrapper">
-  {% for post in site.composition %}
+<div class="feature__wrapper">
+{% assign recent_posts = site.composition | sort:"date" | reverse %}
+{% for post in recent_posts %}
+  {% if post.title contains 'more...'%}
+  {% else %}
     {% include archive-single.html type="grid" %}
-  {% endfor %}
+  {% endif %}
+{% endfor %}
 </div>

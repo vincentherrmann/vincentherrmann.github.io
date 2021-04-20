@@ -10,8 +10,12 @@ permalink: /piano/
 
 {% include base_path %}
 
-<div class="grid__wrapper">
-  {% for post in site.piano %}
+<div class="feature__wrapper">
+{% assign recent_posts = site.piano | sort:"date" | reverse %}
+{% for post in recent_posts %}
+  {% if post.title contains 'more...'%}
+  {% else %}
     {% include archive-single.html type="grid" %}
-  {% endfor %}
+  {% endif %}
+{% endfor %}
 </div>
