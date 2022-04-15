@@ -26,7 +26,7 @@ $$
 This project lets us interact with and explore an audio processing neural network, or what I call an "artificial ear". This network was trained in an unsupervised way on various music datasets using a contrastive predictive coding method. There are two modes of showing its inner workings - one is visual, the other is sonic. For the visualization, first, the neurons of the network are laid out in two-dimensional space, then their activation is shown at every moment, depending on the input, in real-time. To make audible how music sound to the artificial ear, an optimization procedure generates sounds that specifically activate certain neurons in the network.
 In case you're interested, please see the the paper or the poster, as well as the visualization code (that you could use to visualize your own networks)!
 
-- [Paper](https://neurips2019creativity.github.io/doc/Immersions_NeurIPS.pdf)
+- [Paper](https://proceedings.mlr.press/v123/herrmann20a.html)
 
 - [Poster](/assets/pdfs/Immersions_Poster.pdf)
 
