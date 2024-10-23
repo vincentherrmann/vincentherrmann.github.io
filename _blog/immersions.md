@@ -1,7 +1,6 @@
 ---
-title: "Immersions"
-description: "Visualizing and sonifying how an artificial ear hears music"
-excerpt: "Visualizing and sonifying how an artificial ear hears music. Real-time exploration of a sound processing neural network."
+title: "Immersions - Visualizing and sonifying how an artificial ear hears music"
+excerpt: "Real-time exploration of a sound processing neural network."
 type: pages
 layout: single
 author_profile: false

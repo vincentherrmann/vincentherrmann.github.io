@@ -7,24 +7,30 @@ permalink: /about/
 related: false
 
 portrait:
- - image_path: portrait1.jpg
+ - image_path: SUPSI_DTI_140623_HiRes-1535356.jpg
 ---
 
 <div>
-<img src="../images/portrait1.jpg" width="300" ALIGN="right" HSPACE="30"/>
+<img src="../images/SUPSI_DTI_140623_HiRes-1535356.jpg" width="300" ALIGN="right" HSPACE="30"/>
 </div>
 
-Machine learning PhD student in Jürgen Schmidhuber's group at IDSIA & USI.
-My current research interest lies mainly in artificial creativity, curiosity, critical rationalism and open-endedness.
+I am a PhD candidate at the Swiss AI Lab IDSIA, University of Lugano, working under the supervision of Prof. Jürgen Schmidhuber. 
+My research focuses on artificial curiosity, representation learning, reinforcement learning, and information theory. 
+My goal is to discover criteria for identifying the interestingness of objects and to develop effective representations for them. 
 I am also a classical pianist and composer.
 
+[Academic CV](../assets/pdfs/CV_Vincent_Herrmann_2024.pdf)
 
-**Recent News:**
-- 2020: Started my PhD at the [Swiss AI Lab IDSIA](https://www.idsia.ch) (Lugano) in [Jürgen Schmidhuber](https://people.idsia.ch//~juergen/)'s group
-- 2020: Finished Master's degree in Music Informatics at the University of Music Karlsruhe
-- 2020: Master's thesis "Generative Transformer-based Models of Symbolic Polyphonic Music" [(pdf)](/assets/pdfs/mami_thesis.pdf) at the [Bosch Center for Artificial Intelligence](https://www.bosch-ai.com)
-- 2019: My project ["Immersions - How Does Music Sound to Artificial Ears?"](/blog/immersions) has won the Outstanding Demonstration award at [NeurIPS 2019](https://nips.cc/Conferences/2019/) in Vancouver
-- 2019: Finished my Master's degree in piano performance with distinction under Prof. Michael Hauber at the University of Music and Performing Arts Stuttgart
+### Recent News
+<div class="feature__wrapper">
+{% assign recent_posts = site.news | sort:"date" | reverse %}
+{% for post in recent_posts limit: 2 %}
+  {% include archive-single.html type="grid" %}
+{% endfor %}
 
+{% assign recent_posts = site.blog | where: "title", "more..." %}
+{% for post in recent_posts limit: 1 %}
+  {% include archive-single.html type="grid" %}
+{% endfor %}
+</div>
 
-[Academic CV](../assets/pdfs/cv_2021.pdf)

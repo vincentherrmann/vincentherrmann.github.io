@@ -1,18 +1,19 @@
 ---
 title: "Generative Transformer-based Models of Symbolic Polyphonic Music"
-description: "Master thesis audio samples"
-excerpt: "Generative Transformer-based Models of Symbolic Polyphonic Music"
+excerpt: "Master thesis on generating classical music with the help of transformers. Written at the Bosch Center for Artificial Intelligence."
 type: pages
 layout: single
 author_profile: false
 related: false
 header:
   image: master/attention_grid.png
-  teaser: master/teaser.png
-permalink: /mami_thesis
+  teaser: teaser/master_thesis.jpg
+date: 2020-05-01
 ---
 ## Master Thesis
 Institute for Music Informatics and Musicology, University of Music Karlsruhe
+
+
 The thesis is available for download [here](/assets/pdfs/mami_thesis.pdf)
 
 ## Bach Chorale Samples
@@ -73,3 +74,4 @@ The thesis is available for download [here](/assets/pdfs/mami_thesis.pdf)
 <audio controls>
   <source src="../../assets/audio/master/bach_code_sample.mp3" type="audio/mp3">
 </audio>
+

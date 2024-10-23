@@ -63,6 +63,9 @@ collections:
   blog:
     output: true
     permalink: /:collection/:path/
+  news:
+    output: true
+    permalink: /:collection/:path/
 
 defaults:
   # _pages
@@ -109,6 +112,17 @@ defaults:
       comments: true
       share: true
       related: true
+  # _news
+  - scope:
+      path: ""
+      type: news
+    values:
+      layout: single
+      author_profile: false
+      read_time: false
+      comments: false
+      share: true
+      related: false
 
 # SEO Related
 google_site_verification :
@@ -141,7 +155,7 @@ analytics:
 # Site Author
 author:
   name             : "Vincent Herrmann"
-  avatar           : "Profile_Picture_2020.JPG"
+  avatar           : "portrait_2023_square.jpg"
   bio              : "PhD in machine learning at IDSIA. Classical pianist. Interested in artificial and human creativity."
   location         : "Lugano, Switzerland"
   email            : vincent.herrmann@web.de

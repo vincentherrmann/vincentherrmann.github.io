@@ -19,7 +19,7 @@
 
 
 
-<title>Immersions - Vincent Herrmann</title>
+<title>Immersions - Visualizing and sonifying how an artificial ear hears music - Vincent Herrmann</title>
 
 
 
@@ -29,7 +29,7 @@
 
 <meta property="og:locale" content="en">
 <meta property="og:site_name" content="Vincent Herrmann">
-<meta property="og:title" content="Immersions">
+<meta property="og:title" content="Immersions - Visualizing and sonifying how an artificial ear hears music">
 
 
   <link rel="canonical" href="http://localhost:4000/blog/immersions/">
@@ -37,13 +37,13 @@
 
 
 
-  <meta property="og:description" content="Visualizing and sonifying how an artificial ear hears music">
+  <meta property="og:description" content="Real-time exploration of a sound processing neural network.">
 
 
 
   <meta name="twitter:site" content="@idivinci">
-  <meta name="twitter:title" content="Immersions">
-  <meta name="twitter:description" content="Visualizing and sonifying how an artificial ear hears music">
+  <meta name="twitter:title" content="Immersions - Visualizing and sonifying how an artificial ear hears music">
+  <meta name="twitter:description" content="Real-time exploration of a sound processing neural network.">
   <meta name="twitter:url" content="http://localhost:4000/blog/immersions/">
 
   
@@ -131,16 +131,13 @@
           <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Vincent Herrmann</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/research/">Research</a></li>
           
             
             <li class="masthead__menu-item"><a href="http://localhost:4000/piano/">Piano</a></li>
           
             
             <li class="masthead__menu-item"><a href="http://localhost:4000/composition/">Composition</a></li>
-          
-            
-            <li class="masthead__menu-item"><a href="http://localhost:4000/research/">Research</a></li>
           
         </ul>
         <ul class="hidden-links hidden"></ul>
@@ -166,7 +163,7 @@
   style=" "
 >
   
-    <img src="http://localhost:4000/images/immersions/header_loop.gif" alt="Immersions" class="page__hero-image">
+    <img src="http://localhost:4000/images/immersions/header_loop.gif" alt="Immersions - Visualizing and sonifying how an artificial ear hears music" class="page__hero-image">
   
   
 </div>
@@ -180,15 +177,15 @@
 
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Immersions">
-    <meta itemprop="description" content="Visualizing and sonifying how an artificial ear hears music. Real-time exploration of a sound processing neural network.">
+    <meta itemprop="headline" content="Immersions - Visualizing and sonifying how an artificial ear hears music">
+    <meta itemprop="description" content="Real-time exploration of a sound processing neural network.">
     <meta itemprop="datePublished" content="January 01, 2020">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 class="page__title" itemprop="headline">Immersions
+          <h1 class="page__title" itemprop="headline">Immersions - Visualizing and sonifying how an artificial ear hears music
 </h1>
           
         </header>
@@ -197,14 +194,14 @@
       <section class="page__content" itemprop="text">
         <h2 id="visualizing-and-sonifying-how-an-artificial-ear-hears-music">Visualizing and sonifying how an artificial ear hears music</h2>
 
-<script type="math/tex; mode=display">\def\sb{_}</script>
+\[\def\sb{_}\]
 
 <p>This project lets us interact with and explore an audio processing neural network, or what I call an “artificial ear”. This network was trained in an unsupervised way on various music datasets using a contrastive predictive coding method. There are two modes of showing its inner workings - one is visual, the other is sonic. For the visualization, first, the neurons of the network are laid out in two-dimensional space, then their activation is shown at every moment, depending on the input, in real-time. To make audible how music sound to the artificial ear, an optimization procedure generates sounds that specifically activate certain neurons in the network.
 In case you’re interested, please see the the paper or the poster, as well as the visualization code (that you could use to visualize your own networks)!</p>
 
 <ul>
   <li>
-    <p><a href="https://neurips2019creativity.github.io/doc/Immersions_NeurIPS.pdf">Paper</a></p>
+    <p><a href="https://proceedings.mlr.press/v123/herrmann20a.html">Paper</a></p>
   </li>
   <li>
     <p><a href="/assets/pdfs/Immersions_Poster.pdf">Poster</a></p>
@@ -248,7 +245,7 @@ The encoding $k$ time steps in the future, $\mathbf{z}_{k}$, is predicted by a d
 The time steps $k$ are counted from the latest point $t$ for which the autoregressive model had access to the encoding $\mathbf{z}_t$.
 The loss for each mini-batch is calculated as follows:</p>
 
-<script type="math/tex; mode=display">\mathcal{L}_{CPC} = - \sum_{n, k} \log \frac{\exp(\mathbf{z}^T_{n, k} \mathbf{M}_k \mathbf{c}_n)} {\sum_m \exp(\mathbf{z}^T_{m, k} \mathbf{M}_k \mathbf{c}_n)}</script>
+\[\mathcal{L}_{CPC} = - \sum_{n, k} \log \frac{\exp(\mathbf{z}^T_{n, k} \mathbf{M}_k \mathbf{c}_n)} {\sum_m \exp(\mathbf{z}^T_{m, k} \mathbf{M}_k \mathbf{c}_n)}\]
 
 <p>Both $n$ and $m$ are indices of the mini-batch dimension.
 The numerator is a scalar score that measures how well the prediction matches the correct encoding.
@@ -454,7 +451,7 @@ As a baseline, the whole architecture was trained directly in a supervised setti
 <p>I also trained the models additionally with a slight modification of the CPC algorithm:
 Instead of contrasting the prediction scores with the other samples from the mini-batch, they are also contrasted with different time steps (score across time steps, SAT):</p>
 
-<script type="math/tex; mode=display">\mathcal{L}_{CPC \, SAT} = - \sum_{n, k} \log \frac{\exp(\mathbf{z}^T_{n, k} \mathbf{M}_k \mathbf{c}_n)} {\sum_{m, l} \exp(\mathbf{z}^T_{m, l} \mathbf{M}_l \mathbf{c}_n)}</script>
+\[\mathcal{L}_{CPC \, SAT} = - \sum_{n, k} \log \frac{\exp(\mathbf{z}^T_{n, k} \mathbf{M}_k \mathbf{c}_n)} {\sum_{m, l} \exp(\mathbf{z}^T_{m, l} \mathbf{M}_l \mathbf{c}_n)}\]
 
 <div><b>Results of the test tasks</b>
 <style type="text/css">
@@ -560,14 +557,14 @@ The system, starting from random initial conditions, can be simulated using nume
 The first force pulls together vertices that are directly connected.
 The strength is proportional to the distance between vertices and can be scaled with the weight of the connecting edge. Formally, the attractive force $\mathbf{a}$, caused by vertex $j$ and acting on vertex $i$, with their respective positions $\mathbf{p}$, and connected by an edge with weight $w_{ij}$, is:</p>
 
-<script type="math/tex; mode=display">\mathbf{a}_{ij} = w_{ij}  \,  (\mathbf{p}_j - \mathbf{p}_i)</script>
+\[\mathbf{a}_{ij} = w_{ij}  \,  (\mathbf{p}_j - \mathbf{p}_i)\]
 
 <p>If there vertices $i$ and $j$ connected, $w_{ij}$ is $0$. In practice, the attractive forces are calculated only for connected vertices.</p>
 
 <p>The second force works as if each vertex had a certain electric charge, which would make vertices repel each other.
 The force $\mathbf{r}$ caused by vertex $j$ and acting on vertex $i$, and charges $q$, is:</p>
 
-<script type="math/tex; mode=display">\mathbf{r}_{ij} = q_i q_j  \,  \frac{\mathbf{p}_i - \mathbf{p}_j}{\|\mathbf{p}_i - \mathbf{p}_j\|^{k+1}}</script>
+\[\mathbf{r}_{ij} = q_i q_j  \,  \frac{\mathbf{p}_i - \mathbf{p}_j}{\|\mathbf{p}_i - \mathbf{p}_j\|^{k+1}}\]
 
 <p>For a physically accurate simulation of an electrostatic force, the exponent $k$ would have to be 2.
 But seen as an adjustable parameter, it gives us some control over the appearance of the layout:
@@ -588,11 +585,11 @@ On the other hand, low values of $k$ result in dense clusters of vertices.</p>
 
 <p>The optional centering force, scaled by a global factor $l$, pushes vertices towards the origin:</p>
 
-<script type="math/tex; mode=display">\mathbf{c}_{i} = -l  \, \mathbf{p}_i</script>
+\[\mathbf{c}_{i} = -l  \, \mathbf{p}_i\]
 
 <p>With that, the combined force $\mathbf{f}$ acting on vertex $i$, can be defined as:</p>
 
-<script type="math/tex; mode=display">\mathbf{f}_{i} = \mathbf{c}_{i} + \sum_{j \neq i} \mathbf{r}_{ij} + \mathbf{a}_{ij}</script>
+\[\mathbf{f}_{i} = \mathbf{c}_{i} + \sum_{j \neq i} \mathbf{r}_{ij} + \mathbf{a}_{ij}\]
 
 <p>Since the number of individual forces that have to be calculated scales quadratically with the number of vertices, for large networks it is necessary to approximate the forces $\mathbf{r}_{ij}$ in a computationally efficient way using the <a href="https://en.wikipedia.org/wiki/Barnes–Hut_simulation">Barnes-Hut-tree method</a>.</p>
 
@@ -1194,7 +1191,7 @@ The setup described here is very flexible, other networks trained on different d
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2024 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
       </footer>
     </div>
 

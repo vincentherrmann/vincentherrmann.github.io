@@ -1,5 +1,5 @@
 ---
-title: "Research Projects and Blog Posts"
+title: "Research Projects"
 type: pages
 layout: archive
 author_profile: true

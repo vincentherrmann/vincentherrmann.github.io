@@ -133,16 +133,13 @@
           <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Vincent Herrmann</a></li>
           
             
-            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/research/">Research</a></li>
           
             
             <li class="masthead__menu-item"><a href="http://localhost:4000/piano/">Piano</a></li>
           
             
             <li class="masthead__menu-item"><a href="http://localhost:4000/composition/">Composition</a></li>
-          
-            
-            <li class="masthead__menu-item"><a href="http://localhost:4000/research/">Research</a></li>
           
         </ul>
         <ul class="hidden-links hidden"></ul>
@@ -215,11 +212,11 @@ $P_\theta$
 
 <p>To be a valid transport plan, the constraints $\sum_x \gamma(x,y) = P_r(y)$ and $\sum_y \gamma(x,y) = P_\theta(x)$ must of course apply. This ensures that following this plan yields the correct distributions. Equivalently, we can call $\gamma$ a joined probability distribution and require that $\gamma \in \Pi(P_r, P_\theta)$, where $\Pi(P_r, P_\theta)$ is the set of all distributions whose marginals are $P_r$ or $P_\theta$ respectively. To get the EMD, we have to multiply every value of $\gamma$ with the Euclidian distance between $x$ and $y$. With that, the definition of the Earth mover’s distance is:</p>
 
-<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \Vert x - y \Vert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \Vert x - y \Vert</script>
+\[\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \Vert x - y \Vert \gamma (x,y) = \inf_{\gamma \in \Pi} \ \mathbb{E}_{(x,y) \sim \gamma} \Vert x - y \Vert\]
 
 <p>If you’re not familiar with the expression $\inf$, it stands for <em>infimum</em>, or greatest lower bound. It is simply a slight mathematical variation of the <em>minimum</em>. The opposite is $\sup$ or <em>supremum</em>, roughly meaning <em>maximum</em>, which we will come across later. We can also set $\mathbf{\Gamma} = \gamma(x,y)$ and $\mathbf{D} = \Vert x - y \Vert$, with $\mathbf{\Gamma}, \mathbf{D} \in \mathbb{R}^{l \times l}$. Now we can write</p>
 
-<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \langle \mathbf{D}, \mathbf{\Gamma} \rangle_\mathrm{F}</script>
+\[\mathrm{EMD}(P_r, P_\theta) = \inf_{\gamma \in \Pi} \, \langle \mathbf{D}, \mathbf{\Gamma} \rangle_\mathrm{F}\]
 
 <p>where $\langle , \rangle_\mathrm{F}$ is the Frobenius inner product (sum of all the element-wise products).</p>
 
@@ -241,25 +238,23 @@ $P_\theta$
 
 <p>To cast our problem of finding the EMD into this form, we have to flatten $\mathbf{\Gamma}$ and $\mathbf{D}$:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\mathbf{x} &= \mathrm{vec}(\mathbf{\Gamma}) \\
-\mathbf{c} &= \mathrm{vec}(\mathbf{D}) \\
-\end{align} %]]></script>
+\[\begin{align}
+\mathbf{x} &amp;= \mathrm{vec}(\mathbf{\Gamma}) \\
+\mathbf{c} &amp;= \mathrm{vec}(\mathbf{D}) \\
+\end{align}\]
 
 <p>This means $n = l^2$. For the constraints, we concatenate the target distributions, which makes $m=2l$:</p>
 
-<script type="math/tex; mode=display">\mathbf{b} = \begin{bmatrix} P_r \\ P_\theta\end{bmatrix}</script>
+\[\mathbf{b} = \begin{bmatrix} P_r \\ P_\theta\end{bmatrix}\]
 
 <p>For $\mathbf{A}$, we have to construct a large sparse binary matrix that picks out the values from $\mathbf{x}$ and sums them to get $\mathbf{b}$. This schematic should make it clear:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\newcommand\FixWidth[1]{ \hspace{2.2em} \llap{#1}}
+\[\newcommand\FixWidth[1]{ \hspace{2.2em} \llap{#1}}
 
 \begin{array}{rc}
 
-&  \left. \left[ \begin{array} {rrrr|rrrr}
-\FixWidth{P_r(x_1)} & \FixWidth{P_r(x_2)} & \FixWidth{\dots} & \FixWidth{P_r(x_n)} & \FixWidth{P_\theta(y_1)} & \FixWidth{P_\theta(y_2)} & \FixWidth{\dots} & \FixWidth{P_\theta(y_n)}
+&amp;  \left. \left[ \begin{array} {rrrr|rrrr}
+\FixWidth{P_r(x_1)} &amp; \FixWidth{P_r(x_2)} &amp; \FixWidth{\dots} &amp; \FixWidth{P_r(x_n)} &amp; \FixWidth{P_\theta(y_1)} &amp; \FixWidth{P_\theta(y_2)} &amp; \FixWidth{\dots} &amp; \FixWidth{P_\theta(y_n)}
 \end{array} \right]  \, \right\} \; \mathbf{b}^T \\ \\
 
 \mathbf{x} \left\{ \begin{bmatrix}
@@ -275,21 +270,21 @@ $P_\theta$
 \vdots \\
 \end{bmatrix} \right.
 
-& \left. \left[ \begin{array}{rrrr|rrrr}
-1 & 0 & \dots & 0 & 1 & 0 & \dots & 0 \cr
-1 & 0 & \dots & 0 & 0 & 1 & \dots & 0 \cr
-\vdots & \vdots & \dots & \vdots & \vdots & \vdots & \ddots & \vdots \cr \hline
-0 & 1 & \dots & 0 & 1 & 0 & \dots & 0 \cr
-0 & 1 & \dots & 0 & 0 & 1 & \dots & 0 \cr
-\vdots & \vdots & \dots & \vdots & \vdots & \vdots & \ddots & \vdots \cr \hline
-\FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} &
-\FixWidth{\vdots} & \FixWidth{\vdots} & \FixWidth{\vdots} \cr \hline
-0 & 0 & \dots & 1 & 1 & 0 & \dots & 0 \cr
-0 & 0 & \dots & 1 & 0 & 1 & \dots & 0 \cr
-\vdots & \vdots & \dots & \vdots & \vdots & \vdots & \ddots & \vdots \cr
+&amp; \left. \left[ \begin{array}{rrrr|rrrr}
+1 &amp; 0 &amp; \dots &amp; 0 &amp; 1 &amp; 0 &amp; \dots &amp; 0 \cr
+1 &amp; 0 &amp; \dots &amp; 0 &amp; 0 &amp; 1 &amp; \dots &amp; 0 \cr
+\vdots &amp; \vdots &amp; \dots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \cr \hline
+0 &amp; 1 &amp; \dots &amp; 0 &amp; 1 &amp; 0 &amp; \dots &amp; 0 \cr
+0 &amp; 1 &amp; \dots &amp; 0 &amp; 0 &amp; 1 &amp; \dots &amp; 0 \cr
+\vdots &amp; \vdots &amp; \dots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \cr \hline
+\FixWidth{\vdots} &amp; \FixWidth{\vdots} &amp; \FixWidth{\vdots} &amp; \FixWidth{\vdots} &amp; \FixWidth{\vdots} &amp;
+\FixWidth{\vdots} &amp; \FixWidth{\vdots} &amp; \FixWidth{\vdots} \cr \hline
+0 &amp; 0 &amp; \dots &amp; 1 &amp; 1 &amp; 0 &amp; \dots &amp; 0 \cr
+0 &amp; 0 &amp; \dots &amp; 1 &amp; 0 &amp; 1 &amp; \dots &amp; 0 \cr
+\vdots &amp; \vdots &amp; \dots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \cr
 \end{array} \right] \right\} \mathbf{A}^T
 
-\end{array} %]]></script>
+\end{array}\]
 
 <p>With that, we can call a standard LP routine, for example <code class="language-plaintext highlighter-rouge">linprog()</code> from scipy.</p>
 
@@ -298,21 +293,21 @@ $P_\theta$
 
 <span class="c1"># We construct our A matrix by creating two 3-way tensors,
 # and then reshaping and concatenating them
-</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
-<span class="n">A_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="n">A_t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
 	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
 		<span class="n">A_r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 		<span class="n">A_t</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A_r</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span> <span class="n">A_t</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">P_r</span><span class="p">,</span> <span class="n">P_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A_r</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span> <span class="n">A_t</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">P_r</span><span class="p">,</span> <span class="n">P_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">D</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
-<span class="n">emd</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
-<span class="n">gamma</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+<span class="n">emd</span> <span class="o">=</span> <span class="n">opt_res</span><span class="p">.</span><span class="n">fun</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">opt_res</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
 </code></pre></div></div>
 
 <p>Now we have our transference plan, as well as the EMD.</p>
@@ -340,27 +335,26 @@ $P_\theta$
 
 <p>As it turns out, there is another way of calculating the EMD that is much more convenient. Any LP has two ways in which the problem can be formulated: The primal form, which we just used, and the dual form.</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{c|c}
+\[\begin{array}{c|c}
 
-\mathbf{primal \ form:} & \mathbf{dual \ form:}\\
-
-\begin{array}{rrcl}
-\mathrm{minimize} \ & z & = & \ \mathbf{c}^T \mathbf{x}, \\
-\mathrm{so \ that} \ & \mathbf{A} \mathbf{x} & = & \ \mathbf{b} \\
-\mathrm{and}\  & \mathbf{x} & \geq &\ \mathbf{0}
-\end{array} &
+\mathbf{primal \ form:} &amp; \mathbf{dual \ form:}\\
 
 \begin{array}{rrcl}
-\mathrm{maximize} \ & \tilde{z} & = & \ \mathbf{b}^T \mathbf{y}, \\
-\mathrm{so \ that} \ & \mathbf{A}^T \mathbf{y} & \leq & \ \mathbf{c} \\ \\
+\mathrm{minimize} \ &amp; z &amp; = &amp; \ \mathbf{c}^T \mathbf{x}, \\
+\mathrm{so \ that} \ &amp; \mathbf{A} \mathbf{x} &amp; = &amp; \ \mathbf{b} \\
+\mathrm{and}\  &amp; \mathbf{x} &amp; \geq &amp;\ \mathbf{0}
+\end{array} &amp;
+
+\begin{array}{rrcl}
+\mathrm{maximize} \ &amp; \tilde{z} &amp; = &amp; \ \mathbf{b}^T \mathbf{y}, \\
+\mathrm{so \ that} \ &amp; \mathbf{A}^T \mathbf{y} &amp; \leq &amp; \ \mathbf{c} \\ \\
 \end{array}
 
-\end{array} %]]></script>
+\end{array}\]
 
 <p>By changing the relations between the same values, we can turn our minimization problem into a maximization problem. Here the objective $\tilde{z}$ directly depends on $\mathbf{b}$, which contains the our distributions $P_r$ and $P_\theta$. This is exactly that we want. It is easy to see that $\tilde{z}$ is a lower bound of $z$:</p>
 
-<script type="math/tex; mode=display">z = \mathbf{c}^T \mathbf{x} \geq \mathbf{y}^T \mathbf{A} \mathbf{x} = \mathbf{y}^T \mathbf{b} = \tilde{z}</script>
+\[z = \mathbf{c}^T \mathbf{x} \geq \mathbf{y}^T \mathbf{A} \mathbf{x} = \mathbf{y}^T \mathbf{b} = \tilde{z}\]
 
 <p>This is called the <em>Weak Duality</em> theorem. As you might have guessed, there also exists a <em>Strong Duality</em> theorem, which states that, should we find an optimal solution for $\tilde{z}$, then $z=\tilde{z}$. Proving it is a bit more complicated and requires Farkas theorem as an intermediate result.</p>
 
@@ -404,24 +398,24 @@ $P_\theta$
 
 <p>Let the minimal solution to the primal problem be ${z^* } = \mathbf{c}^T \mathbf{x}^{* }$. Then we define</p>
 
-<script type="math/tex; mode=display">\hat{\mathbf{A}} = \begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}, \ \ \
+\[\hat{\mathbf{A}} = \begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}, \ \ \
 \hat{\mathbf{b}}_\epsilon = \begin{bmatrix} \mathbf{b} \\ -z^* + \epsilon \end{bmatrix}, \ \ \
-\hat{\mathbf{y}} = \begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix}</script>
+\hat{\mathbf{y}} = \begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix}\]
 
 <p>with $\epsilon, \alpha \in \mathbb{R}$. For $\epsilon = 0$, we have Farkas case $(1)$, because $\hat{\mathbf{A}} \mathbf{x}^* = \hat{\mathbf{b}}_0$. For $\epsilon &gt; 0$, there exists no nonnegative solution (because $z^{* }$ is already minimal) and we have Farkas case $(2)$. This means there exist $\mathbf{y}$ and $\alpha$, such that</p>
 
-<script type="math/tex; mode=display">\begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}^T
+\[\begin{bmatrix} \mathbf{A} \\ -\mathbf{c}^T \end{bmatrix}^T
 \begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} \leq \mathbf{0}, \ \ \ \
 \begin{bmatrix} \mathbf{b} \\ -z^* + \epsilon \end{bmatrix}
-\begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} > 0</script>
+\begin{bmatrix} \mathbf{y} \\ \alpha \end{bmatrix} &gt; 0\]
 
 <p>or equivalently</p>
 
-<script type="math/tex; mode=display">\mathbf{A}^T \mathbf{y} \leq \alpha \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} > \alpha(z^* - \epsilon).</script>
+\[\mathbf{A}^T \mathbf{y} \leq \alpha \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} &gt; \alpha(z^* - \epsilon).\]
 
 <p>The way we constructed it, we can find $\hat{\mathbf{y}}$ so that additionally $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} = 0$. Then changing $\epsilon$ to any number greater than $0$ has to result in $\hat{\mathbf{b}}_0 \hat{\mathbf{y}} &gt; 0$. In our specific problem, this is only possible if $\alpha &gt; 0$, because $z^* &gt; 0$. We showed that $\hat{\mathbf{y}}$ is simply the normal vector of a hyperplane, and because of that we can freely scale it to any magnitude greater than zero. Particularly, we can scale it so that $\alpha = 1$. This means there exists a vector $\mathbf{y}$, so that</p>
 
-<script type="math/tex; mode=display">\mathbf{A}^T \mathbf{y} \leq \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} > z^* - \epsilon.</script>
+\[\mathbf{A}^T \mathbf{y} \leq \mathbf{c}, \ \ \mathbf{b}^T \mathbf{y} &gt; z^* - \epsilon.\]
 
 <p>We see that $\tilde{z} := z^* - \epsilon$ for any $\epsilon &gt; 0$ is a feasible value of the objective of our dual problem. From the Weak Duality theorem, we know that $\tilde{z} \leq z^{* }$. We just showed that $\tilde{z}$ can get arbitrarily close to $z^{* }$. This means the optimal (maximal) value of our dual form is also $z^{* }$.</p>
 
@@ -429,16 +423,15 @@ $P_\theta$
 
 <p>Now we can confidently use the dual form to calculate the EMD. As we showed, the maximal value $\tilde{z}^* = \mathbf{b}^T \mathbf{y}^{* }$ is the EMD. Let’s define</p>
 
-<script type="math/tex; mode=display">\mathbf{y}^* = \begin{bmatrix} \mathbf{f} \\ \mathbf{g} \end{bmatrix}</script>
+\[\mathbf{y}^* = \begin{bmatrix} \mathbf{f} \\ \mathbf{g} \end{bmatrix}\]
 
 <p>with $\mathbf{f}, \mathbf{g} \in \mathbb{R}^d$. This means $\mathrm{EMD}(P_r, P_\theta) = \mathbf{f}^T P_r + \mathbf{g}^T P_\theta$. Recall the constraints of the dual form: $\mathbf{A}^T \mathbf{y} \leq \mathbf{c}$.</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\newcommand\FixWidth[1]{ \hspace{1.6em} \llap{#1}}
+\[\newcommand\FixWidth[1]{ \hspace{1.6em} \llap{#1}}
 
 \begin{array}{rc}
-&  \left. \left[ \begin{array} {rrr|rrr|r|rrr}
-\FixWidth{\mathbf{D}_{1,1}} & \FixWidth{\mathbf{D}_{1,2}} & \FixWidth{\dots} & \FixWidth{\mathbf{D}_{2,1}} & \FixWidth{\mathbf{D}_{2,2}} & \FixWidth{\dots} & \FixWidth{\dots} & \FixWidth{\mathbf{D}_{n,1}} & \FixWidth{\mathbf{D}_{ n,2}} & \FixWidth{\dots}
+&amp;  \left. \left[ \begin{array} {rrr|rrr|r|rrr}
+\FixWidth{\mathbf{D}_{1,1}} &amp; \FixWidth{\mathbf{D}_{1,2}} &amp; \FixWidth{\dots} &amp; \FixWidth{\mathbf{D}_{2,1}} &amp; \FixWidth{\mathbf{D}_{2,2}} &amp; \FixWidth{\dots} &amp; \FixWidth{\dots} &amp; \FixWidth{\mathbf{D}_{n,1}} &amp; \FixWidth{\mathbf{D}_{ n,2}} &amp; \FixWidth{\dots}
 \end{array} \right]  \, \right\} \; \mathbf{c}^T \\ \\
 
 \mathbf{y} \left\{ \begin{bmatrix}
@@ -452,20 +445,20 @@ g(x_2) \\
 g(x_n) \\
 \end{bmatrix} \right.
 
-& \left. \;\; \left[ \begin{array} {rrr|rrr|r|rrr}
+&amp; \left. \;\; \left[ \begin{array} {rrr|rrr|r|rrr}
 
-1 & 1 & \dots & 0 & 0 & \dots & \dots & 0 & 0 & \dots \cr
-0 & 0 & \dots & 1 & 1 & \dots & \dots & 0 & 0 & \dots \cr
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \dots & \vdots & \vdots & \vdots  \cr
-0 & 0 & \dots & 0 & 0 & \dots & \dots & 1 & 1 & \dots \cr \hline
+1 &amp; 1 &amp; \dots &amp; 0 &amp; 0 &amp; \dots &amp; \dots &amp; 0 &amp; 0 &amp; \dots \cr
+0 &amp; 0 &amp; \dots &amp; 1 &amp; 1 &amp; \dots &amp; \dots &amp; 0 &amp; 0 &amp; \dots \cr
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \dots &amp; \vdots &amp; \vdots &amp; \vdots  \cr
+0 &amp; 0 &amp; \dots &amp; 0 &amp; 0 &amp; \dots &amp; \dots &amp; 1 &amp; 1 &amp; \dots \cr \hline
 
-1 & 0 & \dots & 1 & 0 & \dots & \dots & 1 & 0 & \dots \cr
-0 & 1 & \dots & 0 & 1 & \dots & \dots & 0 & 1 & \dots \cr
-\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \dots & \vdots & \vdots & \ddots  \cr
-\FixWidth{0} & \FixWidth{0} & \FixWidth{\dots} & \FixWidth{0} & \FixWidth{0} & \FixWidth{\dots} & \FixWidth{\dots} & \FixWidth{0} & \FixWidth{0} & \FixWidth{\dots}
+1 &amp; 0 &amp; \dots &amp; 1 &amp; 0 &amp; \dots &amp; \dots &amp; 1 &amp; 0 &amp; \dots \cr
+0 &amp; 1 &amp; \dots &amp; 0 &amp; 1 &amp; \dots &amp; \dots &amp; 0 &amp; 1 &amp; \dots \cr
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \dots &amp; \vdots &amp; \vdots &amp; \ddots  \cr
+\FixWidth{0} &amp; \FixWidth{0} &amp; \FixWidth{\dots} &amp; \FixWidth{0} &amp; \FixWidth{0} &amp; \FixWidth{\dots} &amp; \FixWidth{\dots} &amp; \FixWidth{0} &amp; \FixWidth{0} &amp; \FixWidth{\dots}
 \end{array} \right] \right\} \mathbf{A}\phantom{^T ;}
 
-\end{array} %]]></script>
+\end{array}\]
 
 <p>We have written the vectors $\mathbf{f}$ and $\mathbf{g}$ as values of the functions $f$ and $g$. The constraints can be summarized as $f(x_i) + g(x_j) \leq \mathbf{D}_{i,j}$. The case $i=j$ yields $g(x_i) \leq -f(x_i)$ for all $i$, because $\mathbf{D}_{i,i} = 0$. Since $P_r$ and $P_\theta$ are nonnegative, to maximize our objective, $\sum_i \mathbf{f}_i + \mathbf{g}_i$ has to be as great as possible. This sum has a maximum value of $0$, which we achieve with $g = - f$. This remains true given all additional constraints: Choosing $g(x_{i}) &lt; - f(x_{i})$ would only make sense if it had benefits for values $f(x_{j})$ and $g(x_{j})$ with $j \neq i$. Since $f(x_{j})$ and $g(x_{j})$ remain upper-bounded by the other constraints, this is not the case.</p>
 
@@ -495,7 +488,7 @@ g(x_n) \\
 
 <p>For $g = - f$ the constraints become $f(x_i) - f(x_j) \leq \mathbf{D}_{i,j}$ and $f(x_i) - f(x_j) \geq -\mathbf{D}_{i,j}$. If we see the values $f(x_i)$ as connected with line segments, this means that the upward and the downward slope of these segments is limited. In our case, where we use Euclidian distances, these slope limits are $1$ and $-1$. We call this constraint Lipschitz continuity (with Lipschitz constant $1$) and write $\lVert f \lVert_{L \leq 1}$. With that, our dual form of the EMD is</p>
 
-<script type="math/tex; mode=display">\mathrm{EMD}(P_r, P_\theta) = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{x \sim P_r} f(x) - \mathbb{E}_{x \sim P_\theta} f(x).</script>
+\[\mathrm{EMD}(P_r, P_\theta) = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{x \sim P_r} f(x) - \mathbb{E}_{x \sim P_\theta} f(x).\]
 
 <p>The implementation is straightforward:</p>
 
@@ -504,9 +497,9 @@ g(x_n) \\
 # not constrained to nonnegative values.
 </span><span class="n">opt_res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
 
-<span class="n">emd</span> <span class="o">=</span> <span class="o">-</span><span class="n">opt_res</span><span class="o">.</span><span class="n">fun</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">l</span><span class="p">]</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">opt_res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">l</span><span class="p">:]</span>
+<span class="n">emd</span> <span class="o">=</span> <span class="o">-</span><span class="n">opt_res</span><span class="p">.</span><span class="n">fun</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">opt_res</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">l</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">opt_res</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">l</span><span class="p">:]</span>
 </code></pre></div></div>
 
 <figure class=" ">
@@ -536,20 +529,19 @@ g(x_n) \\
 
 <p>Lastly, we have to consider continuous probability distributions. We can of course view them intuitively as discrete distributions with infinitely many states and use a similar reasoning as described so far. But as I mentioned at the beginning, we will try something neater. Let our continuous distributions be $p_r$ and $p_\theta$, and the set of joined distributions with marginals $p_r$ and $p_\theta$ be $\pi(p_r, p_\theta)$. Then the Wasserstein distance is defined as</p>
 
-<script type="math/tex; mode=display">W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x \, \mathrm{d} y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].</script>
+\[W(p_r, p_\theta) = \inf_{\gamma \in \pi} \iint\limits_{x,y} \lVert x - y \lVert \gamma (x,y) \, \mathrm{d} x \, \mathrm{d} y = \inf_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} \left[ \lVert x - y \lVert \right].\]
 
 <p>If we add suitable terms, we can remove all constraints on the distribution $\gamma$. This is done by adding an additional optimization over a function $f: x \mapsto k \in \mathbb{R}$, which rules out all $\gamma \notin \pi$ as solutions:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{rl}
-W(p_r, p_\theta) & = \inf\limits_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert ] \\
+\[\begin{array}{rl}
+W(p_r, p_\theta) &amp; = \inf\limits_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert ] \\
 
-&\begin{array}{cc}
- = \inf\limits_{\gamma } \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert & + \; \underbrace{\sup\limits_{f} \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - \left( f(x) - f(y) \right)} ] \\
-&= \cases{\begin{align} 0, & \ \ \ \mathrm{if \ \gamma \in \mathrm{\pi}} \\ + \infty  &  \ \ \ \mathrm{else} \end{align}} \end{array}\\
+&amp;\begin{array}{cc}
+ = \inf\limits_{\gamma } \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert &amp; + \; \underbrace{\sup\limits_{f} \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - \left( f(x) - f(y) \right)} ] \\
+&amp;= \cases{\begin{align} 0, &amp; \ \ \ \mathrm{if \ \gamma \in \mathrm{\pi}} \\ + \infty  &amp;  \ \ \ \mathrm{else} \end{align}} \end{array}\\
 
-& = \inf\limits_{\gamma} \ \sup\limits_{f} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - \left( f(x) - f(y) \right) ]
-\end{array} %]]></script>
+&amp; = \inf\limits_{\gamma} \ \sup\limits_{f} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - \left( f(x) - f(y) \right) ]
+\end{array}\]
 
 <p>Now we have bilevel optimization. This means we take the optimal solution of the inner optimization ($\sup_f$) for every value of the outer optimization ($\inf_\gamma$), and from these possible solutions choose the one that is optimal for the outer optimization. To continue, we have to make use of the minimax-principle, which says that in certain cases we can invert the order of $\inf$ and $\sup$ without changing the solution. But first we have to show that our problem is indeed such a case.</p>
 
@@ -564,23 +556,21 @@ W(p_r, p_\theta) & = \inf\limits_{\gamma \in \pi} \mathbb{E}_{x,y \sim \gamma} [
 
 <p>This means of course that, if  $\sup_{\ b \in B} g(a,b)$ is convex and $\inf_{\ a \in A} g(a,b)$ is concave, then the minimax principle applies and $g(\hat{a}, \hat{b}) = g(\hat{a}’, \hat{b}’)$. In our case, we can above already see from the underbrace that the convexity condition is met. Let’s try changing to $\sup \inf$:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{ll}
-&\phantom{= , } \sup\limits_{f} \ \inf\limits_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - (f(x) - f(y)) ] \\
+\[\begin{array}{ll}
+&amp;\phantom{= , } \sup\limits_{f} \ \inf\limits_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert +  \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] - (f(x) - f(y)) ] \\
 
-&\begin{array}{cc}
-= \sup\limits_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + & \underbrace{ \inf\limits_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y))} ] \\
-&= \cases{\begin{align} 0, & \ \ \ \mathrm{if} \ \| f \| {}_{L} \leq 1\\ - \infty  &  \ \ \ \mathrm{else} \end{align}}
+&amp;\begin{array}{cc}
+= \sup\limits_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + &amp; \underbrace{ \inf\limits_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y))} ] \\
+&amp;= \cases{\begin{align} 0, &amp; \ \ \ \mathrm{if} \ \| f \| {}_{L} \leq 1\\ - \infty  &amp;  \ \ \ \mathrm{else} \end{align}}
 \end{array}
-\end{array} %]]></script>
+\end{array}\]
 
 <p>We see that the infimum is concave, as required. Because all functions $f$ that are Lipschitz continuous produce the same optimal solution for $\inf_\gamma$, and only they are feasible solutions of $\sup_f$, we can turn this condition into a constraint. With that, we have the dual form of the Wasserstein distance:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y)) ] \\
-& = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
-\end{align} %]]></script>
+\[\begin{align}
+W(p_r, p_\theta) &amp; = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)] + \inf_{\gamma} \ \mathbb{E}_{x,y \sim \gamma} [ \lVert x - y \lVert - ( f(x) - f(y)) ] \\
+&amp; = \sup_{\lVert f \lVert_{L \leq 1}} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \sim p_\theta}[f(t)]
+\end{align}\]
 
 <p>This is our case of the Kantorovich-Rubinstein duality. It actually holds for other metrics than just the Euclidian metric we used. But the function $f$ is suitable to be approximated by a neural network, and this version has the advantage that the Lipschitz continuity can simply be achieved by clamping the weights.</p>
 
@@ -727,7 +717,7 @@ W(p_r, p_\theta) & = \sup_{f} \ \mathbb{E}_{s \sim p_r}[f(s)] - \mathbb{E}_{t \s
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2024 Vincent Herrmann. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
       </footer>
     </div>
 
