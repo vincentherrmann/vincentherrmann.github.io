@@ -11,4 +11,4 @@ share: false
 
 Our work "On the Distillation of Stories for Transferring Narrative Arcs in Collections of Independent Media" has been accepted as a full paper at IEEE TPAMI.
 
-I will link the open access version of the paper here once it is available, for now you can find an earlier preprint on arXiv [here](https://arxiv.org/abs/2211.12423).
+The open-access version of the paper is available [here](https://ieeexplore.ieee.org/document/10734853).

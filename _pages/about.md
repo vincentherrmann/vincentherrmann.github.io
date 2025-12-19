@@ -19,7 +19,7 @@ My research focuses on artificial curiosity, representation learning, reinforcem
 My goal is to discover criteria for identifying the interestingness of objects and to develop effective representations for them. 
 I am also a classical pianist and composer.
 
-[Academic CV](../assets/pdfs/CV_Vincent_Herrmann_2024.pdf)
+[Academic CV](../assets/pdfs/CV_Vincent_Herrmann_2025.pdf)
 
 ### Recent News
 <div class="feature__wrapper">

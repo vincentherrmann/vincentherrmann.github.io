@@ -1,5 +1,5 @@
 ---
-title: "Research Projects (Selection)"
+title: "Selected Research Projects"
 type: pages
 layout: archive
 author_profile: true
