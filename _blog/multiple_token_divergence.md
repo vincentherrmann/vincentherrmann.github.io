@@ -11,4 +11,4 @@ excerpt: The divergence between the prediction distributions of the full model a
 
 Under review.
 
-[Paper](../assets/pdfs/Multiple_Token_Divergence.pdf)
+[Paper](../../assets/pdfs/Multiple_Token_Divergence.pdf)
