@@ -11,7 +11,7 @@ I am a PhD candidate at the Swiss AI Lab IDSIA, University of Lugano, where I wo
 My research centers on artificial curiosity, representation learning, reinforcement learning, and information theory, with the aim of uncovering criteria for determining the 'interestingness' of objects and developing effective representations for them. 
 In addition to my academic pursuits, I am a classical pianist and composer.
 
-[Academic CV](../assets/pdfs/Vincent_Herrmann_CV_2025.pdf)
+[Academic CV](../assets/pdfs/CV_Vincent_Herrmann_2025.pdf)
 
 ### Recent News
 <div class="feature__wrapper">
