@@ -9,6 +9,6 @@ title: Multiple Token Divergence—Measuring and Steering In-Context Computation
 excerpt: The divergence between the prediction distributions of the full model and a computational shortcut allows us to measure and steer the computational effort of sequence models.
 ---
 
-Under review.
+Accepted at ICLR 2026.
 
-[Paper](../../assets/pdfs/Multiple_Token_Divergence.pdf)
+[Paper](https://arxiv.org/abs/2512.22944)
