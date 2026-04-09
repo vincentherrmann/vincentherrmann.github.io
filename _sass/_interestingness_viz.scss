@@ -938,6 +938,58 @@ a:focus {
 .machine-controls { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; }
 .machine-controls input { padding: 5px; border: 1px solid var(--border-color); border-radius: 4px; }
 
+/* Fix vertical alignment in the machine control row */
+.machine-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center; /* Centers the label, input, and button vertically */
+    flex-wrap: wrap;
+}
+
+/* Fix the 'Run' button appearance */
+.machine-controls .button.is-small {
+    font-size: 0.75rem !important; /* Forces the font to be smaller */
+    padding: 0.5rem 1rem !important;
+    height: auto !important;
+    line-height: 1 !important;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 !important; /* Remove extra margins that might break alignment */
+}
+
+/* Ensure inputs are height-aligned with buttons */
+.machine-controls input {
+    height: 2rem;
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+/* Force labels and inputs to stay on the same line */
+.machine-controls label {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px; /* Space between the letter and the box */
+    font-weight: 600;
+    margin-right: 10px;
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+/* Ensure the input doesn't try to take up a whole new line */
+.machine-controls input {
+    display: inline-block !important;
+    align-items: center;
+    width: auto; /* Let it be sized by its content or placeholder */
+    max-width: 150px; /* Keep them from getting too long */
+}
+
+/* Specific fix for the Rule 110 Tape input which needs to be wider */
+#ca-program {
+    max-width: 300px;
+}
+
 .console-output {
     background: var(--console-bg);
     color: var(--console-text);    /* Reverted to light text for BF */
@@ -991,6 +1043,40 @@ pre#ca-final-output {
 .empirical-wrapper .point { fill: var(--color-point); cursor: pointer; stroke: #fff; stroke-width: 2px; transition: fill 0.2s; pointer-events: all; }
 .empirical-wrapper .point:hover { fill: var(--color-point-hover); }
 .guide-line-dash { stroke: var(--color-guide); stroke-width: 1.5px; stroke-dasharray: 4, 4; fill: none; }
+
+/* Allow the handles to receive mouse events even if the parent SVG is 'transparent' to clicks */
+.empirical-wrapper .point {
+    pointer-events: auto !important;
+    cursor: grab;
+}
+
+.empirical-wrapper .point:active {
+    cursor: grabbing;
+}
+
+/* Ensure the SVG itself doesn't block the canvas, but its children (the points) do work */
+.plot-svg, .prog-svg {
+    pointer-events: none;
+}
+
+.vis-module .point {
+    fill: #e74c3c !important; /* The red handle color */
+    cursor: pointer !important;
+    pointer-events: auto !important; /* This makes them draggable */
+    stroke: #fff;
+    stroke-width: 2px;
+    transition: fill 0.2s;
+}
+
+.vis-module .point:hover {
+    fill: #c0392b !important;
+}
+
+/* Ensure the SVG container allows children to be clicked */
+.vis-module .plot-svg,
+.vis-module .prog-svg {
+    pointer-events: none;
+}
 
 .blue-label {
     color: var(--theme-blue-main);

@@ -1,6 +1,6 @@
 ---
 type: pages
-layout: single
+layout: archive
 author_profile: false
 header:
   teaser: teaser/interestingness_position_paper_teaser.png
@@ -11,7 +11,7 @@ excerpt: Interestingness is an essential ingredient for open-ended learning and 
 
 Under review.
 
-[Paper](../../assets/pdfs/Position_Paper_about_Interestingness_preprint.pdf)
+[*Paper*](../../assets/pdfs/Position_Paper_about_Interestingness_preprint.pdf)
 
 <div class="content-small" markdown="1">
 
