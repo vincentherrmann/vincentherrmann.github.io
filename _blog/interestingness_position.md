@@ -9,9 +9,7 @@ title: Position—Interestingness is an Inductive Heuristic for Future Compressi
 excerpt: Interestingness is an essential ingredient for open-ended learning and artificial general intelligence. It can be described as a heuristic assessing the potential of future compression progress.
 ---
 
-Under review.
-
-[*Paper*](../../assets/pdfs/Position_Paper_about_Interestingness_preprint.pdf)
+[*Paper*](../../assets/pdfs/Interestingness_preprint.pdf)
 
 <div class="content-small" markdown="1">
 
