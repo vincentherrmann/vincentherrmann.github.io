@@ -9,12 +9,12 @@ title: Interestingness as an Inductive Heuristic for Future Compression Progress
 excerpt: Interestingness is an essential ingredient for open-ended learning and artificial general intelligence. It can be described as a heuristic assessing the potential of future compression progress.
 ---
 
-[*Paper*](../../assets/pdfs/Interestingness_preprint.pdf)
+[*ArXiv*](https://arxiv.org/abs/2605.14831)
 
 <div class="content-small" markdown="1">
 
 # Theoretical Profiles, Probabilities, and Expectations
-Propositions 4.1, 4.2, and 4.3 in the paper describe how observed past compression progress affects expected future compression progress. We have created interactive visualizations to make these theoretical results more intuitive.
+Propositions 4.1, 4.2, and 4.4 in the paper describe how observed past compression progress affects expected future compression progress. We have created interactive visualizations to make these theoretical results more intuitive.
 
 Suppose we have an observed partial log-size vs. complexity profile $\hat{P}$, up to a complexity limit $t$. Beyond $t$, the profile could continue in several ways: it might plateau with no further drops, it could drop immediately, or it might experience multiple future drops at much higher complexities. We want to know how the shape of our observation $\hat{P}$ influences our expectation of this continuation.
 
