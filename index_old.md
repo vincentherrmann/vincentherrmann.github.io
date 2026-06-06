@@ -4,7 +4,6 @@ layout: single
 header:
   image: home-header.jpg
 author_profile: true
-permalink: /
 ---
 
 I am a PhD candidate at the Swiss AI Lab IDSIA, University of Lugano, where I work under the supervision of Prof. Jürgen Schmidhuber. 

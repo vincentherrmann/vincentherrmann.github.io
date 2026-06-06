@@ -45,8 +45,8 @@
   <meta name="twitter:url" content="http://localhost:4000/">
 
   
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="http://localhost:4000/images/home-header.jpg">
+    <meta name="twitter:card" content="summary">
+    
   
 
   
@@ -58,8 +58,6 @@
   
 
 
-
-  <meta property="og:image" content="http://localhost:4000/images/home-header.jpg">
 
 
 
@@ -110,7 +108,7 @@
 <!-- end custom head snippets -->
   </head>
 
-  <body class="layout--single">
+  <body class="layout--single content-small">
 
     <!--[if lt IE 9]>
 <div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
@@ -144,25 +142,6 @@
     
 
 
-  
-
-
-
-
-
-
-
-
-
-<div class="page__hero"
-  style=" "
->
-  
-    <img src="http://localhost:4000/images/home-header.jpg" alt="" class="page__hero-image">
-  
-  
-</div>
-
 
 
 
@@ -191,6 +170,9 @@
   <div class="author__urls-wrapper">
     <button class="btn btn--inverse">Follow</button>
     <ul class="author__urls social-icons">
+      
+        <p><a href="../assets/pdfs/CV_Vincent_Herrmann_2026.pdf" target="_blank">Academic CV</a></p>
+      
       
         <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Lugano, Switzerland</li>
       
@@ -247,335 +229,273 @@
       
 
       <section class="page__content" itemprop="text">
-        <p>I am a PhD candidate at the Swiss AI Lab IDSIA, University of Lugano, where I work under the supervision of Prof. Jürgen Schmidhuber. 
-My research centers on artificial curiosity, representation learning, reinforcement learning, and information theory, with the aim of uncovering criteria for determining the ‘interestingness’ of objects and developing effective representations for them. 
-In addition to my academic pursuits, I am a classical pianist and composer.</p>
+        <p>I am a PhD candidate at the Swiss AI Lab IDSIA, University of Lugano, where I work with my advisor Prof. Jürgen Schmidhuber. 
+My research centers on artificial curiosity, representation learning, reinforcement learning, and information theory, with the aim of uncovering criteria for determining the “interestingness” of objects and developing effective representations for them. 
+In addition to my academic pursuits, I am a classical pianist and composer.
+Below, you can find a list of some of my research projects.</p>
 
-<p><a href="../assets/pdfs/CV_Vincent_Herrmann_2026.pdf">Academic CV</a></p>
+<h2 id="interestingness-open-ended-learning-and-artificial-curiosity">Interestingness, Open-Ended Learning, and Artificial Curiosity</h2>
 
-<h3 id="recent-news">Recent News</h3>
-<div class="feature__wrapper">
+<p>I believe that the challenge of interestingness is central to building open-ended, creative, and self-improving systems. I aim to understand what makes something interesting—both in theory, using tools from algorithmic information theory and Kolmogorov complexity, and in practice, by leveraging the in-context learning capabilities of LLMs.</p>
 
-
+<div class="project-list">
   
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://localhost:4000/images/news/tpami_2024_teaser.jpg" alt="" />
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/interestingness_position_paper_teaser.png" alt="Interestingness as an Inductive Heuristic for Future Compression Progress" />
+          </div>
+        
+        
+          <span class="project-venue">ICML 2026</span>
+        
+        
+          <a href="https://arxiv.org/abs/2605.14831" class="project-paper-link">paper</a>
+        
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/news/tpami_2024/" rel="permalink">Paper accepted at IEEE TPAMI
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">Our work “On the Distillation of Stories for Transferring Narrative Arcs in Collections of Independent Media” has been accepted as a full paper at IEEE TPAMI...</p>
-  </article>
-</div>
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://localhost:4000/images/news/ICML_2024_oral_teaser.png" alt="" />
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/interestingness_position/">Interestingness as an Inductive Heuristic for Future Compression Progress</a>
+          
+        </h3>
+        <p class="project-description">We provide a formal definition of interestingness, prove some intriguing properties, experimentally investigate it using exhaustive program search in various Turing-complete domains, and connect it to current machine learning approaches. Most importantly, we show that the metric predicting potential future compression progress best is "stagnation length": the gap since the last observed progress. The longer progress has stalled, the less likely future progress becomes.</p>
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/news/icml_2024_oral/" rel="permalink">ICML 2024 Oral
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">Presented our oral “Learning Useful Representations of Recurrent Neural Network Weight Matrices” at ICML 2024 in Vienna.
-
-Presentation
-
-Paper
-
-Poster
-</p>
-  </article>
-</div>
-
-
-
-
+    </div>
   
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/blog/more/" rel="permalink">more…
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">
-</p>
-  </article>
-</div>
-
-</div>
-
-<h2 id="research-projects">Research Projects</h2>
-
-<div class="feature__wrapper">
-
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://localhost:4000/images/teaser/interestingness_position_paper_teaser.png" alt="" />
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/ICML_2025_teaser.png" alt="Measuring In-Context Computation Complexity via Hidden State Prediction" />
+          </div>
+        
+        
+          <span class="project-venue">ICML 2025</span>
+        
+        
+          <a href="https://arxiv.org/abs/2503.13431" class="project-paper-link">paper</a>
+        
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/blog/interestingness_position/" rel="permalink">Position—Interestingness is an Inductive Heuristic for Future Compression Progress
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">Interestingness is an essential ingredient for open-ended learning and artificial general intelligence. It can be described as a heuristic assessing the pote...</p>
-  </article>
-</div>
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://localhost:4000/images/teaser/multiple_token_divergence_teaser.png" alt="" />
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/hidden_state_prediction/">Measuring In-Context Computation Complexity via Hidden State Prediction</a>
+          
+        </h3>
+        <p class="project-description">How can we determine whether an LLM is doing anything "interesting" at any given moment? Traditional loss only tells us if the next token can be accurately predicted. It says nothing about the computational effort required to predict it. We connect task complexity to the in-context program that the model must synthesize dynamically to solve a task, demonstrating that this can be estimated by measuring the predictability of future hidden states in a sequence model.</p>
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/blog/multiple_token_divergence/" rel="permalink">Multiple Token Divergence—Measuring and Steering In-Context Computation Density
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">The divergence between the prediction distributions of the full model and a computational shortcut allows us to measure and steer the computational effort of...</p>
-  </article>
-</div>
-
-
-
-
+    </div>
   
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/blog/more/" rel="permalink">more…
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">
-</p>
-  </article>
-</div>
-
-</div>
-
-<h2 id="piano">Piano</h2>
-
-<div class="feature__wrapper">
-
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://img.youtube.com/vi/XIt4DhikD7s/mqdefault.jpg" alt="" />
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/multiple_token_divergence_teaser.png" alt="Multiple Token Divergence: Measuring and Steering In-Context Computation Density" />
+          </div>
+        
+        
+          <span class="project-venue">ICLR 2026</span>
+        
+        
+          <a href="https://arxiv.org/abs/2512.22944" class="project-paper-link">paper</a>
+        
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/piano/ravel-la-valse/" rel="permalink">Maurice Ravel
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">La Valse
-</p>
-  </article>
-</div>
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://img.youtube.com/vi/kxra_9_-tIA/mqdefault.jpg" alt="" />
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/multiple_token_divergence/">Multiple Token Divergence: Measuring and Steering In-Context Computation Density</a>
+          
+        </h3>
+        <p class="project-description">We utilize the multi-token prediction heads that many modern LLMs are trained with to measure exactly when additional computational effort alters outputs versus when a shallow shortcut module suffices. In contrast to hidden state prediction, Multiple Token Divergence operates directly at the logit level. This enables real-time model steering during generation: by extrapolating away from the shortcut distribution, we can encourage counter-intuitive tokens that only make sense with deeper computation, enhancing creative capabilities.</p>
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/piano/liszt-sonata/" rel="permalink">Franz Liszt
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">Sonata b minor
-</p>
-  </article>
-</div>
-
-
-
-
+    </div>
   
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/piano/more/" rel="permalink">more…
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">
-</p>
-  </article>
-</div>
-
-</div>
-
-<h2 id="composition">Composition</h2>
-<div class="feature__wrapper">
-
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://localhost:4000/images/concertante-teaser.jpg" alt="" />
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/abstract_experiments.jpg" alt="Learning One Abstract Bit at a Time Through Self-Invented Experiments Encoded as Neural Networks" />
+          </div>
+        
+        
+          <span class="project-venue">IWAI 2023 (Oral)</span>
+        
+        
+          <a href="https://arxiv.org/abs/2212.14374" class="project-paper-link">paper</a>
+        
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/composition/concertante/" rel="permalink">Concertante
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">For Harp, Piano and large Orchestra
-</p>
-  </article>
-</div>
-
-  
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="http://localhost:4000/images/in-ordnung-teaser.jpg" alt="" />
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/abstract_exeriments/">Learning One Abstract Bit at a Time Through Self-Invented Experiments Encoded as Neural Networks</a>
+          
+        </h3>
+        <p class="project-description">Agents that explore the world in an open-ended way and act as artificial scientists must learn how to formulate insightful questions. We present a novel framework for this: most scientific problems can be framed as binary questions of the form, *"If I perform this exact experiment, will I get this exact outcome?"* Due to the computational universality of RNNs, any such question can be encoded within their weights. We implement a proof of concept where a controller module continuously generates such questions and verifies the answers within the environment, receiving rewards for questions that yield high information gain.</p>
       </div>
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/composition/in-ordnung/" rel="permalink">In Ordnung
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">Piano Piece II
-</p>
-  </article>
-</div>
-
-
-
-
+    </div>
   
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope="" itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/composition/more/" rel="permalink">more…
-</a>
-      
-    </h2>
-    
-    <p class="archive__item-excerpt" itemprop="description">
-</p>
-  </article>
 </div>
 
+<h2 id="understanding-and-generating-neural-networks-at-the-weights-level">Understanding and Generating Neural Networks at the Weights Level</h2>
+
+<p>The weights of a neural network are its program. They can also be treated as data. We can train models to generate, interpret, or modify these weights. While neural network weights offer a universal representational format, they present significant challenges: they are massively high-dimensional and rich with complex symmetries that we must learn to exploit.</p>
+
+<div class="project-list">
+  
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/rnn_representations.jpg" alt="Learning Useful Representations of Recurrent Neural Network Weight Matrices" />
+          </div>
+        
+        
+          <span class="project-venue">ICML 2024 (Oral)</span>
+        
+        
+          <a href="https://proceedings.mlr.press/v235/herrmann24a.html" class="project-paper-link">paper</a>
+        
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/rnn_representations/">Learning Useful Representations of Recurrent Neural Network Weight Matrices</a>
+          
+        </h3>
+        <p class="project-description">RNNs are Turing complete, meaning their weights can theoretically represent any computable function. We investigate different ways of how a weight-encoder can extract various aspects about what exactly an RNN does, given only its weights. We find that our novel "interactive probing" method drastically outperforms mechanistic approaches: instead of looking directly at the weights, our functionalist approach successfully learns to interrogate the behavior of the network they define.</p>
+      </div>
+    </div>
+  
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/gogepo.jpg" alt="Goal-Conditioned Generators of Deep Policies" />
+          </div>
+        
+        
+          <span class="project-venue">AAAI 2023 (Oral)</span>
+        
+        
+          <a href="https://ojs.aaai.org/index.php/AAAI/article/view/25912" class="project-paper-link">paper</a>
+        
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/gogepo/">Goal-Conditioned Generators of Deep Policies</a>
+          
+        </h3>
+        <p class="project-description">Using probing techniques, we can evaluate the exact degree to which a policy achieves a specified goal in an environment. In this work, we take this a step further by generating policy weights conditioned directly on a target goal. By backpropagating through the policy evaluator, we can train this weight generator efficiently. This forms the basis of a novel RL algorithm: by iteratively requesting policies that perform marginally better than those already generated, we directionally explore the parameter space to obtain high-performing policies.</p>
+      </div>
+    </div>
+  
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/immersions/teaser.jpg" alt="Sonifying and Visualizing How Music Sounds to an Artificial Ear" />
+          </div>
+        
+        
+          <span class="project-venue">PMLR 2020, NeurIPS 2019 Best Demonstration Award</span>
+        
+        
+          <a href="http://localhost:4000/assets/pdfs/Immersions_NeurIPS.pdf" class="project-paper-link">paper</a>
+        
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/immersions/">Sonifying and Visualizing How Music Sounds to an Artificial Ear</a>
+          
+        </h3>
+        <p class="project-description">This project is an audio-visual study of the inner workings of sound-processing neural networks. How do internal activations react to different acoustic properties? To which kinds of sounds does a given layer or individual neuron respond? We present a real-time tool that answers these questions, allowing users to select specific neurons and synthesize the exact audio that triggers them via gradient descent.</p>
+      </div>
+    </div>
+  
+</div>
+
+<h2 id="creativity-music-and-narratives">Creativity, Music, and Narratives</h2>
+
+<p>I am deeply interested in the creative process—specifically, what defines a work of art, which aspects of the process can be automated, and which remain inherently human. These projects sit at the intersection of science, engineering, and art, exploring how far we can push the boundaries of computational creativity.</p>
+
+<div class="project-list">
+  
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/narrative_essence.jpg" alt="On the Distillation of Stories for Transferring Narrative Arcs in Collections of Independent Media" />
+          </div>
+        
+        
+          <span class="project-venue">IEEE TPAMI</span>
+        
+        
+          <a href="https://ieeexplore.ieee.org/document/10734853" class="project-paper-link">paper</a>
+        
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/narrative_essence/">On the Distillation of Stories for Transferring Narrative Arcs in Collections of Independent Media</a>
+          
+        </h3>
+        <p class="project-description">Many works of art aim to tell a story. We introduce the concept of "narrative information": the aspect of a narrative "atom" in a story that best predicts its structural placement within the whole. We propose a concrete method to distill an atom down to a low-dimensional "narrative essence." Using music albums as a case study, we identify prototypical narrative arcs and introduce an algorithm to automatically rearrange an arbitrary set of tracks to conform to a specific narrative trajectory.</p>
+      </div>
+    </div>
+  
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/music_slots_teaser.jpg" alt="Automatic Album Sequencing" />
+          </div>
+        
+        
+          <span class="project-venue">ISMIR 2024 Demos</span>
+        
+        
+          <a href="https://arxiv.org/abs/2411.07772" class="project-paper-link">paper</a>
+        
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            Automatic Album Sequencing
+          
+        </h3>
+        <p class="project-description">When listening to music playlists, users are typically limited two options: the pre-defined order, or a randomly shuffled one. We present a tool that automatically sequences an arbitrary collection of tracks into multiple coherent orders. The underlying model was trained on many thousands of music albums, successfully extracting the latent structural patterns human producers use when arranging tracks.</p>
+      </div>
+    </div>
+  
+    <div class="project-item">
+      <div class="project-left">
+        
+          <div class="project-teaser">
+            <img src="http://localhost:4000/images/teaser/master_thesis.jpg" alt="Generative Transformer-based Models of Symbolic Polyphonic Music" />
+          </div>
+        
+        
+          <span class="project-venue">Research Project</span>
+        
+        
+          <a href="http://localhost:4000/assets/pdfs/mami_thesis.pdf" class="project-paper-link">paper</a>
+        
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">
+          
+            <a href="http://localhost:4000/blog/master_thesis/">Generative Transformer-based Models of Symbolic Polyphonic Music</a>
+          
+        </h3>
+        <p class="project-description">In this work, we investigate several core challenges of symbolic, MIDI-like music generation. We propose a novel command-based tokenization scheme, augmentations for input representations, and targeted modifications to the relative attention mechanism. Additionally, we present a discrete representation-learning architecture that yields downsampled sequences, which can be easily generated by a dedicated model and subsequently upsampled using a learned decoder.</p>
+      </div>
+    </div>
+  
 </div>
 
         

@@ -157,6 +157,7 @@ author:
   name             : "Vincent Herrmann"
   avatar           : "portrait_2023_square.jpg"
   bio              : "PhD in machine learning at IDSIA. Classical pianist. Interested in artificial and human creativity."
+  cv               : "../assets/pdfs/CV_Vincent_Herrmann_2026.pdf"
   location         : "Lugano, Switzerland"
   email            : vincent.herrmann@web.de
   uri              :
