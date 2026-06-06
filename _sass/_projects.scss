@@ -1,0 +1,109 @@
+/* ==========================================================================
+   RESEARCH PROJECTS STACKED LIST
+   ========================================================================== */
+
+.project-list {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.project-item {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.project-left {
+  flex-shrink: 0;
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.project-teaser {
+  width: 100%;
+  height: 95px;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+}
+
+.project-item:hover .project-teaser img {
+  transform: scale(1.06);
+}
+
+.project-venue {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.3;
+  margin: 0;
+  display: block;
+}
+
+.project-paper-link {
+  font-size: 0.8rem;
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  text-decoration: underline !important;
+
+  &:hover {
+    color: var(--primary-hover) !important;
+  }
+}
+
+.project-body {
+  flex-grow: 1;
+}
+
+.project-title {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 0.4rem 0 !important;
+  line-height: 1.3 !important;
+
+  a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--primary-color) !important;
+      text-decoration: underline !important;
+    }
+  }
+}
+
+.project-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
