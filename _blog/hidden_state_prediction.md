@@ -16,13 +16,3 @@ Paper at ICML 2025.
 [Code](https://github.com/vincentherrmann/predicting-hidden-states)
 
 [ICML](https://icml.cc/virtual/2025/poster/44985)
-
-<div id="presentation-embed-39042664"></div>
-<script src="https://slideslive.com/embed_presentation.js"></script>
-<script>
-  embed = new SlidesLiveEmbed("presentation-embed-39042664", {
-    presentationId: "39042664",
-    autoPlay: false,
-    verticalEnabled: true,
-  });
-</script>
