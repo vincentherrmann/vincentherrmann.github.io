@@ -16,3 +16,13 @@ Paper presented at ICML 2024 (Oral).
 [Paper](https://proceedings.mlr.press/v235/herrmann24a.html)
 
 [Poster](https://icml.cc/media/PosterPDFs/ICML%202024/34097.png?t=1721225624.6028428)
+
+<div id="presentation-embed-39022022"></div>
+<script src="https://slideslive.com/embed_presentation.js"></script>
+<script>
+  embed = new SlidesLiveEmbed("presentation-embed-39022022", {
+    presentationId: "39022022",
+    autoPlay: false,
+    verticalEnabled: true,
+  });
+</script>
