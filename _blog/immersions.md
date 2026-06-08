@@ -1,5 +1,6 @@
 ---
 title: "Immersions - Visualizing and sonifying how an artificial ear hears music"
+authors: Vincent Herrmann
 excerpt: "Real-time exploration of a sound processing neural network."
 type: pages
 layout: single

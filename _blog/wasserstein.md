@@ -5,6 +5,7 @@ author_profile: false
 related: true
 date: 2017-02-24
 title: Wasserstein GAN and the Kantorovich-Rubinstein Duality
+authors: Vincent Herrmann
 header:
   teaser: wasserstein/transport_plan.png
 excerpt: "Derivation of the Kantorovich-Rubinstein duality for the use in Wasserstein Generative Adversarial Networks"

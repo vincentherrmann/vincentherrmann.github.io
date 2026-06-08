@@ -1,5 +1,6 @@
 ---
 title: Werden Roboter jemals so werden wie wir? (German)
+authors: Vincent Herrmann
 related: true
 header:
   teaser: robot.jpg

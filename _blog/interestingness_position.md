@@ -2,12 +2,16 @@
 type: pages
 layout: archive
 author_profile: false
+youtubeID1: "KvD9a8hNoAc"
 header:
   teaser: teaser/interestingness_position_paper_teaser.png
 date: 2026-02-02
 title: Interestingness as an Inductive Heuristic for Future Compression Progress
+authors: Vincent Herrmann, Jürgen Schmidhuber
 excerpt: Interestingness is an essential ingredient for open-ended learning and artificial general intelligence. It can be described as a heuristic assessing the potential of future compression progress.
 ---
+
+{% include youtube-player.html id=page.youtubeID1 %}
 
 [*ArXiv*](https://arxiv.org/abs/2605.14831)
 

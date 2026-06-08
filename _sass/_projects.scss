@@ -107,3 +107,21 @@
   line-height: 1.6;
   margin: 0;
 }
+
+.project-authors {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.archive__item-authors {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+  display: block;
+}

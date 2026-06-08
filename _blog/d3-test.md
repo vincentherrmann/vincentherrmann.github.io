@@ -6,6 +6,7 @@ header:
   teaser: wavelet-graph.jpg
 date: 2017-04-17
 title: Some Wavelet Visualizations
+authors: Vincent Herrmann
 ---
 
 Recently I started to learn how to use [d3.js](https://d3js.org), a JavaScript library for interactive data-driven visualizations. As a first little project, I decided to make interactive and animated versions of graphics that I originally created for two articles on wavelets ([article 1](https://www.dsprelated.com/showarticle/1000.php), [article 2](https://www.dsprelated.com/showarticle/1006.php)). Besides being visually appealing, I hope that this shines a bit of light at some of the deep connections and fascinating properties of wavelets. Here I narrowed down the explanations to a bare minimum, but I linked the corresponding passages in my articles in case you want to dig a little deeper.

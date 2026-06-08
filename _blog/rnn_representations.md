@@ -6,6 +6,7 @@ header:
   teaser: teaser/rnn_representations.jpg
 date: 2024-06-01
 title: Learning useful representations of recurrent neural network weight matrices 
+authors: Vincent Herrmann, Francesco Faccio, Jürgen Schmidhuber
 excerpt: Recurrent Neural Networks are general-purpose computers. The program of an RNN is its weight matrix. How to learn useful representations of RNN weights that facilitate RNN analysis as well as downstream tasks?
 ---
 

@@ -48,6 +48,12 @@ I am deeply interested in the creative process—specifically, what defines a wo
             {{ proj.title }}
           {% endif %}
         </h3>
+        {% if proj.link %}
+          {% assign project_post = site.blog | where: "url", proj.link | first %}
+          {% if project_post and project_post.authors %}
+            <div class="project-authors">{{ project_post.authors }}</div>
+          {% endif %}
+        {% endif %}
         <p class="project-description">{{ proj.description }}</p>
       </div>
     </div>

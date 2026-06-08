@@ -1,5 +1,6 @@
 ---
 title: "Generative Transformer-based Models of Symbolic Polyphonic Music"
+authors: Vincent Herrmann
 excerpt: "Master thesis on generating classical music with the help of transformers. Written at the Bosch Center for Artificial Intelligence."
 type: pages
 layout: single
