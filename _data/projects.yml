@@ -56,7 +56,7 @@
       description: "Many works of art aim to tell a story. We introduce the concept of \"narrative information\": the aspect of a narrative \"atom\" in a story that best predicts its structural placement within the whole. We propose a concrete method to distill an atom down to a low-dimensional \"narrative essence.\" Using music albums as a case study, we identify prototypical narrative arcs and introduce an algorithm to automatically rearrange an arbitrary set of tracks to conform to a specific narrative trajectory."
     - title: "Automatic Album Sequencing"
       link: null
-      image: "teaser/album_sequencing.jpg"
+      image: "teaser/album_sequencing.png"
       venue: "ISMIR 2024 Demos"
       paper: "https://arxiv.org/abs/2411.07772"
       description: "When listening to music playlists, users are typically limited two options: the pre-defined order, or a randomly shuffled one. We present a tool that automatically sequences an arbitrary collection of tracks into multiple coherent orders. The underlying model was trained on many thousands of music albums, successfully extracting the latent structural patterns human producers use when arranging tracks."
